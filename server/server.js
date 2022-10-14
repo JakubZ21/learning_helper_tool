@@ -27,7 +27,8 @@ app.get("/testconn", (req,res) => {
     
     const connection = new Connection(config);
     const request = new Request(
-        `SELECT * FROM SampleTable`,
+        //`SELECT * FROM SampleTable`,
+        "SELECT * FROM questions",
         (err, rowCount) => {
           if (err) {
             console.error(err.message);
@@ -36,6 +37,28 @@ app.get("/testconn", (req,res) => {
           }
         }
       );
+      var header = [];
+      var table = [];
+      var i = 0
+      request.on("row", columns => {
+        while (header.length != 7){
+          header.push(columns[i].metadata.colName)
+          i++;
+        }
+        let st = '';
+        if(i == 7){
+          header.forEach(item => st += item +'\t')
+          i++;
+        }
+        console.log(st)
+        columns.forEach(column => {
+          table.push(column.value);
+        });
+        st = '';
+        table.forEach(item => st += item +'\t')
+        console.log(st);
+        table = [];
+      });
     
     // Attempt to connect and execute queries if connection goes through
     // This returns 3 rows
@@ -47,9 +70,6 @@ app.get("/testconn", (req,res) => {
         connection.execSql(request);
         
     })
-
-
     res.json(connection.execSql(request))
 })
-
 app.listen(5000, () => {console.log("Server started on port 5000")})
