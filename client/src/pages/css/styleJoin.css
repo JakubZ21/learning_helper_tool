@@ -1,11 +1,3 @@
-:root {
-	--firstclr: #92e8a7;
-	--secondclr: #a1ffd1;
-	--thirdclr: #aeffad;
-	--fourthclr: #afe892;
-	--fifthclr: #deffa1;
-}
-
 html {
 	height: 100%;
 }
@@ -17,6 +9,12 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+
+h1 {
+	font-family: monospace;
+	margin-bottom: 50px;
+}
+
 a {
 	text-decoration: none;
 }
@@ -46,7 +44,7 @@ a {
 	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 0.25em;
 	box-shadow: 5px 20px 50px #000;
-
+	width: 450px;
 	left: 50%;
 	top: 50%;
 	padding: 5vmin;
@@ -54,28 +52,28 @@ a {
 	text-align: center;
 	transform: translate(-50%, -50%);
 }
-.question {
-	font-size: 10px;
+label {
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.5s ease-in-out;
 }
-.answear {
-	margin-top: 10px;
+input {
+	width: 60%;
+	height: 50px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
 }
-
-h1 {
-	font-family: monospace;
-	margin-bottom: 50px;
-}
-.number {
-	color: rgb(43, 207, 22);
-	font-size: 2.5rem;
-	width: 12rem;
-	text-align: center;
-	position: relative;
-	bottom: 0;
-	left: 50%;
-	transform: translate(-50%, 50%);
-}
-
 .button {
 	font-family: 'Bungee', cursive;
 	font-size: 1.2rem;
@@ -94,16 +92,11 @@ h1 {
 	transition: all 0.2s ease-in;
 	z-index: 1;
 }
-.hp {
-	margin-top: 20px;
+.join {
+	margin-top: 34px;
 }
 .button:hover {
 	background: #6c3;
-}
-
-.answear:hover {
-	transform: translateY(-3px);
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slide {
