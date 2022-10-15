@@ -3,6 +3,10 @@ const express = require('express')
 const { Connection, Request } = require("tedious");
 const app = express()
 
+app.get("/api", (req, res) => {
+  
+})
+
 const config = {
   authentication: {
     options: {
@@ -18,35 +22,31 @@ const config = {
   }
 };
 
-var jsonArray = [];
+// var jsonArray = [];
 var connection = new Connection(config)
-
-
-connection.on('connect', function(err)
-{
-  if(err){
-    console.log(err)
-  }else
-  {
-    console.log("connected")
-    const resp = execSQL();
-    console.log(resp[1]+"here")
-  }
-})
-
-connection.connect()
-
+var resp 
 // res.json([])
 
 
-app.get("/api", (req, res) => {
-  res.json({ "users": ["userOne", "userTwo", "userThree"] })
-})
+
 //Uzywana jest biblioteka tedious ktora sluzy do polaczenia z azure sql
 app.get("/testconn", (req, res) => {
 
   
-
+  
+  connection.on('connect', function(err)
+  {
+    if(err){
+      console.log(err)
+    }else
+    {
+      console.log("connected")
+      resp = execSQL(res);
+      console.log(resp)
+    }
+  })
+  
+  connection.connect()
 
   // Create connection to database
   // getQuestData(res);
@@ -55,42 +55,52 @@ app.get("/testconn", (req, res) => {
 
   // Attempt to connect and execute queries if connection goes through
   // This returns 3 rows
-
   
+  // res.json(resp);
 })
 
 app.listen(5000, () => { console.log("Server started on port 5000") })
 
 
-function execSQL()
+async function execSQL(res)
 {
-
-  request = new Request(
+  const jsonArray = []
+ await new Promise((resolve,reject) =>
+ {
+  const request = new Request(
     //`SELECT * FROM SampleTable`,
     "SELECT * FROM questions",
-    (err) => {
+    (err, rowCount) => {
       if (err) {
-        console.error(err.message);
+        return reject(err);
+      } else
+      {
+        console.log(rowCount+' rows')
       }     
-    }
-  );
+    }); 
+ 
+    
+    request.on("row", columns => {
+      var rowObject = {};
+      columns.forEach(column => {
+        rowObject[column.metadata.colName] = column.value
+      });
+      jsonArray.push(rowObject);
+    });
+
+  request.on('doneProc', function(rowCount, more, returnStatus, rows)
+  {
+    console.log("onDoneProc");
+    return resolve(jsonArray);
+  });
 
   connection.execSql(request)
-  var counter = 1 
-  resp = {}
-  request.on('row', function(columns)
-  {
-    resp[counter] = {}
-    columns.forEach(function(column)
-    {
-      resp[counter][column.metadata.colName] = column.value
-    });
-    counter += 1;
   })
-  request.on('done', 
-  function (rowCount, more, rows) {console.log("done is called")});
-  
-  return resp
+ 
+
+ 
+  res.json(jsonArray)
+  return res
 }
 
 function getQuestData(res) {
@@ -104,13 +114,7 @@ function getQuestData(res) {
     }
     else {
       
-      request.on("row", columns => {
-        var rowObject = {};
-        columns.forEach(column => {
-          rowObject[column.metadata.colName] = column.value
-        });
-        jsonArray.push(rowObject);
-      });
+      
 
       connection.execSql(request);
       res.json(jsonArray)
