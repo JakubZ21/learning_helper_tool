@@ -45,7 +45,7 @@ a {
 .content {
 	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 0.25em;
-	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
+	box-shadow: 5px 20px 50px #000;
 	box-sizing: border-box;
 	left: 50%;
 	padding: 10vmin;
@@ -84,7 +84,7 @@ h1 {
 	font-weight: bold;
 	letter-spacing: 1px;
 	cursor: pointer;
-	background: var(--firstclr);
+	background: #1e7c16;
 	border: 2px solid var(--thirdclr);
 	padding: 30px 60px;
 	border-radius: 45px;
@@ -93,6 +93,12 @@ h1 {
 	box-shadow: 0 2px 4px darkgray;
 	transition: all 0.2s ease-in;
 	z-index: 1;
+}
+.hp {
+	margin-top: 20px;
+}
+.button:hover {
+	background: #6c3;
 }
 
 .answear:hover {
