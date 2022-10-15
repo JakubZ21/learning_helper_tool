@@ -1,19 +1,55 @@
-const { json } = require('express')
+const { json, response } = require('express')
 const express = require('express')
 const { Connection, Request } = require("tedious");
 const app = express()
+
+const config = {
+  authentication: {
+    options: {
+      userName: "quiz_reader",
+      password: "wsmsjzOu!z"
+    },
+    type: "default"
+  },
+  server: "wsmsjz-learning-helper-tool-sqlsrv-dev.database.windows.net",
+  options: {
+    database: "learning_helper_tool_sqldb_dev", //update me
+    encrypt: true
+  }
+};
+
 var jsonArray = [];
-var connection;
+var connection = new Connection(config)
+
+
+connection.on('connect', function(err)
+{
+  if(err){
+    console.log(err)
+  }else
+  {
+    console.log("connected")
+    const resp = execSQL();
+    console.log(resp[1]+"here")
+  }
+})
+
+connection.connect()
+
+// res.json([])
+
 
 app.get("/api", (req, res) => {
   res.json({ "users": ["userOne", "userTwo", "userThree"] })
 })
 //Uzywana jest biblioteka tedious ktora sluzy do polaczenia z azure sql
-app.get("/testconn", async (req, res) => {
+app.get("/testconn", (req, res) => {
 
   
+
+
   // Create connection to database
-  getQuestData(res);
+  // getQuestData(res);
 
   // console.log(jsonArray)
 
@@ -22,46 +58,52 @@ app.get("/testconn", async (req, res) => {
 
   
 })
+
 app.listen(5000, () => { console.log("Server started on port 5000") })
 
 
-async function getQuestData(res) {
+function execSQL()
+{
 
-  const config = {
-    authentication: {
-      options: {
-        userName: "quiz_reader",
-        password: "wsmsjzOu!z"
-      },
-      type: "default"
-    },
-    server: "wsmsjz-learning-helper-tool-sqlsrv-dev.database.windows.net",
-    options: {
-      database: "learning_helper_tool_sqldb_dev", //update me
-      encrypt: true
+  request = new Request(
+    //`SELECT * FROM SampleTable`,
+    "SELECT * FROM questions",
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      }     
     }
-  };
+  );
 
-  connection = new Connection(config)
+  connection.execSql(request)
+  var counter = 1 
+  resp = {}
+  request.on('row', function(columns)
+  {
+    resp[counter] = {}
+    columns.forEach(function(column)
+    {
+      resp[counter][column.metadata.colName] = column.value
+    });
+    counter += 1;
+  })
+  request.on('done', 
+  function (rowCount, more, rows) {console.log("done is called")});
+  
+  return resp
+}
 
-  await connection.connect(function (err) {
+function getQuestData(res) {
+
+  
+
+  connection.connect(function (err) {
     if (err) {
       console.log(err);
       return;
     }
     else {
-      const request = new Request(
-        //`SELECT * FROM SampleTable`,
-        "SELECT * FROM questions",
-        (err, rowCount) => {
-          if (err) {
-            console.error(err.message);
-          } else {
-            console.log(`${rowCount} row(s) returned`);
-            // res.json(jsonArray)
-          }
-        }
-      );
+      
       request.on("row", columns => {
         var rowObject = {};
         columns.forEach(column => {
