@@ -1,3 +1,4 @@
+const { json } = require('express')
 const express = require('express')
 const app = express()
 
@@ -24,10 +25,12 @@ app.get("/testconn", (req,res) => {
         encrypt: true
       }
     };
-    
+
+    var jsonArray = [];
     const connection = new Connection(config);
     const request = new Request(
-        `SELECT * FROM SampleTable`,
+        //`SELECT * FROM SampleTable`,
+        "SELECT * FROM questions",
         (err, rowCount) => {
           if (err) {
             console.error(err.message);
@@ -36,7 +39,17 @@ app.get("/testconn", (req,res) => {
           }
         }
       );
-    
+      
+      request.on("row", columns => {
+        var rowObject = {};
+        columns.forEach(column => {
+          rowObject[column.metadata.colName] = column.value
+        });
+        jsonArray.push(rowObject);
+        console.log(jsonArray)
+      });
+      //console.log(jsonArray)
+      
     // Attempt to connect and execute queries if connection goes through
     // This returns 3 rows
     connection.connect(function (err) {
@@ -47,9 +60,6 @@ app.get("/testconn", (req,res) => {
         connection.execSql(request);
         
     })
-
-
     res.json(connection.execSql(request))
 })
-
 app.listen(5000, () => {console.log("Server started on port 5000")})
