@@ -1,4 +1,4 @@
-const { json } = require('express')
+const request = require('express')
 const express = require('express')
 const app = express()
 
@@ -7,11 +7,10 @@ app.get("/api", (req,res) => {
 })
 //Uzywana jest biblioteka tedious ktora sluzy do polaczenia z azure sql
 app.get("/testconn", (req,res) => {
-
-    const { Connection, Request } = require("tedious");
-
-    // Create connection to database
-    const config = {
+    var jsonArray = [];
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    var config = {
       authentication: {
         options: {
           userName: "quiz_reader", 
@@ -25,41 +24,36 @@ app.get("/testconn", (req,res) => {
         encrypt: true
       }
     };
-
-    var jsonArray = [];
     const connection = new Connection(config);
-    const request = new Request(
-        //`SELECT * FROM SampleTable`,
-        "SELECT * FROM questions",
-        (err, rowCount) => {
-          if (err) {
-            console.error(err.message);
-          } else {
-            console.log(`${rowCount} row(s) returned`);
-          }
-        }
-      );
-      
-      request.on("row", columns => {
-        var rowObject = {};
-        columns.forEach(column => {
-          rowObject[column.metadata.colName] = column.value
-        });
-        jsonArray.push(rowObject);
-        console.log(jsonArray)
-      });
-      //console.log(jsonArray)
-      
-    // Attempt to connect and execute queries if connection goes through
-    // This returns 3 rows
-    connection.connect(function (err) {
+    connection.on('connect', function(err) {
         if (err) {
-            console.log(err);
-            return;
+            console.log(err)
+        } else {
+            queryDatabase()
         }
+    });
+    connection.connect();
+    const queryDatabase = function() {
+        console.log('Reading rows from the Table...');
+        // Read all rows from table
+        const request = new Request(
+            "SELECT * FROM questions",
+            function(err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                res.json({"users": jsonArray})
+                jsonArray = [];
+                connection.close();
+            }
+        );
+        request.on('row', function(columns) {
+            var jsonRow = {};
+            columns.forEach(function(column) {
+                jsonRow[column.metadata.colName] = column.value;
+            });
+            jsonArray.push(jsonRow);
+        });
         connection.execSql(request);
-        
-    })
-    res.json(connection.execSql(request))
-})
+    }
+});
+
 app.listen(5000, () => {console.log("Server started on port 5000")})
