@@ -2,14 +2,7 @@ const request = require('express')
 const express = require('express')
 const app = express()
 
-app.get("/api", (req,res) => {
-    res.json({"users": ["userOne", "userTwo", "userThree"]})
-})
-//Uzywana jest biblioteka tedious ktora sluzy do polaczenia z azure sql
-app.get("/testconn", (req,res) => {
-    var jsonArray = [];
-    var Connection = require('tedious').Connection;
-    var Request = require('tedious').Request;
+function connectToAzure(){
     var config = {
       authentication: {
         options: {
@@ -24,7 +17,19 @@ app.get("/testconn", (req,res) => {
         encrypt: true
       }
     };
-    const connection = new Connection(config);
+    return config;
+}
+
+app.get("/api", (req,res) => {
+    res.json({"users": ["userOne", "userTwo", "userThree"]})
+})
+//Uzywana jest biblioteka tedious ktora sluzy do polaczenia z azure sql
+app.get("/testconn", (req,res) => {
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    var jsonArray = [];
+    
+    const connection = new Connection(connectToAzure());
     connection.on('connect', function(err) {
         if (err) {
             console.log(err)
@@ -40,7 +45,7 @@ app.get("/testconn", (req,res) => {
             "SELECT * FROM questions",
             function(err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
-                res.json({"users": jsonArray})
+                res.json(jsonArray)
                 jsonArray = [];
                 connection.close();
             }
@@ -52,6 +57,36 @@ app.get("/testconn", (req,res) => {
             });
             jsonArray.push(jsonRow);
         });
+        connection.execSql(request);
+    }
+});
+
+//weryfikacja danych w formularzu logowania
+app.get("/checkuser", (req,res) => {
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    
+    const connection = new Connection(connectToAzure());
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log(err)
+        } else {
+            queryDatabase()
+        }
+    });
+    connection.connect();
+    const queryDatabase = function() {
+        console.log('Reading rows from the Table...');
+        // Read all rows from table
+        const request = new Request(
+          // #TODO zmienic na parametry z formularza
+            "SELECT * FROM users WHERE email = '" + "guest@zxc.pl" + "' AND password = '" + "guest" + "'",
+            function(err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                res.json(rowCount);
+                connection.close();
+            }
+        );
         connection.execSql(request);
     }
 });
