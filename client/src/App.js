@@ -1,4 +1,5 @@
 //import React, { useEffect, useState } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Start from './components/startPage/Start';
 import Categories from './components/categoriesPage/Categories';
 import './index.css';
@@ -35,7 +36,12 @@ import './index.css';
 function App() {
 	return (
 		<div>
-			<Categories />
+			<Route path='/'>
+				<Start />
+			</Route>
+			<Route path='/category' exact>
+				<Categories />
+			</Route>
 		</div>
 	);
 }

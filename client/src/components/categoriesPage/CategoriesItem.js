@@ -3,10 +3,10 @@ function CategoriesItem() {
 	const category = [
 		{
 			id: 'e1',
-			title: 'History',
+			title: 'Historia',
 		},
-		{ id: 'e2', title: 'Math' },
-		{ id: 'e3', title: 'Music' },
+		{ id: 'e2', title: 'Matematyka' },
+		{ id: 'e3', title: 'Muzyka' },
 	];
 	return (
 		<div>
