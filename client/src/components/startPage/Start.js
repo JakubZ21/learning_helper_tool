@@ -9,7 +9,7 @@ function Start() {
 			<BackGround />
 			<Card className='content'>
 				<div className='title'>
-					<h1>Witaj w grze. Wybierz Zagraj,aby przejść dalej</h1>
+					<h1>Witaj w grze</h1>
 				</div>
 				<Link to='/category'>
 					<div className='button hp'>Zagraj jako gość</div>
