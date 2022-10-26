@@ -12,8 +12,8 @@ body {
 	font-family: 'Jost', sans-serif;
 	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 }
-.main {
-	width: 350px;
+.main_login {
+	width: 450px;
 	height: 600px;
 	background: red;
 	overflow: hidden;
@@ -102,13 +102,4 @@ button:hover {
 }
 #chk:checked ~ .signup label {
 	transform: scale(0.6);
-}
-
-@keyframes slide {
-	0% {
-		transform: translateX(-25%);
-	}
-	100% {
-		transform: translateX(25%);
-	}
 }

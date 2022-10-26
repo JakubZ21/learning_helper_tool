@@ -49,10 +49,10 @@ function App() {
 					<Categories />
 				</Route>
 				<Route path='/quiz'>
-					<Quiz />
+					<Login />
 				</Route>
 				<Route path='/login'>
-					<Login />
+					<Quiz />
 				</Route>
 			</Switch>
 		</div>

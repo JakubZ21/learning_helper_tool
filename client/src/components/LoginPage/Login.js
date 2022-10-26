@@ -7,7 +7,7 @@ const Login = () => {
 	return (
 		<div>
 			<BackGround />
-			<div class='main'>
+			<div class='main_login'>
 				<input type='checkbox' id='chk' aria-hidden='true' />
 
 				<div class='signup'>
@@ -55,7 +55,7 @@ const Login = () => {
 						<button>Zatwierdź</button>
 					</form>
 
-					<Link to='./'>
+					<Link className='text-link' to='./'>
 						{' '}
 						<button>Powrót</button>
 					</Link>
