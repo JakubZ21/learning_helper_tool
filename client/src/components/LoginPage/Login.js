@@ -54,6 +54,11 @@ const Login = () => {
 						</div>
 						<button>Zatwierdź</button>
 					</form>
+
+					<Link to='./'>
+						{' '}
+						<button>Powrót</button>
+					</Link>
 				</div>
 
 				<div class='login'>
