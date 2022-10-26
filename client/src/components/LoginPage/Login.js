@@ -89,10 +89,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-	/* <Link to='./'>
-{' '}
-<button>Powrót</button>
-</Link> */
-}
