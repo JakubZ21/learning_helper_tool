@@ -62,7 +62,7 @@ body {
 	margin: 4px;
 	color: #094e28;
 }
-button {
+.btn-log {
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
@@ -79,9 +79,10 @@ button {
 	transition: 0.2s ease-in;
 	cursor: pointer;
 }
-button:hover {
-	background: #0a740a;
+.btn-log:hover {
+	background: #078f07;
 }
+
 .login {
 	height: 560px;
 	background: #eee;

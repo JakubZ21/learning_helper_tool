@@ -5,6 +5,7 @@ import Categories from './components/categoriesPage/Categories';
 import './index.css';
 import Quiz from './components/QuizPage/Quiz';
 import Login from './components/LoginPage/Login';
+import Join from './components/JoinPage/Join';
 
 //////
 // function App() {
@@ -51,8 +52,8 @@ function App() {
 				<Route path='/quiz'>
 					<Login />
 				</Route>
-				<Route path='/login'>
-					<Quiz />
+				<Route path='/join'>
+					<Join />
 				</Route>
 			</Switch>
 		</div>
