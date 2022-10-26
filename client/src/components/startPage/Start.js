@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Card from '../UI/Card';
 import BackGround from '../UI/BackGround';
 import './Start.css';
@@ -11,17 +11,15 @@ function Start() {
 				<div className='title'>
 					<h1>Witaj w grze. Wybierz Zagraj,aby przejść dalej</h1>
 				</div>
-
-				<NavLink to='/category'>
+				<Link to='/category'>
 					<div className='button hp'>Zagraj jako gość</div>
-				</NavLink>
-
-				<a href='./login.html'>
+				</Link>
+				<Link to='/quiz'>
 					<div className='button hp'>Zaloguj</div>
-				</a>
-				<a href='./join.html'>
+				</Link>
+				<Link to='./login'>
 					<div className='button hp'>Dołącz</div>
-				</a>
+				</Link>
 			</Card>
 		</div>
 	);

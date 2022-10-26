@@ -3,6 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Start from './components/startPage/Start';
 import Categories from './components/categoriesPage/Categories';
 import './index.css';
+import Quiz from './components/QuizPage/Quiz';
+import Login from './components/LoginPage/Login';
 
 //////
 // function App() {
@@ -36,12 +38,23 @@ import './index.css';
 function App() {
 	return (
 		<div>
-			<Route path='/'>
-				<Start />
-			</Route>
-			<Route path='/category' exact>
-				<Categories />
-			</Route>
+			<Switch>
+				<Route path='/' exact>
+					<Redirect to='/start' />
+				</Route>
+				<Route path='/start'>
+					<Start />
+				</Route>
+				<Route path='/category' exact>
+					<Categories />
+				</Route>
+				<Route path='/quiz'>
+					<Quiz />
+				</Route>
+				<Route path='/login'>
+					<Login />
+				</Route>
+			</Switch>
 		</div>
 	);
 }
