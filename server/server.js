@@ -20,9 +20,48 @@ function connectToAzure(){
     return config;
 }
 
+
+
 app.get("/api", (req,res) => {
     res.json({"users": ["userOne", "userTwo", "userThree"]})
 })
+
+app.get("/categories/getall", (req,res) => {
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    var jsonArray = [];
+    
+    const connection = new Connection(connectToAzure());
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log(err)
+        } else {
+            queryDatabase()
+        }
+    });
+    connection.connect();
+    const queryDatabase = function() {
+        console.log('Reading rows from the Table...');
+        // Read all rows from table
+        const request = new Request(
+            "SELECT * FROM question_category",
+            function(err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                res.json(jsonArray)
+                jsonArray = [];
+                connection.close();
+            }
+        );
+        request.on('row', function(columns) {
+            var jsonRow = {};
+            columns.forEach(function(column) {
+                jsonRow[column.metadata.colName] = column.value;
+            });
+            jsonArray.push(jsonRow);
+        });
+        connection.execSql(request);
+    }
+});
 
 qAPI();
 
