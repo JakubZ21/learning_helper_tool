@@ -52,12 +52,12 @@ const Login = () => {
 								<label for='dewey'>Nauczyciel</label>
 							</div>
 						</div>
-						<button>Zatwierdź</button>
+						<button className='btn-log'>Zatwierdź</button>
 					</form>
 
 					<Link className='text-link' to='./'>
 						{' '}
-						<button>Powrót</button>
+						<button className='btn-log'>Powrót</button>
 					</Link>
 				</div>
 
@@ -80,7 +80,7 @@ const Login = () => {
 							placeholder='Password'
 							required=''
 						/>
-						<button>Login</button>
+						<button className='btn-log'>Login</button>
 					</form>
 				</div>
 			</div>
@@ -89,10 +89,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-	/* <Link to='./'>
-{' '}
-<button>Powrót</button>
-</Link> */
-}
