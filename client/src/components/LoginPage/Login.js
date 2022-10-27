@@ -45,11 +45,15 @@ const Login = () => {
 									value='user'
 									checked
 								/>
-								<label htmlFor='huey'>Użytkownik</label>
+								<label htmlFor='huey' className='lbl-user'>
+									Użytkownik
+								</label>
 							</div>
 							<div className='btn__radio'>
 								<input type='radio' id='dewey' name='user' value='teacher' />
-								<label htmlFor='dewey'>Nauczyciel</label>
+								<label htmlFor='dewey' className='lbl-user'>
+									Nauczyciel
+								</label>
 							</div>
 						</div>
 						<button className='btn-log'>Zatwierdź</button>

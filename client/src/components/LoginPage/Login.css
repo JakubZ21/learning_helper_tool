@@ -40,10 +40,13 @@ body {
 	cursor: pointer;
 	transition: 0.5s ease-in-out;
 }
+.lbl-user {
+	margin-left: 4px;
+}
 
 .input__data {
 	width: 60%;
-	height: 20px;
+	height: 3rem;
 	background: #e0dede;
 	justify-content: center;
 	display: flex;

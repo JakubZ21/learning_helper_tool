@@ -5,6 +5,7 @@ const Quiz = () => {
 	return (
 		<div>
 			<BackGround />
+
 			<div className='container'>
 				<div className='justify-center flex-column'>
 					<h2 className='question'>What is the answear to this questions</h2>
