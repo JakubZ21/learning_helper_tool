@@ -28,19 +28,3 @@ function Start() {
 }
 
 export default Start;
-
-/* <BackGround />
-			<Card className='content'>
-				<div className='title'>
-					<h1>Witaj w grze</h1>
-				</div>
-				<Link to='/category'>
-					<div className='button hp'>Zagraj jako gość</div>
-				</Link>
-				<Link to='/quiz'>
-					<div className='button hp'>Zaloguj</div>
-				</Link>
-				<Link to='./login'>
-					<div className='button hp'>Dołącz</div>
-				</Link>
-			</Card> */

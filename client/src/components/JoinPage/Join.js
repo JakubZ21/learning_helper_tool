@@ -8,7 +8,7 @@ const Join = () => {
 			<BackGround />
 			<div class='main-join'>
 				<form>
-					<label for='chk' aria-hidden='true'></label>
+					<label htmlFor='chk' aria-hidden='true'></label>
 					<input
 						className='input-join'
 						type='text'

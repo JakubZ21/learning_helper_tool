@@ -18,7 +18,7 @@ const Categories = () => {
 				<Link className='text-link' to='/'>
 					<button className='btn-close'>close</button>
 				</Link>
-				<label className='lbl-cat' for='chk' aria-hidden='true'>
+				<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
 					Kategorie
 				</label>
 

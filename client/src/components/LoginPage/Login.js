@@ -12,7 +12,7 @@ const Login = () => {
 
 				<div class='signup'>
 					<form>
-						<label className='lbl__main reg' for='chk' aria-hidden='true'>
+						<label className='lbl__main reg' htmlFor='chk' aria-hidden='true'>
 							Rejestracja
 						</label>
 						<input
@@ -45,11 +45,11 @@ const Login = () => {
 									value='user'
 									checked
 								/>
-								<label for='huey'>Użytkownik</label>
+								<label htmlFor='huey'>Użytkownik</label>
 							</div>
 							<div className='btn__radio'>
 								<input type='radio' id='dewey' name='user' value='teacher' />
-								<label for='dewey'>Nauczyciel</label>
+								<label htmlFor='dewey'>Nauczyciel</label>
 							</div>
 						</div>
 						<button className='btn-log'>Zatwierdź</button>
@@ -63,7 +63,7 @@ const Login = () => {
 
 				<div class='login'>
 					<form>
-						<label className='lbl__main log' for='chk' aria-hidden='true'>
+						<label className='lbl__main log' htmlFor='chk' aria-hidden='true'>
 							Logowanie
 						</label>
 						<input
