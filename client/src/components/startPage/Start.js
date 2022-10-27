@@ -15,7 +15,7 @@ function Start() {
 					<Link className='text-link' to='/category'>
 						<button className='btn_main'>Szybka Gra</button>
 					</Link>
-					<Link className='text-link' to='/quiz'>
+					<Link className='text-link' to='/login'>
 						<button className='btn_main'>Zaloguj się</button>
 					</Link>
 					<Link className='text-link' to='/join'>

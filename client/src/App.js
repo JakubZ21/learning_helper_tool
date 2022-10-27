@@ -50,6 +50,9 @@ function App() {
 					<Categories />
 				</Route>
 				<Route path='/quiz'>
+					<Quiz />
+				</Route>
+				<Route path='/login'>
 					<Login />
 				</Route>
 				<Route path='/join'>

@@ -1,15 +1,16 @@
 import './Categories.css';
 import BackGround from '../UI/BackGround';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+import Quiz from '../QuizPage/Quiz';
 
 const Categories = () => {
 	const category = [
 		{
-			id: 'e1',
+			id: '1',
 			title: 'Historia',
 		},
-		{ id: 'e2', title: 'Matematyka' },
-		{ id: 'e3', title: 'Muzyka' },
+		{ id: '2', title: 'Matematyka' },
+		{ id: '3', title: 'Muzyka' },
 	];
 	return (
 		<div>
@@ -21,10 +22,16 @@ const Categories = () => {
 				<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
 					Kategorie
 				</label>
+				<Link className='text-link' to={`/quiz/${category[0].id}`}>
+					<button className='btn-ctg'>{category[0].title}</button>
+				</Link>
 
-				<button className='btn-ctg'>{category[0].title}</button>
-				<button className='btn-ctg'>{category[1].title}</button>
-				<button className='btn-ctg'>{category[2].title}</button>
+				<Link className='text-link' to={`/quiz/${category[1].id}`}>
+					<button className='btn-ctg'>{category[1].title}</button>
+				</Link>
+				<Link className='text-link' to={`/quiz/${category[2].id}`}>
+					<button className='btn-ctg'>{category[2].title}</button>
+				</Link>
 			</div>
 		</div>
 	);
