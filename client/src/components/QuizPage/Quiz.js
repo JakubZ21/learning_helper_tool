@@ -16,9 +16,11 @@ const Quiz = () => {
 		setIsActive(false);
 	};
 
-	
+const queryParams = new URLSearchParams(window.location.search);
 const API_ENDPOINT = "http://localhost:5000/";
-const url = "http://localhost:5000/questions/get10random";
+const urlCateg = queryParams.get('cat_id'); 
+const url = "http://localhost:5000/questions/get10randomfromcat?category[]="+urlCateg;
+
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
