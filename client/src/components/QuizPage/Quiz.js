@@ -1,12 +1,16 @@
 import './Quiz.css';
 import BackGround from '../UI/BackGround';
 import { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
+
+
 
 const Quiz = () => {
 
 	const [index, setIndex] = useState(0);
 	const [isActive, setIsActive] = useState(true);
+	let history = useHistory()
 
 	const handleClick = () => {
 		setIsActive(false);
@@ -157,18 +161,22 @@ useEffect(() =>
 	// 		],
 	// 	},
 	// ];
+	
 
 	const nextQuestion = () => {
 		setIndex((oldIndex) => {
 			const index = oldIndex + 1;
 			if (index > questionsFetched.length - 1) {
 				console.log('Koniec gry');
+				history.push('/')
 				return 0;
 			} else {
 				return index;
 			}
 		});
 	};
+
+	
 
 
 	return (
