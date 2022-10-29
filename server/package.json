@@ -11,6 +11,7 @@
   "author": "Wojciech Serodziński Mateusz Szymaniak Jakub Żytkowski",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "tedious": "^15.1.0"
   },

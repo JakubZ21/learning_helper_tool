@@ -30,6 +30,7 @@ app.get("/categories/getall", (req,res) => {
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
     var jsonArray = [];
+    res.header("Access-Control-Allow-Origin", "*");
     
     const connection = new Connection(connectToAzure());
     connection.on('connect', function(err) {
@@ -142,7 +143,7 @@ app.get("/questions/getcategory", (req,res) => {
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
     var jsonArray = [];
-
+    res.header("Access-Control-Allow-Origin", "*");
     
     let categories = req.query.category
     let categorySQL = []
@@ -190,7 +191,7 @@ app.get("/questions/get10random", (req,res) => {
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
     var jsonArray = [];
-
+    res.header("Access-Control-Allow-Origin", "*");
     
     // let categories = req.query.category
     // let categorySQL = []
@@ -213,7 +214,7 @@ app.get("/questions/get10random", (req,res) => {
         console.log('Reading rows from the Table...');
         // Read all rows from table
         const request = new Request(
-            "SELECT TOP 10 * FROM questions ORDER BY NEWID() )",
+            "SELECT TOP 10 * FROM questions ORDER BY NEWID()",
             function(err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
                 res.json(jsonArray)
@@ -236,7 +237,7 @@ app.get("/questions/get10randomfromcat", (req,res) => {
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
     var jsonArray = [];
-
+    res.header("Access-Control-Allow-Origin", "*");
     
     let categories = req.query.category
     let categorySQL = []
