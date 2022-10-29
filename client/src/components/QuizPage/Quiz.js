@@ -6,12 +6,9 @@ import axios from 'axios';
 
 const Quiz = () => {
 	const [index, setIndex] = useState(0);
-	const [isActive, setIsActive] = useState(true);
-	let history = useHistory();
+	const [counter, setCounter] = useState(0);
 
-	const handleClick = () => {
-		setIsActive(false);
-	};
+	let history = useHistory();
 
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = 'http://localhost:5000/';
@@ -82,6 +79,13 @@ const Quiz = () => {
 			}
 		});
 	};
+	//DO POPRAWY!!!!
+	const checkAnswer = (value) => {
+		if (value) {
+			setCorrect((oldState) => oldState + 1);
+		}
+		nextQuestion();
+	};
 
 	return (
 		<div>
@@ -93,14 +97,7 @@ const Quiz = () => {
 					{answersState.map((answer, index) => (
 						<div className='choice-container'>
 							<p className='choice-prefix'>{index + 1}</p>
-							<p
-								className='choice-text'
-								style={{
-									backgroundColor: isActive ? 'salmon' : '',
-									color: isActive ? 'white' : '',
-								}}
-								onClick={handleClick}
-							>
+							<p className='choice-text' onClick={checkAnswer}>
 								{answer}
 							</p>
 						</div>
