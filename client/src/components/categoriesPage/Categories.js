@@ -21,7 +21,7 @@ const url = "http://localhost:5000/categories/getall";
 	
 
 
-const fetchQuestions = async (API_ENDPOINT) =>
+const fetchCategories = async (API_ENDPOINT) =>
 {
 	const response = await axios(url).catch((err) => console.log(err));
     if (response) {
@@ -45,7 +45,7 @@ const fetchQuestions = async (API_ENDPOINT) =>
 }	
 	useEffect(() =>
 	{
-		fetchQuestions();
+		fetchCategories();
 	}, [])
 
 	const locButtons = []
