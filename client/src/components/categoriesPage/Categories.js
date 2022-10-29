@@ -53,7 +53,7 @@ const fetchCategories = async (API_ENDPOINT) =>
 	useEffect(()=>{
 		categories.forEach((cat) => {
 			locButtons.push(
-		<Link className='text-link' to={`/quiz/${cat.id}`} key={`${cat.id}`}>
+		<Link className='text-link' to={`/quiz/?cat_id=${cat.id}`} key={`${cat.id}`}>
 			<button className='btn-ctg'>{cat.category_name}</button>
 		</Link>
 		);

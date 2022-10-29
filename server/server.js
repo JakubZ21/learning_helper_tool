@@ -260,7 +260,7 @@ app.get("/questions/get10randomfromcat", (req,res) => {
         console.log('Reading rows from the Table...');
         // Read all rows from table
         const request = new Request(
-            "SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+") ORDER BY NEWID() )",
+            "SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+") ORDER BY NEWID()",
             function(err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
                 res.json(jsonArray)
