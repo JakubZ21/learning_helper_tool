@@ -1,3 +1,4 @@
+const { json } = require('express');
 const request = require('express')
 const express = require('express')
 const app = express()
@@ -84,7 +85,7 @@ app.get("/categories/getall", (req,res) => {
 
 qAPI();
 
-app.get("/quiz/registernew", (req,res)=>{
+app.put("/quiz/registernew", (req,res)=>{
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
     let code ="AAAAAA" 
@@ -99,56 +100,66 @@ app.get("/quiz/registernew", (req,res)=>{
             console.log("Err")
         } else {
             console.log("Connected")
-            queryDatabase()
+            connection.beginTransaction(function(err)
+        {
+            
+                if(err){
+                    connection.rollbackTransaction(function(err)
+                    {
+                        console.log(err)
+                        console.log("Rolling back transaction")
+                    })
+                }
+                else
+                {
+                    queryDatabase()
+                    console.log("After exec")
+                                       
+                }
+                console.log("out of trans")
+        })
+            
         }
     });
     connection.connect();
     console.log("Before Send")
-    res.json(code);
-    console.log("After send")
 
     const queryDatabase = function() {
         console.log('Reading rows from the Table...');
         // Read all rows from table
-        // connection.beginTransaction(function(err)
-        // {
-        //     console.log("Starting Transaction")
-        //     if(err){
-        //         connection.rollbackTransaction(function(err)
-        //         {
-        //             console.log(err)
-        //             console.log("Rolling back transaction")
-        //         }
-        //         )
-        //     }
-        //     else
-        //     {
-        //         console.log("Starting Request")
+        
+        //    
                 const request = new Request(
                     
                     `
                     INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,10,'NO TIME')
-                    SELECT hashids.encode1(MAX(id)) FROM dbo.quizes
+                    SELECT hashids.encode1(MAX(id)) as Id FROM dbo.quizes
                     `,
                     function(err, rowCount, rows) {
-                        console.log(rows)
                         console.log(rowCount + ' row(s) returned');
-                        console.log(err)
-
-                        connection.close();
+                        res.json(code);
+                        connection.commitTransaction(function(error){
+                            console.log(error)
+                        })
+                                       
                     }
                 );
 
                 request.on('row', function(columns) {
-                    var jsonRow = {};
+                    let json = {}
                     columns.forEach(function(column) {
-                        jsonRow[column.metadata.colName] = column.value;
+                        json['Id'] = column.value;
                         console.log(column.metadata.colName+" | "+column.value)
                     });
-                    jsonArray.push(jsonRow);
-                });
-                
+                    code = json;
+                }); 
+
+
                 connection.execSql(request);
+                connection.on('end', function(column)
+                {
+                console.log('Ending conn')
+    })
                 
     }
 }) 
