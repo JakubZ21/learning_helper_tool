@@ -375,7 +375,7 @@ function quizRegisterAPI(){
                 function (err, rowCount, rows) {
                     console.log(rowCount + ' row(s) returned');
                     res.json(code);
-                    typeof err === "undefined" ? console.log(err) : console.log("Successfully inserted quiz and returned quiz code");
+                    typeof err === "undefined" ? console.log("Successfully inserted quiz and returned quiz code") : console.log(err) ;
                 }
             );
     
@@ -428,7 +428,7 @@ function quizRegisterAPI(){
                 sqlQuery,
                 function (err, rowCount, rows) {
                     console.log(rowCount + ' row(s) returned');
-                    typeof err === "undefined" ? console.log(err) : console.log("Successfully fetched 10 random questions");
+                    typeof err === "undefined" ?  console.log("Successfully fetched 10 random questions") : console.log(err) ;
                 }
             );
             request.on('row', function (columns) {
