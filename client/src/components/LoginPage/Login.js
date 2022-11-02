@@ -75,6 +75,7 @@ const Login = () => {
 					'Content-Type': 'application/json',
 				},
 			}).then((res) => {
+				setIsLogin(false);
 				if (res.ok) {
 					console.log('Zalogowany');
 				} else {
