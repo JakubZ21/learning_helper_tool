@@ -1,3 +1,7 @@
+#packs ignored
+*.pack
+.eslintcache
+
 # compiled output
 /dist
 /tmp
