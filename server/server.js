@@ -113,12 +113,15 @@ app.get("/checkuser", (req, res) => {
 });
 
 app.put("/user/register", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     console.log(req.query)
     res.json(req.query)
 })
 
 
 app.post("/user/login", (req, res) => {
+   
+    res.header("Access-Control-Allow-Origin", "*");
     let fakeuser = {
         username: "regularUser",
         password: "regularPwd",
