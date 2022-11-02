@@ -39,11 +39,6 @@ function connectToAzureWriter() {
 }
 
 
-
-app.get("/api", (req, res) => {
-    res.json({ "users": ["userOne", "userTwo", "userThree"] })
-})
-
 app.get("/categories/getall", (req, res) => {
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
@@ -119,6 +114,7 @@ app.get("/checkuser", (req, res) => {
 
 app.put("/user/register", (req, res) => {
     console.log(req.query)
+    res.json(req.query)
 })
 
 
