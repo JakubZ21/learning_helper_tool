@@ -52,6 +52,7 @@ const Login = () => {
 	// };
 
 	const [isLogin, setIsLogin] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -63,6 +64,7 @@ const Login = () => {
 		const enteredPassword = passwordInputRef.current.value;
 
 		let url = 'http://localhost:5000/user/login';
+		setIsLoading(true);
 
 		if (isLogin) {
 			fetch(url, {
@@ -75,13 +77,15 @@ const Login = () => {
 					'Content-Type': 'application/json',
 				},
 			}).then((res) => {
-				setIsLogin(false);
+				// setIsLogin(false);
+				console.log(res);
 				if (res.ok) {
-					console.log('Zalogowany');
+					if (res.body) console.log('Zalogowany');
 				} else {
 					return res.json().then((data) => {
 						let errorMessage = 'Failed!';
 						alert(errorMessage);
+						throw new Error(errorMessage);
 					});
 				}
 			});
@@ -183,7 +187,8 @@ const Login = () => {
 							required=''
 							ref={passwordInputRef}
 						/>
-						<button className='btn-log'>Login</button>
+						{!isLoading && <button className='btn-log'>Login</button>}
+						{isLoading && <p className='btn-log p'>Loading...</p>}
 					</form>
 				</div>
 			</div>
