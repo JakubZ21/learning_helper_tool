@@ -195,8 +195,8 @@ useEffect(() =>
 							<p
 								className='choice-text'
 								style={{
-									backgroundColor: isActive ? 'salmon' : '',
-									color: isActive ? 'white' : '',
+									backgroundColor: isActive ? 'white' : '',
+									color: isActive ? 'black' : '',
 								}}
 								onClick={handleClick}
 							>

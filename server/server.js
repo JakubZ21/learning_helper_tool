@@ -19,6 +19,24 @@ function connectToAzure(){
     };
     return config;
 }
+function connectToAzureWriter(){
+    var config = {
+      authentication: {
+        options: {
+          userName: "quiz_readwriter", 
+          password: "wsmsjzOu!z" 
+        },
+        type: "default"
+      },
+      server: "wsmsjz-learning-helper-tool-sqlsrv-dev.database.windows.net", 
+      options: {
+        database: "learning_helper_tool_sqldb_dev", //update me
+        encrypt: true,
+        "requestTimeout": 0
+      }
+    };
+    return config;
+}
 
 
 
@@ -66,6 +84,76 @@ app.get("/categories/getall", (req,res) => {
 
 qAPI();
 
+app.get("/quiz/registernew", (req,res)=>{
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    let code ="AAAAAA" 
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    
+    
+    const connection = new Connection(connectToAzureWriter());
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log(err)
+            console.log("Err")
+        } else {
+            console.log("Connected")
+            queryDatabase()
+        }
+    });
+    connection.connect();
+    console.log("Before Send")
+    res.json(code);
+    console.log("After send")
+
+    const queryDatabase = function() {
+        console.log('Reading rows from the Table...');
+        // Read all rows from table
+        // connection.beginTransaction(function(err)
+        // {
+        //     console.log("Starting Transaction")
+        //     if(err){
+        //         connection.rollbackTransaction(function(err)
+        //         {
+        //             console.log(err)
+        //             console.log("Rolling back transaction")
+        //         }
+        //         )
+        //     }
+        //     else
+        //     {
+        //         console.log("Starting Request")
+                const request = new Request(
+                    
+                    `
+                    INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,10,'NO TIME')
+                    SELECT hashids.encode1(MAX(id)) FROM dbo.quizes
+                    `,
+                    function(err, rowCount, rows) {
+                        console.log(rows)
+                        console.log(rowCount + ' row(s) returned');
+                        console.log(err)
+
+                        connection.close();
+                    }
+                );
+
+                request.on('row', function(columns) {
+                    var jsonRow = {};
+                    columns.forEach(function(column) {
+                        jsonRow[column.metadata.colName] = column.value;
+                        console.log(column.metadata.colName+" | "+column.value)
+                    });
+                    jsonArray.push(jsonRow);
+                });
+                
+                connection.execSql(request);
+                
+    }
+}) 
+
+
 //weryfikacja danych w formularzu logowania
 app.get("/checkuser", (req,res) => {
     var Connection = require('tedious').Connection;
@@ -95,6 +183,23 @@ app.get("/checkuser", (req,res) => {
         connection.execSql(request);
     }
 });
+
+app.put("/user/register", (req,res)=>
+{
+    console.log(req.query)
+})
+
+app.post("/user/login", (req, res)=>{
+let fakeuser = {
+    username: "regularUser",
+    password: "regularPwd",
+    user_type: "REGULAR_USER",
+    email: "regular_user@zxc.pl",
+}
+res.json(fakeuser);
+})
+
+
 
 app.listen(5000, () => {console.log("Server started on port 5000")})
 
