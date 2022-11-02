@@ -58,6 +58,7 @@ body {
 	outline: none;
 	border-radius: 5px;
 }
+
 .container_radio {
 	display: flex;
 	justify-content: center;
