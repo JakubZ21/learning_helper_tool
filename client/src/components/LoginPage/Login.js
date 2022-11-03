@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRef } from 'react';
+import axios from 'axios';
 
 const Login = () => {
 	// const initialValues = { name: '', email: '', password: '' };
@@ -76,21 +77,37 @@ const Login = () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-			}).then((res) => {
-				// setIsLogin(false);
-				console.log(res);
-				if (res.ok) {
-					if (res.body) console.log('Zalogowany');
-				} else {
-					return res.json().then((data) => {
-						let errorMessage = 'Failed!';
-						alert(errorMessage);
-						throw new Error(errorMessage);
-					});
-				}
-			});
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (enteredEmail === data.email) {
+						console.log('Works');
+					}
+					if (enteredPassword === data.password) {
+						console.log('works222');
+					} else {
+						console.log('Does not work');
+					}
+
+					///przypisać zmienna
+				});
+
+			// }).then((res) => {
+			// 	// setIsLogin(false);
+			// 	// if (res.ok) {
+			// 	// 	console.log('Zalogowany/');
+			// 	// 	return res.json().then((data) => console.log(data.password));
+			// 	// } else {
+			// 	// 	return res.json().then((data) => {
+			// 	// 		let errorMessage = 'Failed!';
+			// 	// 		alert(errorMessage);
+			// 	// 		throw new Error(errorMessage);
+			// 	// 	});
+			// 	// }
+			// });
 		}
 	};
+
 	return (
 		<div>
 			<BackGround />
@@ -187,8 +204,11 @@ const Login = () => {
 							required=''
 							ref={passwordInputRef}
 						/>
-						{!isLoading && <button className='btn-log'>Login</button>}
-						{isLoading && <p className='btn-log p'>Loading...</p>}
+						{/* {!isLoading && <button className='btn-log'>Login</button>}
+						{isLoading && <p className='btn-log p'>Loading...</p>} */}
+						<button type='submit' className='btn-log'>
+							Login
+						</button>
 					</form>
 				</div>
 			</div>

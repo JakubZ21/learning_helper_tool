@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const Quiz = () => {
 	const [index, setIndex] = useState(0);
-	const [counter, setCounter] = useState(0);
+	const [countCorrectAnswer, setCountCorrectAnswer] = useState(1);
 
 	let history = useHistory();
 
@@ -52,10 +52,32 @@ const Quiz = () => {
 		if (typeof questionsFetched[index] !== 'undefined') {
 			setContent(questionsFetched[index].question_content);
 			let answers = [];
-			answers.push(questionsFetched[index].answer_1);
-			answers.push(questionsFetched[index].answer_2);
-			answers.push(questionsFetched[index].answer_3);
-			answers.push(questionsFetched[index].answer_correct);
+			const answer1 = {
+				answer: questionsFetched[index].answer_1,
+				isCorrect: false,
+			};
+			const answer2 = {
+				answer: questionsFetched[index].answer_2,
+				isCorrect: false,
+			};
+			const answer3 = {
+				answer: questionsFetched[index].answer_3,
+				isCorrect: false,
+			};
+			const answer4 = {
+				answer: questionsFetched[index].answer_correct,
+				isCorrect: true,
+			};
+			answers.push(answer1);
+			answers.push(answer2);
+			answers.push(answer3);
+			answers.push(answer4);
+			console.log(answers);
+
+			// answers.push(questionsFetched[index].answer_1);
+			// answers.push(questionsFetched[index].answer_2);
+			// answers.push(questionsFetched[index].answer_3);
+			// answers.push(questionsFetched[index].answer_correct);
 			answers.sort(() => Math.random() - 0.5);
 			setCorrect(
 				answers.findIndex(
@@ -68,6 +90,8 @@ const Quiz = () => {
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
+		console.log(questionsFetched, 'dAdfa');
+
 		setIndex((oldIndex) => {
 			const index = oldIndex + 1;
 			if (index > questionsFetched.length - 1) {
@@ -80,10 +104,15 @@ const Quiz = () => {
 		});
 	};
 	//DO POPRAWY!!!!
-	const checkAnswer = (value) => {
-		if (value) {
-			setCorrect((oldState) => oldState + 1);
+	const checkAnswer = (e) => {
+		// if (checkAnswer === ) {
+		// 	setCorrect((oldState) => oldState + 1);
+		// }
+		if (e.target.classList.contains('answerCorrect')) {
+			setCountCorrectAnswer(countCorrectAnswer + 1);
+			console.log(countCorrectAnswer, ' JEST OK');
 		}
+
 		nextQuestion();
 	};
 
@@ -97,8 +126,11 @@ const Quiz = () => {
 					{answersState.map((answer, index) => (
 						<div className='choice-container'>
 							<p className='choice-prefix'>{index + 1}</p>
-							<p className='choice-text' onClick={checkAnswer}>
-								{answer}
+							<p
+								className={`choice-text ${answer.isCorrect && 'answerCorrect'}`}
+								onClick={checkAnswer}
+							>
+								{answer.answer}
 							</p>
 						</div>
 					))}
