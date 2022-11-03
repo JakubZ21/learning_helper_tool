@@ -3,60 +3,19 @@ import BackGround from '../UI/BackGround';
 
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { useRef } from 'react';
 import axios from 'axios';
 
 const Login = () => {
-	// const initialValues = { name: '', email: '', password: '' };
-	// const [registerValue, setRegisterValue] = useState(initialValues);
-	// const [registerError, setRegisterError] = useState({});
-	// const [isSubmit, setIsSubmit] = useState(false);
-
-	// const handleChange = (e) => {
-	// 	const { name, value } = e.target;
-	// 	setRegisterValue({ ...registerValue, [name]: value });
-	// };
-
-	// const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	setRegisterError(validationData(registerValue));
-	// 	setIsSubmit(true);
-	// };
-
-	// useEffect(() => {
-	// 	console.log(registerError);
-	// 	if (Object.keys(registerError).length === 0 && isSubmit) {
-	// 		console.log(registerValue);
-	// 	}
-	// }, [registerError]);
-
-	// const validationData = (values) => {
-	// 	const errors = {};
-	// 	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-	// 	if (!values.name) {
-	// 		errors.name = 'Name is required';
-	// 	}
-	// 	if (!values.email) {
-	// 		errors.email = 'Email is required';
-	// 	} else if (!regex.test(values.email)) {
-	// 		errors.email = 'This is not a valid email format';
-	// 	}
-	// 	if (!values.password) {
-	// 		errors.password = 'Password is required';
-	// 	} else if (values.password.length < 4) {
-	// 		errors.password = 'Password must be more than 4 characters';
-	// 	} else if (values.password.length > 10) {
-	// 		errors.password = 'Password cannot exceed more than 10 characters';
-	// 	}
-	// 	return errors;
-	// };
-
 	const [isLogin, setIsLogin] = useState(true);
+	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
+	const usernameInputRefRegister = useRef();
+	const emailInputRefRegister = useRef();
+	const passwordInputRefRegister = useRef();
 
 	const submitHandler = (event) => {
 		event.preventDefault();
@@ -81,46 +40,61 @@ const Login = () => {
 				.then((response) => response.json())
 				.then((data) => {
 					if (enteredEmail === data.email) {
-						console.log('Works');
+						console.log('Correct email');
+					} else {
+						console.log('Incorrect email');
 					}
 					if (enteredPassword === data.password) {
-						console.log('works222');
+						console.log('Correct password');
 					} else {
-						console.log('Does not work');
+						console.log('Incorrect password');
 					}
 
 					///przypisać zmienna
 				});
+		}
+	};
+	//Sprawdzić!!
+	const submitHandlerRegister = (event) => {
+		event.preventDefault();
+		const enteredUsernameRegister = usernameInputRefRegister.current.value;
+		const enteredEmailRegister = emailInputRefRegister.current.value;
+		const enteredPasswordRegister = passwordInputRefRegister.current.value;
 
-			// }).then((res) => {
-			// 	// setIsLogin(false);
-			// 	// if (res.ok) {
-			// 	// 	console.log('Zalogowany/');
-			// 	// 	return res.json().then((data) => console.log(data.password));
-			// 	// } else {
-			// 	// 	return res.json().then((data) => {
-			// 	// 		let errorMessage = 'Failed!';
-			// 	// 		alert(errorMessage);
-			// 	// 		throw new Error(errorMessage);
-			// 	// 	});
-			// 	// }
-			// });
+		let url = 'http://localhost:5000/user/register';
+		setIsLoading(true);
+
+		if (isRegister) {
+			fetch(url, {
+				method: 'PUT',
+				body: JSON.stringify({
+					username: enteredUsernameRegister,
+					email: enteredEmailRegister,
+					password: enteredPasswordRegister,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then((response) => {
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data.username);
+
+					///przypisać zmienna
+				});
 		}
 	};
 
 	return (
 		<div>
 			<BackGround />
-			{/* {Object.keys(registerError).length === 0 && isSubmit ? (
-				<div className='ui message success'>Signed in successfully</div>
-			) : (
-				<pre>{JSON.stringify(registerValue, undefined, 2)}</pre>
-			)} */}
-			<div className='main_login'>
+			<div className='main_login' onSubmit={submitHandlerRegister}>
 				<input type='checkbox' id='chk' aria-hidden='true' />
 
 				<div className='signup'>
-					<form /*onSubmit={handleSubmit}*/>
+					<form onSubmit={submitHandlerRegister}>
 						<label className='lbl__main reg' htmlFor='chk' aria-hidden='true'>
 							Rejestracja
 						</label>
@@ -129,31 +103,27 @@ const Login = () => {
 							type='text'
 							name='name'
 							placeholder='Imię'
-							// value={registerValue.name}
-							// onChange={handleChange}
 							required=''
+							ref={usernameInputRefRegister}
 						/>
-						{/* <p className='error-msg'>{registerError.name}</p> */}
+
 						<input
 							className='input__data'
 							type='email'
 							name='email'
-							// value={registerValue.email}
-							// onChange={handleChange}
 							placeholder='Email'
 							required=''
+							ref={emailInputRefRegister}
 						/>
-						{/* <p className='error-msg'>{registerError.email}</p> */}
+
 						<input
 							className='input__data'
 							type='password'
 							name='password'
-							// value={registerValue.password}
-							// onChange={handleChange}
 							placeholder='Hasło'
 							required=''
+							ref={passwordInputRefRegister}
 						/>
-						{/* <p className='error-msg'>{registerError.username}</p> */}
 						<div className='container_radio'>
 							<div className='btn__radio'>
 								<input

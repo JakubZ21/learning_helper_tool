@@ -5,9 +5,6 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const Quiz = () => {
-	const [index, setIndex] = useState(0);
-	const [countCorrectAnswer, setCountCorrectAnswer] = useState(1);
-
 	let history = useHistory();
 
 	const queryParams = new URLSearchParams(window.location.search);
@@ -22,6 +19,8 @@ const Quiz = () => {
 	const [questionsFetched, setQuestionsFetched] = useState([]);
 	const [correctAnswer, setCorrect] = useState();
 	const [answersState, setAnswers] = useState([]);
+	const [index, setIndex] = useState(0);
+	const [countCorrectAnswer, setCountCorrectAnswer] = useState(1);
 
 	const [questionContent, setContent] = useState('');
 
@@ -31,7 +30,7 @@ const Quiz = () => {
 			const data = response.data;
 			if (data.length > 0) {
 				setQuestionsFetched(response.data);
-				console.log(questionsFetched);
+				// console.log(questionsFetched);
 				setLoading(false);
 				setWaiting(false);
 				setError(false);
@@ -90,29 +89,26 @@ const Quiz = () => {
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
-		console.log(questionsFetched, 'dAdfa');
-
-		setIndex((oldIndex) => {
-			const index = oldIndex + 1;
-			if (index > questionsFetched.length - 1) {
-				console.log('Koniec gry');
-				history.push('/');
-				return 0;
-			} else {
-				return index;
-			}
-		});
+		// console.log(index, 'index PRZED setINDEX!!');
+		// setIndex((oldIndex) => {
+		// 	const index = oldIndex + 1;
+		// console.log(index, 'index PO setINDEX');
+		if (index > questionsFetched.length - 1) {
+			console.log('Koniec gry');
+			history.push('/');
+			return 0;
+		} else {
+			setIndex(index + 1);
+			return index;
+		}
+		// });
 	};
-	//DO POPRAWY!!!!
+
 	const checkAnswer = (e) => {
-		// if (checkAnswer === ) {
-		// 	setCorrect((oldState) => oldState + 1);
-		// }
 		if (e.target.classList.contains('answerCorrect')) {
 			setCountCorrectAnswer(countCorrectAnswer + 1);
-			console.log(countCorrectAnswer, ' JEST OK');
+			console.log(`PUNKT ${countCorrectAnswer}`);
 		}
-
 		nextQuestion();
 	};
 
@@ -140,122 +136,7 @@ const Quiz = () => {
 				</div>
 			</div>
 		</div>
-
-		// Statycznie
-		// <div>
-		// 	<BackGround />
-		// 	<div className='container'>
-		// 		<div className='justify-center flex-column'>
-		// 			<h2 className='question'>{questions[index].question}</h2>
-
-		// 			{questions[index].answer.map((answer) => (
-		// 				//onClick -- index++
-		// 				<div className='choice-container'>
-		// 					<p className='choice-prefix'>{answer.answerPrefix}</p>
-		// 					<p
-		// 						className='choice-text'
-		// 						style={{
-		// 							backgroundColor: isActive ? 'salmon' : '',
-		// 							color: isActive ? 'white' : '',
-		// 						}}
-		// 						onClick={handleClick}
-		// 					>
-		// 						{answer.answerText}
-		// 					</p>
-		// 				</div>
-		// 			))}
-		// 			<button onClick={nextQuestion} className='btn-next'>
-		// 				Next
-		// 			</button>
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 };
 
 export default Quiz;
-
-///Dane Statyczne
-// const questions = [
-// 	{
-// 		id: 1,
-// 		question: 'W Której wsi rozgrywają się losy bohaterów serialu "Ranczo"?',
-
-// 		answer: [
-// 			{
-// 				answerPrefix: 'A',
-// 				answerText: 'Wilkowyje',
-// 				answerIsTrue: true,
-// 			},
-// 			{
-// 				answerPrefix: 'B',
-// 				answerText: 'Nowa wieś',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'C',
-// 				answerText: 'Stara wieś',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'D',
-// 				answerText: 'Lipany',
-// 				answerIsTrue: false,
-// 			},
-// 		],
-// 	},
-// 	{
-// 		id: 2,
-// 		question: 'Który piłkarz zdobył w tym roku złotą piłkę?',
-
-// 		answer: [
-// 			{
-// 				answerPrefix: 'A',
-// 				answerText: 'R.Lewandowski',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'B',
-// 				answerText: 'C.Ronaldo',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'C',
-// 				answerText: 'L.Messi',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'D',
-// 				answerText: 'K.Benzema',
-// 				answerIsTrue: true,
-// 			},
-// 		],
-// 	},
-// 	{
-// 		id: 3,
-// 		question: 'Jak miał na imię Papkin w "Zemście?',
-
-// 		answer: [
-// 			{
-// 				answerPrefix: 'A',
-// 				answerText: 'Michał',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'B',
-// 				answerText: 'Piotr',
-// 				answerIsTrue: false,
-// 			},
-// 			{
-// 				answerPrefix: 'C',
-// 				answerText: 'Józef',
-// 				answerIsTrue: true,
-// 			},
-// 			{
-// 				answerPrefix: 'D',
-// 				answerText: 'Jan',
-// 				answerIsTrue: false,
-// 			},
-// 		],
-// 	},
-// ];
