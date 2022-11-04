@@ -22,6 +22,7 @@ const Login = () => {
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
+		const status = "";
 		console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
@@ -32,6 +33,7 @@ const Login = () => {
 				body: JSON.stringify({
 					email: enteredEmail,
 					password: enteredPassword,
+					status: status,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -39,14 +41,8 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
-					if(data == 1){
-						console.log('Login successful');
-						alert('Login successful');
-					} else {
-						console.log('Login failed');
-						alert('Login failed');
-					}
+					console.log(data.status);
+					alert(data.status);
 					///przypisać zmienna
 				});
 		}
@@ -57,6 +53,8 @@ const Login = () => {
 		const enteredUsernameRegister = usernameInputRefRegister.current.value;
 		const enteredEmailRegister = emailInputRefRegister.current.value;
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
+		//const accountType = miejsce na wybór typu konta radiobuttony
+		const status = "";
 
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
@@ -68,6 +66,7 @@ const Login = () => {
 					username: enteredUsernameRegister,
 					email: enteredEmailRegister,
 					password: enteredPasswordRegister,
+					status: status,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -77,8 +76,8 @@ const Login = () => {
 					return response.json();
 				})
 				.then((data) => {
-					console.log(data.username);
-
+					console.log(data.status);
+					alert(data.status);
 					///przypisać zmienna
 				});
 		}
@@ -87,7 +86,8 @@ const Login = () => {
 	return (
 		<div>
 			<BackGround />
-			<div className='main_login' onSubmit={submitHandlerRegister}>
+				{/*<div className='main_login' onSubmit={submitHandlerRegister}>*/}
+				<div className='main_login'>
 				<input type='checkbox' id='chk' aria-hidden='true' />
 
 				<div className='signup'>
