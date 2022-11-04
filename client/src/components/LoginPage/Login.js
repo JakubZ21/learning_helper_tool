@@ -80,8 +80,7 @@ const Login = () => {
 					return response.json();
 				})
 				.then((data) => {
-					console.log(data.username);
-
+					// console.log(data.username);
 					///przypisać zmienna
 				});
 		}
