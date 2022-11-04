@@ -22,7 +22,7 @@ const Login = () => {
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
-
+		console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
 
@@ -39,17 +39,14 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					if (enteredEmail === data.email) {
-						console.log('Correct email');
+					console.log(data);
+					if(data == 1){
+						console.log('Login successful');
+						alert('Login successful');
 					} else {
-						console.log('Incorrect email');
+						console.log('Login failed');
+						alert('Login failed');
 					}
-					if (enteredPassword === data.password) {
-						console.log('Correct password');
-					} else {
-						console.log('Incorrect password');
-					}
-
 					///przypisać zmienna
 				});
 		}
