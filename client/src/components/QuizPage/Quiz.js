@@ -3,6 +3,7 @@ import BackGround from '../UI/BackGround';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Quiz = () => {
 	let history = useHistory();
@@ -20,17 +21,21 @@ const Quiz = () => {
 	const [correctAnswer, setCorrect] = useState();
 	const [answersState, setAnswers] = useState([]);
 	const [index, setIndex] = useState(0);
-	const [countCorrectAnswer, setCountCorrectAnswer] = useState(1);
-
+	const [countCorrectAnswer, setCountCorrectAnswer] = useState(0);
 	const [questionContent, setContent] = useState('');
+	const [endQuiz, setEndQuiz] = useState(false);
 
+	let zmienna = 0; //do usuniecia
 	const fetchQuestions = async (API_ENDPOINT) => {
 		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
+				console.log(zmienna, 'ZMIENNA');
+				zmienna += 1; //do usunięcia
 				setQuestionsFetched(response.data);
-				// console.log(questionsFetched);
+				console.log(questionsFetched);
+
 				setLoading(false);
 				setWaiting(false);
 				setError(false);
@@ -46,6 +51,7 @@ const Quiz = () => {
 	useEffect(() => {
 		fetchQuestions();
 	}, []);
+
 
 	useEffect(() => {
 		if (typeof questionsFetched[index] !== 'undefined') {
@@ -89,15 +95,14 @@ const Quiz = () => {
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
-		// console.log(index, 'index PRZED setINDEX!!');
-		// setIndex((oldIndex) => {
-		// 	const index = oldIndex + 1;
-		// console.log(index, 'index PO setINDEX');
-		if (index > questionsFetched.length - 1) {
+		if (index >= questionsFetched.length - 1) {
+			console.log(index, 'NEXT QUESTION-KONIEC GRY');
 			console.log('Koniec gry');
-			history.push('/');
+			setEndQuiz(true);
+			// history.push('/');
 			return 0;
 		} else {
+			console.log(index, 'NEXT QUESTION');
 			setIndex(index + 1);
 			return index;
 		}
@@ -112,11 +117,36 @@ const Quiz = () => {
 		nextQuestion();
 	};
 
+	if (endQuiz) {
+		return (
+			<div>
+				<BackGround />
+				<div className='main-container'>
+					<div className='container-title'>Uzyskana liczba punktów:</div>
+					<div className='container-score'>
+						<strong>
+							{countCorrectAnswer}/{questionsFetched.length}
+						</strong>
+					</div>
+					<Link className='text-link' to='/'>
+						<button className='btn-join'>Powrót</button>
+					</Link>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div>
 			<BackGround />
 			<div className='container'>
 				<div className='justify-center flex-column'>
+					<h3>
+						Poprawnych {countCorrectAnswer} /{questionsFetched.length}
+					</h3>
+					<h3>
+						Pytanie {index} z {questionsFetched.length}
+					</h3>
 					<h2 className='question'>{questionContent}</h2>
 
 					{answersState.map((answer, index) => (

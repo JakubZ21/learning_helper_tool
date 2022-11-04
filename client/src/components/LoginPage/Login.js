@@ -77,6 +77,7 @@ const Login = () => {
 					return response.json();
 				})
 				.then((data) => {
+
 					console.log(data.status);
 					alert(data.status);
 					///przypisać zmienna
