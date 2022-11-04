@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors');
 
+app.use(express.json());
 app.use(cors());
 
 function connectToAzure() {
@@ -85,8 +86,19 @@ qAPI();
 //API for Quiz Register
 quizRegisterAPI();
 
-//weryfikacja danych w formularzu logowania
-app.get("/checkuser", (req, res) => {
+app.put("/user/register", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    console.log(req.query)
+    res.json(req.query)
+})
+
+//check user if exists in db -> return 1 if exists, 0 if not
+app.post("/user/login", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    const email = req.body.email;
+    const password = req.body.password;
+    
     var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;
 
@@ -103,8 +115,7 @@ app.get("/checkuser", (req, res) => {
         console.log('Reading rows from the Table...');
         // Read all rows from table
         const request = new Request(
-            // #TODO zmienic na parametry z formularza
-            "SELECT * FROM users WHERE email = '" + "guest@zxc.pl" + "' AND password = '" + "guest" + "'",
+            "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'",
             function (err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
                 res.json(rowCount);
@@ -113,25 +124,6 @@ app.get("/checkuser", (req, res) => {
         );
         connection.execSql(request);
     }
-});
-
-app.put("/user/register", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.query)
-    res.json(req.query)
-})
-
-
-app.post("/user/login", (req, res) => {
-   
-    res.header("Access-Control-Allow-Origin", "*");
-    let fakeuser = {
-        username: "regularUser",
-        password: "regularPwd",
-        user_type: "REGULAR_USER",
-        email: "regular_user@zxc.pl",
-    }
-    res.json(fakeuser);
 })
 
 
