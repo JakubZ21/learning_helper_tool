@@ -52,6 +52,7 @@ const Quiz = () => {
 		fetchQuestions();
 	}, []);
 
+
 	useEffect(() => {
 		if (typeof questionsFetched[index] !== 'undefined') {
 			setContent(questionsFetched[index].question_content);
@@ -94,7 +95,7 @@ const Quiz = () => {
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
-		if (index > questionsFetched.length - 1) {
+		if (index >= questionsFetched.length - 1) {
 			console.log(index, 'NEXT QUESTION-KONIEC GRY');
 			console.log('Koniec gry');
 			setEndQuiz(true);
@@ -141,7 +142,10 @@ const Quiz = () => {
 			<div className='container'>
 				<div className='justify-center flex-column'>
 					<h3>
-						{countCorrectAnswer} /{questionsFetched.length + 1}
+						Poprawnych {countCorrectAnswer} /{questionsFetched.length}
+					</h3>
+					<h3>
+						Pytanie {index} z {questionsFetched.length}
 					</h3>
 					<h2 className='question'>{questionContent}</h2>
 
