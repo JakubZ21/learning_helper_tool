@@ -10,6 +10,7 @@ const Login = () => {
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
+	const [accountType, setAccountType] = useState('REGULAR_USER');
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -53,9 +54,8 @@ const Login = () => {
 		const enteredUsernameRegister = usernameInputRefRegister.current.value;
 		const enteredEmailRegister = emailInputRefRegister.current.value;
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
-		//const accountType = miejsce na wybór typu konta radiobuttony
 		const status = "";
-
+		
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
 
@@ -66,6 +66,7 @@ const Login = () => {
 					username: enteredUsernameRegister,
 					email: enteredEmailRegister,
 					password: enteredPasswordRegister,
+					accountType: accountType,
 					status: status,
 				}),
 				headers: {
@@ -123,20 +124,22 @@ const Login = () => {
 						/>
 						<div className='container_radio'>
 							<div className='btn__radio'>
+							<label htmlFor='huey' className='lbl-user'>
 								<input
 									type='radio'
 									id='huey'
 									name='user'
-									value='user'
-									checked
+									value='REGULAR_USER'
+									checked={true} //przy domyslnym zaznaczeniu w konsoli wyrzuca on zamiast REGULAR_USER
+									onChange={(e) => setAccountType(e.target.value)}
 								/>
-								<label htmlFor='huey' className='lbl-user'>
+								
 									Użytkownik
 								</label>
 							</div>
 							<div className='btn__radio'>
-								<input type='radio' id='dewey' name='user' value='teacher' />
-								<label htmlFor='dewey' className='lbl-user'>
+							<label htmlFor='dewey' className='lbl-user'>
+								<input type='radio' id='dewey' name='user' value='TEACHER_USER' onChange={(e) => setAccountType(e.target.value)}/>
 									Nauczyciel
 								</label>
 							</div>

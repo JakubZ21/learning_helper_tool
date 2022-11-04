@@ -92,7 +92,7 @@ app.put("/user/register", (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    //const accountType = req.body.accountType;
+    const accountType = req.body.accountType;
 
     console.log(username, email, password);//, accountType);
 
@@ -130,7 +130,8 @@ app.put("/user/register", (req, res) => {
         console.log('Reading rows from the Table...');
         // Read all rows from table
         const request = new Request(
-            `INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', 'REGULAR_USER', '${password}', CURRENT_TIMESTAMP)`,
+            //TODO podmienić typ usera po zmianach we front-endzie
+            `INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${accountType}', '${password}', CURRENT_TIMESTAMP)`,
             function (err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
                 connection.close();
