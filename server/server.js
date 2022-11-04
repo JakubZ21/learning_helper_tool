@@ -88,8 +88,57 @@ quizRegisterAPI();
 
 app.put("/user/register", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.query)
-    res.json(req.query)
+
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    const accountType = req.body.accountType;
+
+    console.log(username, email, password);//, accountType);
+
+    var Connection = require('tedious').Connection;
+    var Request = require('tedious').Request;
+    
+    const connection = new Connection(connectToAzureWriter());
+    connection.on('connect', function (err) {
+        if (err) {
+            console.log(err)
+        } else {
+            checkEmailExist();
+        }
+    });
+    connection.connect();
+
+    const checkEmailExist = function () {
+        // Read all rows from table
+        const request2 = new Request(
+            "SELECT * FROM users WHERE email = '" + email + "'",
+            function (err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                if(rowCount > 0) {
+                    console.log("Email exist");
+                    res.json({status: "Podany email istnieje"});
+                } else {
+                    queryDatabase();
+                    res.json({status: "Poprawnie zarejestrowano"});
+                }
+            });
+            connection.execSql(request2);
+    }
+
+    const queryDatabase = function () {
+        console.log('Reading rows from the Table...');
+        // Read all rows from table
+        const request = new Request(
+            //TODO podmienić typ usera po zmianach we front-endzie
+            `INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${accountType}', '${password}', CURRENT_TIMESTAMP)`,
+            function (err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                connection.close();
+            }
+        );
+        connection.execSql(request);
+    }
 })
 
 //check user if exists in db -> return 1 if exists, 0 if not
@@ -118,7 +167,11 @@ app.post("/user/login", (req, res) => {
             "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'",
             function (err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
-                res.json(rowCount);
+                if(rowCount > 0) {
+                    res.json({status: "Zalogowano pomyślnie"});
+                } else {
+                    res.json({status: "Niepoprawny email lub hasło"});
+                }
                 connection.close();
             }
         );
