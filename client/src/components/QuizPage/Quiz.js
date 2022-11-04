@@ -1,5 +1,6 @@
 import './Quiz.css';
 import BackGround from '../UI/BackGround';
+import Loading from '../LoadingPage/Loading';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -27,6 +28,7 @@ const Quiz = () => {
 
 	let zmienna = 0; //do usuniecia
 	const fetchQuestions = async (API_ENDPOINT) => {
+		setLoading(true);
 		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
