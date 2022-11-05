@@ -23,8 +23,7 @@ const Join = () => {
 	}
 
 	const submitHandle = (event) => {
-		console.log("oooga")
-		history.push("/quiz")
+		history.push("/quiz/?quizcode="+quizCode)
 		// return  <Redirect  to="/quiz" />
 	};
 	return (

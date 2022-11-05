@@ -11,9 +11,10 @@ const Quiz = () => {
 
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = 'http://localhost:5000/';
-	const urlCateg = queryParams.get('cat_id');
+	const urlCateg = queryParams.get('quizcode');
+	console.log(urlCateg)
 	const url =
-		'http://localhost:5000/questions/get10randomfromcat?category[]=' + urlCateg;
+		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ const Quiz = () => {
 
 	let zmienna = 0; //do usuniecia
 	const fetchQuestions = async (API_ENDPOINT) => {
-		const response = await axios(url).catch((err) => console.log(err));
+		const response = await axios.post(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
