@@ -61,8 +61,6 @@ const Categories = () => {
 
 		let putUrl = `http://localhost:5000/quiz/registernew?category[]=${id}`
 		registerQuiz(putUrl)	
-		// setCode('DVW48k')
-
 	}
 
 	const handleGoToQuiz = () => {
