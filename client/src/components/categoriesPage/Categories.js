@@ -4,6 +4,8 @@ import { Link, Route } from 'react-router-dom';
 import Quiz from '../QuizPage/Quiz';
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import Loading from '../LoadingPage/Loading';
+import MainNavigation from '../Navigation/MainNavigation';
 
 const Categories = () => {
 	const API_ENDPOINT = 'http://localhost:5000/';
@@ -16,6 +18,7 @@ const Categories = () => {
 	const [buttons, setButtons] = useState([]);
 
 	const fetchCategories = async (API_ENDPOINT) => {
+		setLoading(true);
 		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
@@ -53,43 +56,32 @@ const Categories = () => {
 		setButtons(locButtons);
 	}, [categories]);
 
-	return (
-		<div>
-			<BackGround />
-			<div className='main-cat'>
-				<Link className='text-link' to='/'>
-					<button className='btn-close'>close</button>
-				</Link>
-				<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
-					Kategorie
-				</label>
-
-				{buttons}
+	//WS!!!!!!!!!
+	if (loading) {
+		return (
+			<div className='main-container'>
+				<div className='container-spinner'>
+					<div className='loading'></div>
+				</div>
 			</div>
-		</div>
-		//Statycznie
-		// <div>
-		// 	<BackGround />
-		// 	<div class='main-cat'>
-		// 		<Link className='text-link' to='/'>
-		// 			<button className='btn-close'>close</button>
-		// 		</Link>
-		// 		<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
-		// 			Kategorie
-		// 		</label>
-		// 		<Link className='text-link' to={`/quiz/${category[0].id}`}>
-		// 			<button className='btn-ctg'>{category[0].title}</button>
-		// 		</Link>
+		);
+	} else {
+		return (
+			<div>
+				{/* <MainNavigation /> */}
+				<BackGround />
+				<div className='main-cat'>
+					<Link className='text-link' to='/'>
+						<button className='btn-close'>close</button>
+					</Link>
+					<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
+						Kategorie
+					</label>
 
-		// 		<Link className='text-link' to={`/quiz/${category[1].id}`}>
-		// 			<button className='btn-ctg'>{category[1].title}</button>
-		// 		</Link>
-		// 		<Link className='text-link' to={`/quiz/${category[2].id}`}>
-		// 			<button className='btn-ctg'>{category[2].title}</button>
-		// 		</Link>
-		// 	</div>
-		// </div>
-	);
+					{buttons}
+				</div>{' '}
+			</div>
+		);
+	}
 };
-
 export default Categories;

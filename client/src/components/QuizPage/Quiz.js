@@ -26,19 +26,14 @@ const Quiz = () => {
 	const [questionContent, setContent] = useState('');
 	const [endQuiz, setEndQuiz] = useState(false);
 
-	let zmienna = 0; //do usuniecia
 	const fetchQuestions = async (API_ENDPOINT) => {
-		setLoading(true);
 		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
-				console.log(zmienna, 'ZMIENNA');
-				zmienna += 1; //do usunięcia
 				setQuestionsFetched(response.data);
-				console.log(questionsFetched);
 
-				setLoading(false);
+				setLoading(true);
 				setWaiting(false);
 				setError(false);
 			} else {
@@ -53,7 +48,6 @@ const Quiz = () => {
 	useEffect(() => {
 		fetchQuestions();
 	}, []);
-
 
 	useEffect(() => {
 		if (typeof questionsFetched[index] !== 'undefined') {
@@ -80,11 +74,6 @@ const Quiz = () => {
 			answers.push(answer3);
 			answers.push(answer4);
 			console.log(answers);
-
-			// answers.push(questionsFetched[index].answer_1);
-			// answers.push(questionsFetched[index].answer_2);
-			// answers.push(questionsFetched[index].answer_3);
-			// answers.push(questionsFetched[index].answer_correct);
 			answers.sort(() => Math.random() - 0.5);
 			setCorrect(
 				answers.findIndex(
@@ -92,23 +81,18 @@ const Quiz = () => {
 				)
 			);
 			setAnswers(answers);
-			// console.log(answers)
 		}
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
 		if (index >= questionsFetched.length - 1) {
-			console.log(index, 'NEXT QUESTION-KONIEC GRY');
-			console.log('Koniec gry');
 			setEndQuiz(true);
-			// history.push('/');
 			return 0;
 		} else {
 			console.log(index, 'NEXT QUESTION');
 			setIndex(index + 1);
 			return index;
 		}
-		// });
 	};
 
 	const checkAnswer = (e) => {
