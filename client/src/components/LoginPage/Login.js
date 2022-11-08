@@ -80,11 +80,15 @@ const Login = () => {
 
 					console.log(data.status);
 					alert(data.status);
+					if(data.status == "Nieprawidlowy typ konta!"){
+						window.location.reload(true);
+						console.log('done');
+					}
 					///przypisać zmienna
 				});
 		}
 	};
-
+	
 	return (
 		<div>
 			<BackGround />
@@ -131,7 +135,7 @@ const Login = () => {
 									id='huey'
 									name='user'
 									value='REGULAR_USER'
-									checked={true} //przy domyslnym zaznaczeniu w konsoli wyrzuca on zamiast REGULAR_USER
+									checked={true}
 									onChange={(e) => setAccountType(e.target.value)}
 								/>
 								

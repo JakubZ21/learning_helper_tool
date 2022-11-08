@@ -94,6 +94,27 @@ app.put('/user/register', (req, res) => {
 	const password = req.body.password;
 	const accountType = req.body.accountType;
 
+	const validateUsername = /^[A-Za-z0-9]{2,}$/;
+	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
+	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
+
+	if(!validateUsername.test(username)){
+		res.json({status: "Nazwa użytkownika musi zawierac conajmniej 2 znaki!"});
+		return;
+	}
+	if(!validateEmail.test(email)){
+		res.json({status: "Nieprawidlowy adres email!"});
+		return;
+	}
+	if(!validatePassword.test(password)){
+		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!"});
+		return;
+	}
+	if(accountType != "REGULAR_USER" || accountType != "TEACHER_USER"){
+		res.json({status: "Nieprawidlowy typ konta!"});
+		return;
+	}
+	
 	const crypto = require('crypto');
 	const hashed = crypto.createHash('sha256').update(password).digest('hex');
 
@@ -108,7 +129,7 @@ app.put('/user/register', (req, res) => {
 			checkEmailExist();
 		}
 	});
-	connection.connect();
+	//connection.connect();
 
 	const checkEmailExist = function () {
 		// Read all rows from table
@@ -148,6 +169,19 @@ app.post('/user/login', (req, res) => {
 
 	const email = req.body.email;
 	const password = req.body.password;
+
+	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
+	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
+
+	if(!validateEmail.test(email)){
+		res.json({status: "Nieprawidlowy adres email!"});
+		return;
+	}
+	if(!validatePassword.test(password)){
+		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!"});
+		return;
+	}
+	
 	const crypto = require('crypto');
 	const hashed = crypto.createHash('sha256').update(password).digest('hex');
 
