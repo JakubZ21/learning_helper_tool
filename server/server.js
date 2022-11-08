@@ -94,7 +94,8 @@ app.put('/user/register', (req, res) => {
 	const password = req.body.password;
 	const accountType = req.body.accountType;
 
-	console.log(username, email, password); //, accountType);
+	const crypto = require('crypto');
+	const hashed = crypto.createHash('sha256').update(password).digest('hex');
 
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
@@ -131,8 +132,7 @@ app.put('/user/register', (req, res) => {
 		console.log('Reading rows from the Table...');
 		// Read all rows from table
 		const request = new Request(
-			//TODO podmienić typ usera po zmianach we front-endzie
-			`INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${accountType}', '${password}', CURRENT_TIMESTAMP)`,
+			`INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${accountType}', '${hashed}', CURRENT_TIMESTAMP)`,
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				connection.close();
@@ -148,6 +148,8 @@ app.post('/user/login', (req, res) => {
 
 	const email = req.body.email;
 	const password = req.body.password;
+	const crypto = require('crypto');
+	const hashed = crypto.createHash('sha256').update(password).digest('hex');
 
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
@@ -168,7 +170,7 @@ app.post('/user/login', (req, res) => {
 			"SELECT * FROM users WHERE email = '" +
 				email +
 				"' AND password = '" +
-				password +
+				hashed +
 				"'",
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
