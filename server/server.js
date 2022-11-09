@@ -92,8 +92,8 @@ app.put('/user/register', (req, res) => {
 	const username = req.body.username;
 	const email = req.body.email;
 	const password = req.body.password;
-	const accountType = req.body.accountType;
-
+	const userType = req.body.userType;
+	
 	const validateUsername = /^[A-Za-z0-9]{2,}$/;
 	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
 	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
@@ -110,11 +110,15 @@ app.put('/user/register', (req, res) => {
 		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!"});
 		return;
 	}
-	if(accountType != "REGULAR_USER" || accountType != "TEACHER_USER"){
+	if(userType == false){
+		res.json({status: "Nie wybrano rodzaju konta!"});
+		return;
+	}
+	if(userType != "REGULAR_USER" && userType != "TEACHER_USER"){
 		res.json({status: "Nieprawidlowy typ konta!"});
 		return;
 	}
-	
+
 	const crypto = require('crypto');
 	const hashed = crypto.createHash('sha256').update(password).digest('hex');
 
@@ -153,7 +157,7 @@ app.put('/user/register', (req, res) => {
 		console.log('Reading rows from the Table...');
 		// Read all rows from table
 		const request = new Request(
-			`INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${accountType}', '${hashed}', CURRENT_TIMESTAMP)`,
+			`INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${userType}', '${hashed}', CURRENT_TIMESTAMP)`,
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				connection.close();
