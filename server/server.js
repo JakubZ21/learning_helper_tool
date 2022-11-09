@@ -93,29 +93,29 @@ app.put('/user/register', (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	const userType = req.body.userType;
-	
+
 	const validateUsername = /^[A-Za-z0-9]{2,}$/;
 	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
 	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
 
 	if(!validateUsername.test(username)){
-		res.json({status: "Nazwa użytkownika musi zawierac conajmniej 2 znaki!"});
+		res.json({status: "Nazwa użytkownika musi zawierac conajmniej 2 znaki!", statusCode: 1});
 		return;
 	}
 	if(!validateEmail.test(email)){
-		res.json({status: "Nieprawidlowy adres email!"});
+		res.json({status: "Nieprawidlowy adres email!", statusCode: 3});
 		return;
 	}
 	if(!validatePassword.test(password)){
-		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!"});
+		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!", statusCode: 1});
 		return;
 	}
 	if(userType == false){
-		res.json({status: "Nie wybrano rodzaju konta!"});
+		res.json({status: "Nie wybrano rodzaju konta!", statusCode: 1});
 		return;
 	}
 	if(userType != "REGULAR_USER" && userType != "TEACHER_USER"){
-		res.json({status: "Nieprawidlowy typ konta!"});
+		res.json({status: "Nieprawidlowy typ konta!", statusCode: 31});
 		return;
 	}
 
@@ -133,7 +133,7 @@ app.put('/user/register', (req, res) => {
 			checkEmailExist();
 		}
 	});
-	//connection.connect();
+	connection.connect();
 
 	const checkEmailExist = function () {
 		// Read all rows from table
@@ -143,10 +143,10 @@ app.put('/user/register', (req, res) => {
 				console.log(rowCount + ' row(s) returned');
 				if (rowCount > 0) {
 					console.log('Email exist');
-					res.json({ status: 'Podany email istnieje' });
+					res.json({ status: 'Podany email istnieje', statusCode: 3});
 				} else {
 					queryDatabase();
-					res.json({ status: 'Poprawnie zarejestrowano' });
+					res.json({ status: 'Poprawnie zarejestrowano', statusCode: 2});
 				}
 			}
 		);
@@ -174,15 +174,15 @@ app.post('/user/login', (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
 
-	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
+	//const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
 	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
 
-	if(!validateEmail.test(email)){
-		res.json({status: "Nieprawidlowy adres email!"});
+	/*if(!validatePassword.test(password)){
+		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!", statusCode: 1});
 		return;
-	}
-	if(!validatePassword.test(password)){
-		res.json({status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!"});
+	}*/
+	if(!validateEmail.test(email)){
+		res.json({status: "Nieprawidlowy adres email!", statusCode: 3});
 		return;
 	}
 	
@@ -213,9 +213,9 @@ app.post('/user/login', (req, res) => {
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				if (rowCount > 0) {
-					res.json({ status: 'Zalogowano pomyślnie' });
+					res.json({ status: 'Zalogowano pomyślnie', statusCode: 2 });
 				} else {
-					res.json({ status: 'Niepoprawny email lub hasło' });
+					res.json({ status: 'Niepoprawny email lub hasło', statusCode: 3 });
 				}
 				connection.close();
 			}
