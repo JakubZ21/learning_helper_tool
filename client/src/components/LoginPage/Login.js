@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const [accountType, setAccountType] = useState('REGULAR_USER');
+	const [accountType, setAccountType] = useState(false);
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -35,6 +37,7 @@ const Login = () => {
 					email: enteredEmail,
 					password: enteredPassword,
 					status: status,
+					statusCode: 0,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -42,12 +45,31 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data.status);
-					alert(data.status);
+					prepareToast(data.status, data.statusCode);
 					///przypisać zmienna
 				});
 		}
 	};
+
+	const prepareToast = function (status, statusCode){
+		const options = {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		}
+		switch (statusCode) {
+			case 1: toast.info(status, options); break;
+			case 2: toast.success(status, options); break;
+			case 3: toast.error(status, options); break;
+			case 31: toast.error(status, options); break;
+		}
+	}
+
 	//Sprawdzić!!
 	const submitHandlerRegister = (event) => {
 		event.preventDefault();
@@ -55,7 +77,7 @@ const Login = () => {
 		const enteredEmailRegister = emailInputRefRegister.current.value;
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
 		const status = "";
-		
+
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
 
@@ -66,24 +88,18 @@ const Login = () => {
 					username: enteredUsernameRegister,
 					email: enteredEmailRegister,
 					password: enteredPasswordRegister,
-					accountType: accountType,
+					userType: accountType,
 					status: status,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			})
-				.then((response) => {
-					return response.json();
-				})
+				.then((response) => 
+					response.json()
+				)
 				.then((data) => {
-
-					console.log(data.status);
-					alert(data.status);
-					if(data.status == "Nieprawidlowy typ konta!"){
-						window.location.reload(true);
-						console.log('done');
-					}
+					prepareToast(data.status, data.statusCode);
 					///przypisać zmienna
 				});
 		}
@@ -133,9 +149,9 @@ const Login = () => {
 								<input
 									type='radio'
 									id='huey'
-									name='user'
+									name='accountType'
 									value='REGULAR_USER'
-									checked={true}
+									//checked={true} //problemy sa gdy domyslnie sie zaznacza jedna z wartosci
 									onChange={(e) => setAccountType(e.target.value)}
 								/>
 								
@@ -144,7 +160,7 @@ const Login = () => {
 							</div>
 							<div className='btn__radio'>
 							<label htmlFor='dewey' className='lbl-user'>
-								<input type='radio' id='dewey' name='user' value='TEACHER_USER' onChange={(e) => setAccountType(e.target.value)}/>
+								<input type='radio' id='dewey' name='accountType' value='TEACHER_USER' onChange={(e) => setAccountType(e.target.value)}/>
 									Nauczyciel
 								</label>
 							</div>
