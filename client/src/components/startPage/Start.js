@@ -7,6 +7,7 @@ function Start() {
 	return (
 		<div>
 			<BackGround />
+
 			<div className='main_view'>
 				<div className='welcome'>
 					<img src={Logo} alt='logo'></img>

@@ -88,6 +88,12 @@ body {
 .btn-log:hover {
 	background: #078f07;
 }
+.btn-log.p {
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	color: #fff;
+}
 
 .login {
 	height: 560px;
