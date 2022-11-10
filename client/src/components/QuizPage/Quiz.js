@@ -15,6 +15,8 @@ const Quiz = () => {
 	const url =
 		'http://localhost:5000/questions/get10randomfromcat?category[]=' + urlCateg;
 
+	let url2 = 'http://localhost:5000/sendscore';
+
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
@@ -113,6 +115,17 @@ const Quiz = () => {
 		);
 	} else {
 		if (endQuiz) {
+			fetch(url2, {
+				method: 'PUT',
+				body: JSON.stringify({
+					//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
+					score: countCorrectAnswer,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			})
+			.then((response) => response.json())
 			return (
 				<div>
 					<BackGround />

@@ -86,6 +86,14 @@ qAPI();
 //API for Quiz Register
 quizRegisterAPI();
 
+app.put('/sendscore', (req, res) => {
+	res.header('Access-Control-Allow-Origin', '*');
+
+	const score = req.body.score;
+	console.log(score);
+	res.json({ status: 'ok', statusCode: 2})
+});
+
 app.put('/user/register', (req, res) => {
 	res.header('Access-Control-Allow-Origin', '*');
 
