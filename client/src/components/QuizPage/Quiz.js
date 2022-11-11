@@ -29,6 +29,8 @@ const Quiz = () => {
 	const [countCorrectAnswer, setCountCorrectAnswer] = useState(0);
 	const [questionContent, setContent] = useState('');
 	const [endQuiz, setEndQuiz] = useState(false);
+	const [user_id, setUserId] = useState(0);
+	const [quizId, setQuizId] = useState(0);
 
 	const fetchQuestions = async (API_ENDPOINT) => {
 		const response = await axios.post(url).catch((err) => console.log(err));
@@ -36,6 +38,22 @@ const Quiz = () => {
 			const data = response.data;
 			if (data.length > 0) {
 				setQuestionsFetched(response.data);
+
+				setLoading(false);
+				setWaiting(false);
+				setError(false);
+			} else {
+				setWaiting(true);
+				setError(true);
+			}
+		} else {
+			setWaiting(true);
+		}
+		const getCode = await axios.get("http://localhost:5000/quiz/getQuizId?quiz_code="+urlCateg).catch((err) => console.log(err));
+		if (getCode) {
+			const data = getCode.data;
+			if (data.length > 0) {
+				setQuizId(getCode.data[0].id);
 
 				setLoading(false);
 				setWaiting(false);
@@ -121,6 +139,9 @@ const Quiz = () => {
 				body: JSON.stringify({
 					//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
 					score: countCorrectAnswer,
+					takenby: 1,
+					quiz_id: quizId,
+					maxScore: questionsFetched.length,
 			}),
 			headers: {
 				'Content-Type': 'application/json',

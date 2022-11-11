@@ -90,7 +90,7 @@ app.put('/sendscore', (req, res) => {
 	res.header('Access-Control-Allow-Origin', '*');
 
 	const score = req.body.score;
-	console.log(score);
+	console.log(req.body);
 	res.json({ status: 'ok', statusCode: 2})
 });
 
@@ -475,6 +475,44 @@ function qAPI() {
 }
 
 function quizRegisterAPI() {
+
+	app.get("/quiz/getQuizId", (req, res) => {
+        var Connection = require('tedious').Connection;
+        var Request = require('tedious').Request;
+        let code = req.query.quiz_code
+        let jsonArray = []
+		res.header("Access-Control-Allow-Origin", "*");
+        const connection = new Connection(connectToAzure());
+        connection.on('connect', function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                queryDatabase()
+            }
+        });
+        connection.connect();
+        const queryDatabase = function () {
+            console.log('Reading rows from the Table...');
+            // Read all rows from table
+            const request = new Request(
+                "SELECT TOP 1 id FROM vw_quizes where quiz_code='"+code+"'",
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    res.json(jsonArray)
+                    jsonArray = [];
+                    connection.close();
+                }
+            );
+            request.on('row', function (columns) {
+                var jsonRow = {};
+                columns.forEach(function (column) {
+                    jsonRow[column.metadata.colName] = column.value;
+                });
+                jsonArray.push(jsonRow);
+            });
+            connection.execSql(request);
+        }
+    })
 
     app.put("/quiz/registernew", (req, res) => {
         var Connection = require('tedious').Connection;
