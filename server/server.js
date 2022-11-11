@@ -389,186 +389,248 @@ function qAPI() {
 
 		//console.log("SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+")")
 
-		const connection = new Connection(connectToAzure());
-		connection.on('connect', function (err) {
-			if (err) {
-				console.log(err);
-			} else {
-				queryDatabase();
-			}
-		});
-		connection.connect();
-		const queryDatabase = function () {
-			console.log('Reading rows from the Table...');
-			// Read all rows from table
-			const request = new Request(
-				'SELECT TOP 10 * FROM questions where category_id in (' +
-					categorySQL.join(',') +
-					') ORDER BY NEWID()',
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					res.json(jsonArray);
-					jsonArray = [];
-					connection.close();
-				}
-			);
-			request.on('row', function (columns) {
-				var jsonRow = {};
-				columns.forEach(function (column) {
-					jsonRow[column.metadata.colName] = column.value;
-				});
-				jsonArray.push(jsonRow);
-			});
-			connection.execSql(request);
-		};
-	});
+        //console.log("SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+")")
+
+        const connection = new Connection(connectToAzure());
+        connection.on('connect', function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                queryDatabase()
+            }
+        });
+        connection.connect();
+        const queryDatabase = function () {
+            console.log('Reading rows from the Table...');
+            // Read all rows from table
+            const request = new Request(
+                "SELECT TOP 10 * FROM questions where category_id in (" + categorySQL.join(",") + ") ORDER BY NEWID()",
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    res.json(jsonArray)
+                    jsonArray = [];
+                    connection.close();
+                }
+            );
+            request.on('row', function (columns) {
+                var jsonRow = {};
+                columns.forEach(function (column) {
+                    jsonRow[column.metadata.colName] = column.value;
+                });
+                jsonArray.push(jsonRow);
+            });
+            connection.execSql(request);
+        }
+    });
+
+    app.post("/questions/getqueswithcode", (req, res) => {
+        var Connection = require('tedious').Connection;
+        var Request = require('tedious').Request;
+        var jsonArray = [];
+        res.header("Access-Control-Allow-Origin", "*");
+
+
+        let quiz_code;
+        if (typeof req.query.quiz_code == "undefined")
+        {
+            res.json("quiz_code not defined")
+            return 0;
+        }
+        else 
+            quiz_code = req.query.quiz_code;
+
+        //console.log("SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+")")
+
+        const connection = new Connection(connectToAzure());
+        connection.on('connect', function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                queryDatabase()
+            }
+        });
+        connection.connect();
+        const queryDatabase = function () {
+            console.log('Reading rows from the Table...');
+            // Read all rows from table
+            const request = new Request(
+                "SELECT  *  FROM [dbo].[vw_quiz_associated_questions] where [quiz_code] ='" + quiz_code + "' ORDER BY NEWID()",
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    res.json(jsonArray)
+                    jsonArray = [];
+                    connection.close();
+                }
+            );
+            request.on('row', function (columns) {
+                var jsonRow = {};
+                columns.forEach(function (column) {
+                    jsonRow[column.metadata.colName] = column.value;
+                });
+                jsonArray.push(jsonRow);
+            });
+            connection.execSql(request);
+        }
+    });
 }
 
 function quizRegisterAPI() {
-	app.put('/quiz/registernew', (req, res) => {
-		var Connection = require('tedious').Connection;
-		var Request = require('tedious').Request;
-		let code = '';
-		res.header('Access-Control-Allow-Origin', '*');
 
-		//Depends on the passed category like ?category[]=1&category[]=3
-		let categories = req.query.category;
-		let categorySQL = [];
+    app.put("/quiz/registernew", (req, res) => {
+        var Connection = require('tedious').Connection;
+        var Request = require('tedious').Request;
+        let code = ""
+        res.header("Access-Control-Allow-Origin", "*");
 
-		const connection = new Connection(connectToAzureWriter());
-		connection.on('connect', function (err) {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log('Connected');
-				connection.beginTransaction(function (err) {
-					if (err) {
-						connection.rollbackTransaction(function (err) {
-							console.log(err);
-							console.log('Rolling back transaction');
-						});
-					} else {
-						console.log('Executing insert, fetching code');
-						insertQuizReturnCode();
-					}
-					console.log('Finalized Transaction');
-				}, 'add_quiz');
-			}
-		});
+        //Depends on the passed category like ?category[]=1&category[]=3
+        let categories = req.query.category
+        let categorySQL = []
 
-		connection.connect();
-		console.log('Sending Request');
 
-		const insertQuizReturnCode = function () {
-			console.log('Inserting and reading code from the Table...');
-			// Read all rows from table
-			let quiz_id = undefined;
-			const request = new Request(
-				`
+
+        const connection = new Connection(connectToAzureWriter());
+        connection.on('connect', function (err) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Connected")
+                connection.beginTransaction(function (err) {
+
+                    if (err) {
+                        connection.rollbackTransaction(function (err) {
+                            console.log(err)
+                            console.log("Rolling back transaction")
+                        })
+                    }
+                    else {
+                        console.log("Executing insert, fetching code")
+                        insertQuizReturnCode()
+
+
+
+                    }
+                    console.log("Finalized Transaction")
+                }, "add_quiz")
+
+            }
+        });
+
+        connection.connect();
+        console.log("Sending Request")
+
+        const insertQuizReturnCode = function () {
+            console.log('Inserting and reading code from the Table...');
+            // Read all rows from table
+            let quiz_id = undefined
+            const request = new Request(
+
+                `
                 INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,10,'NO TIME')
                 SELECT hashids.encode1(MAX(id)) as code, MAX(id) as Id FROM dbo.quizes
-                `,
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					res.json(code);
-					typeof err === 'undefined'
-						? console.log('Successfully inserted quiz and returned quiz code')
-						: console.log(err);
-				}
-			);
+                `
+                ,
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    res.json(code);
+                    typeof err === "undefined" ? console.log("Successfully inserted quiz and returned quiz code") : console.log(err);
+                }
+            );
 
-			request.on('row', function (columns) {
-				let json = {};
-				columns.forEach(function (column) {
-					if (column.metadata.colName == 'code') {
-						json[column.metadata.colName] = column.value;
-					} else if (column.metadata.colName == 'Id') {
-						quiz_id = column.value;
-						console.log('quizid = ' + quiz_id);
-					}
-				});
-				code = json;
-			});
+            request.on('row', function (columns) {
+                let json = {}
+                columns.forEach(function (column) {
+                    if (column.metadata.colName == 'code') {
+                        json[column.metadata.colName] = column.value;
+                    }
+                    else if (column.metadata.colName == 'Id') {
+                        quiz_id = column.value;
+                        console.log("quizid = " + quiz_id)
+                    }
+                });
+                code = json;
+            });
 
-			connection.execSql(request);
-			request.on('requestCompleted', function () {
-				console.log('Request completed setting assigning questionsToQuiz');
-				selectQuestionsForQuiz(quiz_id);
-			});
+            connection.execSql(request);
+            request.on('requestCompleted', function () {
+                console.log("Request completed setting assigning questionsToQuiz")
+                selectQuestionsForQuiz(quiz_id)
+            })
 
-			connection.on('end', function () {
-				console.log('Ending connection');
-			});
-		};
+            connection.on('end', function () {
+                console.log('Ending connection')
+            })
+        }
 
-		const selectQuestionsForQuiz = function (quiz_id) {
-			console.log('Reading random 10 rows from the Table...');
-			let sqlQuery = '';
-			let jsonArray = [];
+        const selectQuestionsForQuiz = function (quiz_id) {
 
-			// Read all rows from table
-			if (typeof req.query.category === 'undefined') {
-				console.log('Categories were not selected');
-				sqlQuery = 'SELECT TOP 10 id FROM questions ORDER BY NEWID()';
-			} else {
-				console.log('Categories were selected');
-				categories.forEach((category) => {
-					categorySQL.push(category);
-				});
-				sqlQuery =
-					'SELECT TOP 10 id FROM questions where category_id in (' +
-					categorySQL.join(',') +
-					') ORDER BY NEWID()';
-			}
-			console.log(sqlQuery);
+            console.log('Reading random 10 rows from the Table...');
+            let sqlQuery = ""
+            let jsonArray = []
 
-			const request = new Request(sqlQuery, function (err, rowCount, rows) {
-				console.log(rowCount + ' row(s) returned');
-				typeof err === 'undefined'
-					? console.log('Successfully fetched 10 random questions')
-					: console.log(err);
-			});
-			request.on('row', function (columns) {
-				var jsonRow = {};
-				columns.forEach(function (column) {
-					jsonRow[column.metadata.colName] = column.value;
-				});
-				jsonArray.push(jsonRow);
-			});
-			request.on('requestCompleted', function () {
-				console.log('Request completed populating bridge table...');
-				// console.log(jsonArray)
-				populateBridgeTable(quiz_id, jsonArray);
-				jsonArray = [];
-			});
-			connection.execSql(request);
-		};
-		const populateBridgeTable = function (quiz_id, question_ids) {
-			let arrayIds = [];
-			question_ids.forEach((id) => {
-				arrayIds.push('(' + quiz_id + ', ' + id.id + ')');
-			});
-			question_ids = undefined;
-			console.log(arrayIds);
-			let sqlQuery =
-				'INSERT INTO [dbo].[quiz_questions_bridge] (quiz_id, question_id) VALUES ';
-			sqlQuery += arrayIds.join(',');
-			// console.log(sqlQuery)
-			const request = new Request(sqlQuery, function (err, rowCount, rows) {
-				console.log(rowCount + ' row(s) returned');
-				typeof err === 'undefined'
-					? console.log('Successfully inserted assignemnt data to database')
-					: console.log(err);
-				connection.commitTransaction(function (error) {
-					console.log('Trying to close connection');
-					typeof error === 'undefined'
-						? connection.close()
-						: console.log('error' + error);
-				});
-			});
+            // Read all rows from table
+            if (typeof req.query.category === 'undefined') {
+                console.log("Categories were not selected")
+                sqlQuery = "SELECT TOP 10 id FROM questions ORDER BY NEWID()"
+            } else {
+                console.log("Categories were selected")
+                categories.forEach(category => {
+                    categorySQL.push(category)
+                });
+                sqlQuery = "SELECT TOP 10 id FROM questions where category_id in (" + categorySQL.join(",") + ") ORDER BY NEWID()"
+            }
+            console.log(sqlQuery)
 
-			console.log('Executing request');
-			connection.execSql(request);
-		};
-	});
+
+            const request = new Request(
+                sqlQuery,
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    typeof err === "undefined" ? console.log("Successfully fetched 10 random questions") : console.log(err);
+                }
+            );
+            request.on('row', function (columns) {
+                var jsonRow = {};
+                columns.forEach(function (column) {
+                    jsonRow[column.metadata.colName] = column.value;
+                });
+                jsonArray.push(jsonRow);
+            });
+            request.on('requestCompleted', function () {
+                console.log("Request completed populating bridge table...")
+                // console.log(jsonArray)
+                populateBridgeTable(quiz_id, jsonArray);
+                jsonArray = [];
+
+            })
+            connection.execSql(request);
+        }
+        const populateBridgeTable = function (quiz_id, question_ids) {
+            let arrayIds = []
+            question_ids.forEach(id => {
+                arrayIds.push("(" + quiz_id + ", " + id.id + ")")
+            });
+            question_ids = undefined;
+            console.log(arrayIds)
+            let sqlQuery = "INSERT INTO [dbo].[quiz_questions_bridge] (quiz_id, question_id) VALUES "
+            sqlQuery += arrayIds.join(',')
+            // console.log(sqlQuery)
+            const request = new Request(
+                sqlQuery,
+                function (err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                    typeof err === "undefined" ? console.log("Successfully inserted assignemnt data to database") : console.log(err);
+                    connection.commitTransaction(function (error) {
+                        console.log("Trying to close connection")
+                        typeof error === "undefined" ? connection.close() : console.log("error" + error);
+                    })
+
+                }
+            );
+
+            console.log("Executing request");
+            connection.execSql(request);
+
+        }
+    })
+
 }

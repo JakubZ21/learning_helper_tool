@@ -5,15 +5,17 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 const Quiz = () => {
 	let history = useHistory();
 
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = 'http://localhost:5000/';
-	const urlCateg = queryParams.get('cat_id');
+	const urlCateg = queryParams.get('quizcode');
+	console.log(urlCateg)
 	const url =
-		'http://localhost:5000/questions/get10randomfromcat?category[]=' + urlCateg;
+		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
 
 	let url2 = 'http://localhost:5000/sendscore';
 
@@ -29,8 +31,7 @@ const Quiz = () => {
 	const [endQuiz, setEndQuiz] = useState(false);
 
 	const fetchQuestions = async (API_ENDPOINT) => {
-		setLoading(true);
-		const response = await axios(url).catch((err) => console.log(err));
+		const response = await axios.post(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
