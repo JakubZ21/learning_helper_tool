@@ -4,6 +4,8 @@ import { Link, Route, useHistory } from 'react-router-dom';
 import Quiz from '../QuizPage/Quiz';
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import Loading from '../LoadingPage/Loading';
+import MainNavigation from '../Navigation/MainNavigation';
 
 const Categories = () => {
 	let history = useHistory();
@@ -18,6 +20,7 @@ const Categories = () => {
 	const [buttons, setButtons] = useState([]);
 
 	const fetchCategories = async (API_ENDPOINT) => {
+		setLoading(true);
 		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
@@ -80,7 +83,15 @@ const Categories = () => {
 		setButtons(locButtons);
 	}, [categories]);
 
-	if (code !== "") {
+	if (loading) {
+		return (
+			<div>
+				<BackGround />
+				<Loading />
+			</div>
+		);
+	}
+	else if (code !== "") {
 		return (
 			<div>
 				<BackGround />
@@ -114,5 +125,4 @@ const Categories = () => {
 		);
 	}
 };
-
 export default Categories;

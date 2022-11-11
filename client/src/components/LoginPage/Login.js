@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
+	const [accountType, setAccountType] = useState(false);
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -22,6 +25,7 @@ const Login = () => {
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
+		const status = "";
 		console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
@@ -32,6 +36,8 @@ const Login = () => {
 				body: JSON.stringify({
 					email: enteredEmail,
 					password: enteredPassword,
+					status: status,
+					statusCode: 0,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -39,24 +45,38 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
-					if(data == 1){
-						console.log('Login successful');
-						alert('Login successful');
-					} else {
-						console.log('Login failed');
-						alert('Login failed');
-					}
+					prepareToast(data.status, data.statusCode);
 					///przypisać zmienna
 				});
 		}
 	};
+
+	const prepareToast = function (status, statusCode){
+		const options = {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		}
+		switch (statusCode) {
+			case 1: toast.info(status, options); break;
+			case 2: toast.success(status, options); break;
+			case 3: toast.error(status, options); break;
+			case 31: toast.error(status, options); break;
+		}
+	}
+
 	//Sprawdzić!!
 	const submitHandlerRegister = (event) => {
 		event.preventDefault();
 		const enteredUsernameRegister = usernameInputRefRegister.current.value;
 		const enteredEmailRegister = emailInputRefRegister.current.value;
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
+		const status = "";
 
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
@@ -68,25 +88,28 @@ const Login = () => {
 					username: enteredUsernameRegister,
 					email: enteredEmailRegister,
 					password: enteredPasswordRegister,
+					userType: accountType,
+					status: status,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			})
-				.then((response) => {
-					return response.json();
-				})
+				.then((response) => 
+					response.json()
+				)
 				.then((data) => {
-					// console.log(data.username);
+					prepareToast(data.status, data.statusCode);
 					///przypisać zmienna
 				});
 		}
 	};
-
+	
 	return (
 		<div>
 			<BackGround />
-			<div className='main_login' onSubmit={submitHandlerRegister}>
+				{/*<div className='main_login' onSubmit={submitHandlerRegister}>*/}
+				<div className='main_login'>
 				<input type='checkbox' id='chk' aria-hidden='true' />
 
 				<div className='signup'>
@@ -122,20 +145,22 @@ const Login = () => {
 						/>
 						<div className='container_radio'>
 							<div className='btn__radio'>
+							<label htmlFor='huey' className='lbl-user'>
 								<input
 									type='radio'
 									id='huey'
-									name='user'
-									value='user'
-									checked
+									name='accountType'
+									value='REGULAR_USER'
+									//checked={true} //problemy sa gdy domyslnie sie zaznacza jedna z wartosci
+									onChange={(e) => setAccountType(e.target.value)}
 								/>
-								<label htmlFor='huey' className='lbl-user'>
+								
 									Użytkownik
 								</label>
 							</div>
 							<div className='btn__radio'>
-								<input type='radio' id='dewey' name='user' value='teacher' />
-								<label htmlFor='dewey' className='lbl-user'>
+							<label htmlFor='dewey' className='lbl-user'>
+								<input type='radio' id='dewey' name='accountType' value='TEACHER_USER' onChange={(e) => setAccountType(e.target.value)}/>
 									Nauczyciel
 								</label>
 							</div>

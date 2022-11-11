@@ -1,5 +1,6 @@
 import './Quiz.css';
 import BackGround from '../UI/BackGround';
+import Loading from '../LoadingPage/Loading';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -16,6 +17,8 @@ const Quiz = () => {
 	const url =
 		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
 
+	let url2 = 'http://localhost:5000/sendscore';
+
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
@@ -27,16 +30,12 @@ const Quiz = () => {
 	const [questionContent, setContent] = useState('');
 	const [endQuiz, setEndQuiz] = useState(false);
 
-	let zmienna = 0; //do usuniecia
 	const fetchQuestions = async (API_ENDPOINT) => {
 		const response = await axios.post(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
-				console.log(zmienna, 'ZMIENNA');
-				zmienna += 1; //do usunięcia
 				setQuestionsFetched(response.data);
-				console.log(questionsFetched);
 
 				setLoading(false);
 				setWaiting(false);
@@ -53,7 +52,6 @@ const Quiz = () => {
 	useEffect(() => {
 		fetchQuestions();
 	}, []);
-
 
 	useEffect(() => {
 		if (typeof questionsFetched[index] !== 'undefined') {
@@ -80,11 +78,6 @@ const Quiz = () => {
 			answers.push(answer3);
 			answers.push(answer4);
 			console.log(answers);
-
-			// answers.push(questionsFetched[index].answer_1);
-			// answers.push(questionsFetched[index].answer_2);
-			// answers.push(questionsFetched[index].answer_3);
-			// answers.push(questionsFetched[index].answer_correct);
 			answers.sort(() => Math.random() - 0.5);
 			setCorrect(
 				answers.findIndex(
@@ -92,23 +85,18 @@ const Quiz = () => {
 				)
 			);
 			setAnswers(answers);
-			// console.log(answers)
 		}
 	}, [questionsFetched[index], index]);
 
 	const nextQuestion = () => {
 		if (index >= questionsFetched.length - 1) {
-			console.log(index, 'NEXT QUESTION-KONIEC GRY');
-			console.log('Koniec gry');
 			setEndQuiz(true);
-			// history.push('/');
 			return 0;
 		} else {
 			console.log(index, 'NEXT QUESTION');
 			setIndex(index + 1);
 			return index;
 		}
-		// });
 	};
 
 	const checkAnswer = (e) => {
@@ -119,56 +107,78 @@ const Quiz = () => {
 		nextQuestion();
 	};
 
-	if (endQuiz) {
+	if (loading) {
 		return (
 			<div>
 				<BackGround />
-				<div className='main-container'>
-					<div className='container-title'>Uzyskana liczba punktów:</div>
-					<div className='container-score'>
-						<strong>
-							{countCorrectAnswer}/{questionsFetched.length}
-						</strong>
+				<Loading />
+			</div>
+		);
+	} else {
+		if (endQuiz) {
+			fetch(url2, {
+				method: 'PUT',
+				body: JSON.stringify({
+					//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
+					score: countCorrectAnswer,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			})
+			.then((response) => response.json())
+			return (
+				<div>
+					<BackGround />
+					<div className='main-container'>
+						<div className='container-title'>Uzyskana liczba punktów:</div>
+						<div className='container-score'>
+							<strong>
+								{countCorrectAnswer}/{questionsFetched.length}
+							</strong>
+						</div>
+						<Link className='text-link' to='/'>
+							<button className='btn-join'>Powrót</button>
+						</Link>
 					</div>
-					<Link className='text-link' to='/'>
-						<button className='btn-join'>Powrót</button>
-					</Link>
+				</div>
+			);
+		}
+
+		return (
+			<div>
+				<BackGround />
+				<div className='container'>
+					<div className='justify-center flex-column'>
+						<h3>
+							Poprawnych {countCorrectAnswer} /{questionsFetched.length}
+						</h3>
+						<h3>
+							Pytanie {index} z {questionsFetched.length}
+						</h3>
+						<h2 className='question'>{questionContent}</h2>
+
+						{answersState.map((answer, index) => (
+							<div className='choice-container'>
+								<p className='choice-prefix'>{index + 1}</p>
+								<p
+									className={`choice-text ${
+										answer.isCorrect && 'answerCorrect'
+									}`}
+									onClick={checkAnswer}
+								>
+									{answer.answer}
+								</p>
+							</div>
+						))}
+						<button onClick={nextQuestion} className='btn-next'>
+							Next
+						</button>
+					</div>
 				</div>
 			</div>
 		);
 	}
-
-	return (
-		<div>
-			<BackGround />
-			<div className='container'>
-				<div className='justify-center flex-column'>
-					<h3>
-						Poprawnych {countCorrectAnswer} /{questionsFetched.length}
-					</h3>
-					<h3>
-						Pytanie {index} z {questionsFetched.length}
-					</h3>
-					<h2 className='question'>{questionContent}</h2>
-
-					{answersState.map((answer, index) => (
-						<div className='choice-container'>
-							<p className='choice-prefix'>{index + 1}</p>
-							<p
-								className={`choice-text ${answer.isCorrect && 'answerCorrect'}`}
-								onClick={checkAnswer}
-							>
-								{answer.answer}
-							</p>
-						</div>
-					))}
-					<button onClick={nextQuestion} className='btn-next'>
-						Next
-					</button>
-				</div>
-			</div>
-		</div>
-	);
 };
 
 export default Quiz;
