@@ -13,7 +13,7 @@ const Quiz = () => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = 'http://localhost:5000/';
 	const urlCateg = queryParams.get('quizcode');
-	console.log(urlCateg)
+	console.log(urlCateg);
 	const url =
 		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
 
@@ -49,7 +49,9 @@ const Quiz = () => {
 		} else {
 			setWaiting(true);
 		}
-		const getCode = await axios.get("http://localhost:5000/quiz/getQuizId?quiz_code="+urlCateg).catch((err) => console.log(err));
+		const getCode = await axios
+			.get('http://localhost:5000/quiz/getQuizId?quiz_code=' + urlCateg)
+			.catch((err) => console.log(err));
 		if (getCode) {
 			const data = getCode.data;
 			if (data.length > 0) {
@@ -142,61 +144,81 @@ const Quiz = () => {
 					takenby: 1,
 					quiz_id: quizId,
 					maxScore: questionsFetched.length,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			})
-			.then((response) => response.json())
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}).then((response) => response.json());
 			return (
 				<div>
-					<BackGround />
-					<div className='main-container'>
-						<div className='container-title'>Uzyskana liczba punktów:</div>
-						<div className='container-score'>
-							<strong>
-								{countCorrectAnswer}/{questionsFetched.length}
-							</strong>
+					<nav className='nav'></nav>
+					<main className='main-container-container'>
+						<div className='main-container-quiz1'>
+							<div className='container-title'>Uzyskana liczba punktów:</div>
+							<div className='container-score'>
+								<strong>
+									{countCorrectAnswer}/{questionsFetched.length}
+								</strong>
+							</div>
+
+							<div className='container-text'>
+								{(() => {
+									if (countCorrectAnswer < 5) {
+										return <h3>Słabiutko</h3>;
+									} else if (countCorrectAnswer < 5 && correctAnswer <= 7) {
+										return <h3>Nie jest źle</h3>;
+									} else {
+										return <h3>Gratuluje wyniku</h3>;
+									}
+								})()}
+							</div>
+							<div className='container-quiz-btn'>
+								<Link className='text-link' to='/'>
+									<button className='btn-join'>Powrót</button>
+								</Link>
+							</div>
 						</div>
-						<Link className='text-link' to='/'>
-							<button className='btn-join'>Powrót</button>
-						</Link>
-					</div>
+					</main>
 				</div>
 			);
 		}
 
 		return (
 			<div>
-				<BackGround />
-				<div className='container'>
-					<div className='justify-center flex-column'>
-						<h3>
-							Poprawnych {countCorrectAnswer} /{questionsFetched.length}
-						</h3>
-						<h3>
-							Pytanie {index} z {questionsFetched.length}
-						</h3>
-						<h2 className='question'>{questionContent}</h2>
-
-						{answersState.map((answer, index) => (
-							<div className='choice-container'>
-								<p className='choice-prefix'>{index + 1}</p>
-								<p
-									className={`choice-text ${
-										answer.isCorrect && 'answerCorrect'
-									}`}
-									onClick={checkAnswer}
-								>
-									{answer.answer}
-								</p>
+				<nav className='nav'></nav>
+				<main className='main-container-quiz2'>
+					<div className='container'>
+						<div className='justify-center flex-column'>
+							<div className='container-score-question'>
+								<h4>
+									Poprawnych {countCorrectAnswer} /{questionsFetched.length}
+								</h4>
+								<h4>
+									Pytanie {index} z {questionsFetched.length}
+								</h4>
 							</div>
-						))}
-						<button onClick={nextQuestion} className='btn-next'>
-							Next
-						</button>
+							<h2 className='question'>{questionContent}</h2>
+
+							{answersState.map((answer, index) => (
+								<div className='choice-container'>
+									<p className='choice-prefix'>{index + 1}</p>
+									<p
+										className={`choice-text ${
+											answer.isCorrect && 'answerCorrect'
+										}`}
+										onClick={checkAnswer}
+									>
+										{answer.answer}
+									</p>
+								</div>
+							))}
+
+							<button onClick={nextQuestion} className='btn-next'>
+								Next
+							</button>
+						</div>
 					</div>
-				</div>
+				</main>
 			</div>
 		);
 	}

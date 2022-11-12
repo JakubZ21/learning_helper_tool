@@ -6,7 +6,9 @@ import './index.css';
 import Quiz from './components/QuizPage/Quiz';
 import Login from './components/LoginPage/Login';
 import Join from './components/JoinPage/Join';
+import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
+import Creator from './components/QuestionCreator/Creator';
 
 //////
 // function App() {
@@ -58,6 +60,13 @@ function App() {
 				</Route>
 				<Route path='/join'>
 					<Join />
+				</Route>
+				{/* Nowe  */}
+				{/* <Route path='/user'>
+					<PanelUser />
+				</Route> */}
+				<Route path='/question'>
+					<Creator />
 				</Route>
 			</Switch>
 			<ToastContainer />

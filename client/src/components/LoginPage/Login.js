@@ -1,7 +1,7 @@
 import './Login.css';
 import BackGround from '../UI/BackGround';
 import MainNavigation from '../Navigation/MainNavigation';
-import { Link } from 'react-router-dom';
+import { Link, history, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
@@ -19,6 +19,8 @@ const Login = () => {
 	const usernameInputRefRegister = useRef();
 	const emailInputRefRegister = useRef();
 	const passwordInputRefRegister = useRef();
+
+	const history = useHistory();
 
 	const submitHandler = (event) => {
 		event.preventDefault();
@@ -46,6 +48,10 @@ const Login = () => {
 				.then((response) => response.json())
 				.then((data) => {
 					prepareToast(data.status, data.statusCode);
+					//dodane
+					if (data.statusCode === 2) {
+						history.push('/user');
+					}
 					///przypisać zmienna
 				});
 		}
@@ -113,110 +119,108 @@ const Login = () => {
 
 	return (
 		<div>
-			<BackGround />
-			{/*<div className='main_login' onSubmit={submitHandlerRegister}>*/}
-			{/* <div className='container-header'>
-				<MainNavigation />
-			</div> */}
-			<div className='main_login'>
-				<input type='checkbox' id='chk' aria-hidden='true' />
+			<nav className='nav'></nav>
+			<main className='main-container-login'>
+				<div className='main_login'>
+					<input type='checkbox' id='chk' aria-hidden='true' />
 
-				<div className='signup'>
-					<form onSubmit={submitHandlerRegister}>
-						<label className='lbl__main reg' htmlFor='chk' aria-hidden='true'>
-							Rejestracja
-						</label>
-						<input
-							className='input__data'
-							type='text'
-							name='name'
-							placeholder='Imię'
-							required=''
-							ref={usernameInputRefRegister}
-						/>
+					<div className='signup'>
+						<form onSubmit={submitHandlerRegister}>
+							<label className='lbl__main reg' htmlFor='chk' aria-hidden='true'>
+								Rejestracja
+							</label>
+							<input
+								className='input__data'
+								type='text'
+								name='name'
+								placeholder='Imię'
+								required=''
+								ref={usernameInputRefRegister}
+							/>
 
-						<input
-							className='input__data'
-							type='email'
-							name='email'
-							placeholder='Email'
-							required=''
-							ref={emailInputRefRegister}
-						/>
+							<input
+								className='input__data'
+								type='email'
+								name='email'
+								placeholder='Email'
+								required=''
+								ref={emailInputRefRegister}
+							/>
 
-						<input
-							className='input__data'
-							type='password'
-							name='password'
-							placeholder='Hasło'
-							required=''
-							ref={passwordInputRefRegister}
-						/>
-						<div className='container_radio'>
-							<div className='btn__radio'>
-								<label htmlFor='huey' className='lbl-user'>
-									<input
-										type='radio'
-										id='huey'
-										name='accountType'
-										value='REGULAR_USER'
-										//checked={true} //problemy sa gdy domyslnie sie zaznacza jedna z wartosci
-										onChange={(e) => setAccountType(e.target.value)}
-									/>
-									Użytkownik
-								</label>
+							<input
+								className='input__data'
+								type='password'
+								name='password'
+								placeholder='Hasło'
+								required=''
+								ref={passwordInputRefRegister}
+							/>
+							<div className='container_radio'>
+								<div className='btn__radio'>
+									<label htmlFor='huey' className='lbl-user'>
+										<input
+											type='radio'
+											id='huey'
+											name='accountType'
+											value='REGULAR_USER'
+											//checked={true} //problemy sa gdy domyslnie sie zaznacza jedna z wartosci
+											onChange={(e) => setAccountType(e.target.value)}
+										/>
+										Użytkownik
+									</label>
+								</div>
+								<div className='btn__radio'>
+									<label htmlFor='dewey' className='lbl-user'>
+										<input
+											type='radio'
+											id='dewey'
+											name='accountType'
+											value='TEACHER_USER'
+											onChange={(e) => setAccountType(e.target.value)}
+										/>
+										Nauczyciel
+									</label>
+								</div>
 							</div>
-							<div className='btn__radio'>
-								<label htmlFor='dewey' className='lbl-user'>
-									<input
-										type='radio'
-										id='dewey'
-										name='accountType'
-										value='TEACHER_USER'
-										onChange={(e) => setAccountType(e.target.value)}
-									/>
-									Nauczyciel
-								</label>
-							</div>
-						</div>
-						<button className='btn-log'>Zatwierdź</button>
-					</form>
+							<button className='btn-log'>Zatwierdź</button>
+						</form>
 
-					<Link className='text-link' to='./'>
-						{' '}
-						<button className='btn-log'>Powrót</button>
-					</Link>
-				</div>
+						<Link className='text-link' to='./'>
+							{' '}
+							<button className='btn-log'>Powrót</button>
+						</Link>
+					</div>
 
-				<div className='login'>
-					<form onSubmit={submitHandler}>
-						<label className='lbl__main log' htmlFor='chk' aria-hidden='true'>
-							Logowanie
-						</label>
-						<input
-							className='input__data'
-							type='email'
-							name='email'
-							placeholder='Email'
-							required=''
-							ref={emailInputRef}
-						/>
-						<input
-							className='input__data'
-							type='password'
-							name='pswd'
-							placeholder='Password'
-							required=''
-							ref={passwordInputRef}
-						/>
-						{/* {!isLoading && <button className='btn-log'>Login</button>}
+					<div className='login'>
+						<form onSubmit={submitHandler}>
+							<label className='lbl__main log' htmlFor='chk' aria-hidden='true'>
+								Logowanie
+							</label>
+							<input
+								className='input__data'
+								type='email'
+								name='email'
+								placeholder='Email'
+								required=''
+								ref={emailInputRef}
+							/>
+							<input
+								className='input__data'
+								type='password'
+								name='pswd'
+								placeholder='Password'
+								required=''
+								ref={passwordInputRef}
+							/>
+							{/* {!isLoading && <button className='btn-log'>Login</button>}
 						{isLoading && <p className='btn-log p'>Loading...</p>} */}
-						<button type='submit' className='btn-log'>
-							Login
-						</button>
-					</form>
+							<button type='submit' className='btn-log'>
+								Login
+							</button>
+						</form>
+					</div>
 				</div>
-			</div>
+			</main>
 		</div>
 	);
 };

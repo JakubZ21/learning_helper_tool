@@ -5,12 +5,12 @@ import React from 'react';
 const Loading = () => {
 	return (
 		<div>
-			<BackGround />
-			<div className='main-container'>
+			<nav> </nav>
+			<main>
 				<div className='container-spinner'>
 					<div className='loading'></div>
 				</div>
-			</div>
+			</main>
 		</div>
 	);
 };

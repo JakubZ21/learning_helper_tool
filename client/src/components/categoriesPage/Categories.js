@@ -6,6 +6,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Loading from '../LoadingPage/Loading';
 import MainNavigation from '../Navigation/MainNavigation';
+import Logo from '../startPage/quiz.png';
 
 const Categories = () => {
 	let history = useHistory();
@@ -16,7 +17,7 @@ const Categories = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
 	const [categories, setCategories] = useState([]);
-	const [code, setCode] = useState("");
+	const [code, setCode] = useState('');
 	const [buttons, setButtons] = useState([]);
 
 	const fetchCategories = async (API_ENDPOINT) => {
@@ -45,7 +46,7 @@ const Categories = () => {
 		const response = await axios.put(putUrl).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
-			if (typeof data !== "undefined") {
+			if (typeof data !== 'undefined') {
 				setCode(response.data.code);
 				setLoading(false);
 				setWaiting(false);
@@ -59,25 +60,27 @@ const Categories = () => {
 		}
 	};
 
-
 	const handleClick = (id) => {
-
-		let putUrl = `http://localhost:5000/quiz/registernew?category[]=${id}`
-		registerQuiz(putUrl)	
-	}
+		let putUrl = `http://localhost:5000/quiz/registernew?category[]=${id}`;
+		registerQuiz(putUrl);
+	};
 
 	const handleGoToQuiz = () => {
-		history.push("/quiz/?quizcode=" + code)
-	}
-
-
+		history.push('/quiz/?quizcode=' + code);
+	};
 
 	const locButtons = [];
 	//jesli cos sie zmieni w categories to uruchom ten kod ktory wrzuci buttony na stronke z kategoriami, TODO: Dodac loading icon gdy ich nie ma
 	useEffect(() => {
 		categories.forEach((cat) => {
 			locButtons.push(
-				<button className='btn-ctg' key={cat.id} onClick={() => handleClick(cat.id)}>{cat.category_name}</button>
+				<button
+					className='btn-ctg'
+					key={cat.id}
+					onClick={() => handleClick(cat.id)}
+				>
+					{cat.category_name}
+				</button>
 			);
 		});
 		setButtons(locButtons);
@@ -90,37 +93,41 @@ const Categories = () => {
 				<Loading />
 			</div>
 		);
-	}
-	else if (code !== "") {
+	} else if (code !== '') {
 		return (
 			<div>
-				<BackGround />
-				<div className='main-cat'>
-					<Link className='text-link' to='/'>
-						<button className='btn-close'>close</button>
-					</Link>
-					<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
-						Twój Kod
-					</label>
-					<p className='code-display'>{code}</p>
-					<button className='btn-ctg' onClick={handleGoToQuiz}>Przejdź do Quizu</button>
-				</div>
+				<nav class='nav'></nav>
+				<main className='container-main'>
+					<div className='main-join'>
+						<Link className='text-link' to='/'>
+							<button className='btn-close'>close</button>
+						</Link>
+						<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
+							Twój Kod
+						</label>
+						<p className='code-display'>{code}</p>
+						<button className='btn-ctg' onClick={handleGoToQuiz}>
+							Przejdź do Quizu
+						</button>
+					</div>
+				</main>
 			</div>
-		)
+		);
 	} else {
 		return (
 			<div>
-				<BackGround />
-				<div className='main-cat'>
-					<Link className='text-link' to='/'>
-						<button className='btn-close'>close</button>
-					</Link>
-					<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
-						Kategorie
-					</label>
-
-					{buttons}
-				</div>
+				<nav class='nav'></nav>
+				<main>
+					<div className='main-cat'>
+						<Link className='text-link' to='/'>
+							<button className='btn-close'>close</button>
+						</Link>
+						<div className='container-category-img'>
+							<img src={Logo} alt='logo'></img>
+						</div>
+						<div className='btn'>{buttons}</div>
+					</div>
+				</main>
 			</div>
 		);
 	}
