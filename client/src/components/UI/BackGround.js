@@ -1,4 +1,5 @@
 import './BackGround.css';
+import MainNavigation from '../Navigation/MainNavigation';
 
 function BackGround() {
 	return (

@@ -1,6 +1,6 @@
 import './Login.css';
 import BackGround from '../UI/BackGround';
-
+import MainNavigation from '../Navigation/MainNavigation';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
@@ -23,7 +23,7 @@ const Login = () => {
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
-		const status = "";
+		const status = '';
 		console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
@@ -54,8 +54,8 @@ const Login = () => {
 		const enteredUsernameRegister = usernameInputRefRegister.current.value;
 		const enteredEmailRegister = emailInputRefRegister.current.value;
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
-		const status = "";
-		
+		const status = '';
+
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
 
@@ -77,7 +77,6 @@ const Login = () => {
 					return response.json();
 				})
 				.then((data) => {
-
 					console.log(data.status);
 					alert(data.status);
 					///przypisać zmienna
@@ -88,8 +87,11 @@ const Login = () => {
 	return (
 		<div>
 			<BackGround />
-				{/*<div className='main_login' onSubmit={submitHandlerRegister}>*/}
-				<div className='main_login'>
+			{/*<div className='main_login' onSubmit={submitHandlerRegister}>*/}
+			{/* <div className='container-header'>
+				<MainNavigation />
+			</div> */}
+			<div className='main_login'>
 				<input type='checkbox' id='chk' aria-hidden='true' />
 
 				<div className='signup'>
@@ -125,22 +127,27 @@ const Login = () => {
 						/>
 						<div className='container_radio'>
 							<div className='btn__radio'>
-							<label htmlFor='huey' className='lbl-user'>
-								<input
-									type='radio'
-									id='huey'
-									name='user'
-									value='REGULAR_USER'
-									checked={true} //przy domyslnym zaznaczeniu w konsoli wyrzuca on zamiast REGULAR_USER
-									onChange={(e) => setAccountType(e.target.value)}
-								/>
-								
+								<label htmlFor='huey' className='lbl-user'>
+									<input
+										type='radio'
+										id='huey'
+										name='user'
+										value='REGULAR_USER'
+										checked={true} //przy domyslnym zaznaczeniu w konsoli wyrzuca on zamiast REGULAR_USER
+										onChange={(e) => setAccountType(e.target.value)}
+									/>
 									Użytkownik
 								</label>
 							</div>
 							<div className='btn__radio'>
-							<label htmlFor='dewey' className='lbl-user'>
-								<input type='radio' id='dewey' name='user' value='TEACHER_USER' onChange={(e) => setAccountType(e.target.value)}/>
+								<label htmlFor='dewey' className='lbl-user'>
+									<input
+										type='radio'
+										id='dewey'
+										name='user'
+										value='TEACHER_USER'
+										onChange={(e) => setAccountType(e.target.value)}
+									/>
 									Nauczyciel
 								</label>
 							</div>

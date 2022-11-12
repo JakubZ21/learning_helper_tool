@@ -8,10 +8,11 @@ button {
 	text-decoration: none;
 }
 .header-container {
-	display: flex;
+	display: inline-block;
 	justify-content: space-between;
 	align-items: center;
 	padding: 30px 10%;
+	vertical-align: top;
 	background-color: rgba(29, 117, 29, 0.747);
 }
 .container-logo {
