@@ -101,3 +101,20 @@ body {
 .btn-close:after {
 	transform: rotate(-45deg);
 }
+
+.code-display {
+	width: 63%;
+	height: 3.5rem;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin-top: 3rem;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 16px;
+	border: none;
+	outline: none;
+	font-weight: bold;
+	font-size: larger;
+	border-radius: 5px;
+}

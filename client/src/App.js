@@ -6,6 +6,7 @@ import './index.css';
 import Quiz from './components/QuizPage/Quiz';
 import Login from './components/LoginPage/Login';
 import Join from './components/JoinPage/Join';
+import { ToastContainer, toast } from 'react-toastify';
 
 //////
 // function App() {
@@ -59,6 +60,7 @@ function App() {
 					<Join />
 				</Route>
 			</Switch>
+			<ToastContainer />
 		</div>
 	);
 }

@@ -5,15 +5,19 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 const Quiz = () => {
 	let history = useHistory();
 
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = 'http://localhost:5000/';
-	const urlCateg = queryParams.get('cat_id');
+	const urlCateg = queryParams.get('quizcode');
+	console.log(urlCateg)
 	const url =
-		'http://localhost:5000/questions/get10randomfromcat?category[]=' + urlCateg;
+		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
+
+	let url2 = 'http://localhost:5000/sendscore';
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -25,14 +29,31 @@ const Quiz = () => {
 	const [countCorrectAnswer, setCountCorrectAnswer] = useState(0);
 	const [questionContent, setContent] = useState('');
 	const [endQuiz, setEndQuiz] = useState(false);
+	const [user_id, setUserId] = useState(0);
+	const [quizId, setQuizId] = useState(0);
 
 	const fetchQuestions = async (API_ENDPOINT) => {
-		setLoading(true);
-		const response = await axios(url).catch((err) => console.log(err));
+		const response = await axios.post(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
 				setQuestionsFetched(response.data);
+
+				setLoading(false);
+				setWaiting(false);
+				setError(false);
+			} else {
+				setWaiting(true);
+				setError(true);
+			}
+		} else {
+			setWaiting(true);
+		}
+		const getCode = await axios.get("http://localhost:5000/quiz/getQuizId?quiz_code="+urlCateg).catch((err) => console.log(err));
+		if (getCode) {
+			const data = getCode.data;
+			if (data.length > 0) {
+				setQuizId(getCode.data[0].id);
 
 				setLoading(false);
 				setWaiting(false);
@@ -113,6 +134,20 @@ const Quiz = () => {
 		);
 	} else {
 		if (endQuiz) {
+			fetch(url2, {
+				method: 'PUT',
+				body: JSON.stringify({
+					//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
+					score: countCorrectAnswer,
+					takenby: 1,
+					quiz_id: quizId,
+					maxScore: questionsFetched.length,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			})
+			.then((response) => response.json())
 			return (
 				<div>
 					<BackGround />
