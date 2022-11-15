@@ -2,13 +2,15 @@ import './Login.css';
 import BackGround from '../UI/BackGround';
 import MainNavigation from '../Navigation/MainNavigation';
 import { Link, history, useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
+	const [name, setName] = useState('');
+
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
@@ -22,12 +24,53 @@ const Login = () => {
 
 	const history = useHistory();
 
+	///------------------
+	///Walidacja rejestracji
+	const initVal = { name: '', email: '', password: '' };
+	const [formVal, setFormVal] = useState(initVal);
+	const [formErrors, setFormErrors] = useState({});
+	const [isSubmit, setIsSubmit] = useState(false);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormVal({ ...formVal, [name]: value });
+	};
+
+	useEffect(() => {
+		if (Object.keys(formErrors).length === 0 && isSubmit) {
+		}
+	}, [formErrors]);
+
+	const validate = (values) => {
+		const errors = {};
+		const regex = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
+		if (!values.name) {
+			errors.name = 'Proszę wpisać imię';
+		} else if (values.name.length <= 2) {
+			errors.name = 'Imię musi posiadać co najmniej 2 znaki';
+		}
+		if (!values.email) {
+			errors.email = 'Proszę wpisać email';
+		} else if (!regex.test(values.email)) {
+			errors.email = 'Niepoprawny format email';
+		}
+
+		if (!values.password) {
+			errors.password = 'Proszę wpisać hasło';
+		} else if (values.password.length < 4) {
+			errors.password = 'Hasło musi zawierać conajmniej niż 4 znaki';
+		}
+
+		return errors;
+	};
+
 	const submitHandler = (event) => {
 		event.preventDefault();
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
 		const status = '';
+
 		console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
@@ -48,11 +91,10 @@ const Login = () => {
 				.then((response) => response.json())
 				.then((data) => {
 					prepareToast(data.status, data.statusCode);
-					//dodane
 					if (data.statusCode === 2) {
 						history.push('/user');
+					} else {
 					}
-					///przypisać zmienna
 				});
 		}
 	};
@@ -92,6 +134,9 @@ const Login = () => {
 		const enteredPasswordRegister = passwordInputRefRegister.current.value;
 		const status = '';
 
+		setFormErrors(validate(formVal));
+		setIsSubmit(true);
+
 		let url = 'http://localhost:5000/user/register';
 		setIsLoading(true);
 
@@ -130,31 +175,40 @@ const Login = () => {
 								Rejestracja
 							</label>
 							<input
-								className='input__data'
+								// className='input__data'
+								className={`input__data ${formErrors.name ? 'warn' : ''}`}
 								type='text'
 								name='name'
 								placeholder='Imię'
 								required=''
 								ref={usernameInputRefRegister}
+								value={formVal.name}
+								onChange={handleChange}
 							/>
+							<p>{formErrors.name}</p>
 
 							<input
-								className='input__data'
+								className={`input__data ${formErrors.email ? 'warn' : ''}`}
 								type='email'
 								name='email'
 								placeholder='Email'
 								required=''
 								ref={emailInputRefRegister}
+								value={formVal.email}
+								onChange={handleChange}
 							/>
-
+							<p>{formErrors.email}</p>
 							<input
-								className='input__data'
+								className={`input__data ${formErrors.password ? 'warn' : ''}`}
 								type='password'
 								name='password'
 								placeholder='Hasło'
 								required=''
 								ref={passwordInputRefRegister}
+								value={formVal.password}
+								onChange={handleChange}
 							/>
+							<p>{formErrors.password}</p>
 							<div className='container_radio'>
 								<div className='btn__radio'>
 									<label htmlFor='huey' className='lbl-user'>
@@ -164,6 +218,7 @@ const Login = () => {
 											name='accountType'
 											value='REGULAR_USER'
 											//checked={true} //problemy sa gdy domyslnie sie zaznacza jedna z wartosci
+
 											onChange={(e) => setAccountType(e.target.value)}
 										/>
 										Użytkownik
@@ -197,6 +252,8 @@ const Login = () => {
 								Logowanie
 							</label>
 							<input
+								onChange={(e) => setName(e.target.value)}
+								value={name}
 								className='input__data'
 								type='email'
 								name='email'
@@ -204,6 +261,7 @@ const Login = () => {
 								required=''
 								ref={emailInputRef}
 							/>
+
 							<input
 								className='input__data'
 								type='password'
@@ -212,6 +270,7 @@ const Login = () => {
 								required=''
 								ref={passwordInputRef}
 							/>
+
 							{/* {!isLoading && <button className='btn-log'>Login</button>}
 						{isLoading && <p className='btn-log p'>Loading...</p>} */}
 							<button type='submit' className='btn-log'>

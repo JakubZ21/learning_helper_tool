@@ -84,43 +84,37 @@ app.get('/categories/getall', (req, res) => {
 app.put('/categories/addCategory', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
-	if(req.body.category_name !== "undefined")
-	{
-		let category_name = req.body.category_name
-	}else
-	{
-		res.json("Category not defined")
+	if (req.body.category_name !== 'undefined') {
+		let category_name = req.body.category_name;
+	} else {
+		res.json('Category not defined');
 	}
 
 	const connection = new Connection(connectToAzureWriter());
-		connection.on('connect', function (err) {
-			if (err) {
-				console.log(err);
-			} else {
-				queryDatabase();
-			}
-		});
-		connection.connect();
+	connection.on('connect', function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			queryDatabase();
+		}
+	});
+	connection.connect();
 
-		const queryDatabase = function () {
-			console.log('Inserting question into questions');
-			// Read all rows from table
-			const request = new Request(
-				`INSERT INTO question_category (category_name) values (${category_name})`,
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					if (err !== "undefined") {
-						res.json("Insert complete")
-					}
-					else
-						(
-							res.json(err)
-						)
-					connection.close();
-				}
-			);
-			connection.execSql(request);
-		};
+	const queryDatabase = function () {
+		console.log('Inserting question into questions');
+		// Read all rows from table
+		const request = new Request(
+			`INSERT INTO question_category (category_name) values (${category_name})`,
+			function (err, rowCount, rows) {
+				console.log(rowCount + ' row(s) returned');
+				if (err !== 'undefined') {
+					res.json('Insert complete');
+				} else res.json(err);
+				connection.close();
+			}
+		);
+		connection.execSql(request);
+	};
 });
 
 //API for Questions
@@ -129,29 +123,26 @@ qAPI();
 quizRegisterAPI();
 
 app.put('/sendscore', (req, res) => {
-	
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
-	if(
-		req.body.score !== "undefined" &&
-		req.body.maxScore !== "undefined" &&
-		req.body.quiz_id !== "undefined" &&
-		req.body.takenby !== "undefined"
-	)
-	{
-		let score = req.body.score
-		let maxScore = req.body.maxScore
-		let quiz_id = req.body.quiz_id
-		let takenby = req.body.takenby
-	}else
-	{
-		res.json("Data is not defined")
+	if (
+		req.body.score !== 'undefined' &&
+		req.body.maxScore !== 'undefined' &&
+		req.body.quiz_id !== 'undefined' &&
+		req.body.takenby !== 'undefined'
+	) {
+		let score = req.body.score;
+		let maxScore = req.body.maxScore;
+		let quiz_id = req.body.quiz_id;
+		let takenby = req.body.takenby;
+	} else {
+		res.json('Data is not defined');
 	}
 	res.header('Access-Control-Allow-Origin', '*');
 
 	const score = req.body.score;
 	console.log(req.body);
-	res.json({ status: 'ok', statusCode: 2 })
+	res.json({ status: 'ok', statusCode: 2 });
 
 	// const connection = new Connection(connectToAzureWriter());
 	// 	connection.on('connect', function (err) {
@@ -182,8 +173,6 @@ app.put('/sendscore', (req, res) => {
 	// 		);
 	// 		connection.execSql(request);
 	// 	};
-
-
 });
 
 app.put('/user/register', (req, res) => {
@@ -195,27 +184,35 @@ app.put('/user/register', (req, res) => {
 	const userType = req.body.userType;
 
 	const validateUsername = /^[A-Za-z0-9]{2,}$/;
-	const validatePassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
+	const validatePassword =
+		/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/;
 	const validateEmail = /^[a-z0-9]+(.[a-z0-9])*@[a-z0-9]+\.[a-z]{2,3}$/;
 
 	if (!validateUsername.test(username)) {
-		res.json({ status: "Nazwa użytkownika musi zawierac conajmniej 2 znaki!", statusCode: 1 });
+		res.json({
+			status: 'Nazwa użytkownika musi zawierac conajmniej 2 znaki!',
+			statusCode: 1,
+		});
 		return;
 	}
 	if (!validateEmail.test(email)) {
-		res.json({ status: "Nieprawidlowy adres email!", statusCode: 3 });
+		res.json({ status: 'Nieprawidlowy adres email!', statusCode: 3 });
 		return;
 	}
 	if (!validatePassword.test(password)) {
-		res.json({ status: "Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!", statusCode: 1 });
+		res.json({
+			status:
+				'Haslo musi zawierac conajmniej 5 znakow, 1 cyfre, 1 znak specjalny, 1 mała literę, 1 dużą literę!',
+			statusCode: 1,
+		});
 		return;
 	}
 	if (userType == false) {
-		res.json({ status: "Nie wybrano rodzaju konta!", statusCode: 1 });
+		res.json({ status: 'Nie wybrano rodzaju konta!', statusCode: 1 });
 		return;
 	}
-	if (userType != "REGULAR_USER" && userType != "TEACHER_USER") {
-		res.json({ status: "Nieprawidlowy typ konta!", statusCode: 31 });
+	if (userType != 'REGULAR_USER' && userType != 'TEACHER_USER') {
+		res.json({ status: 'Nieprawidlowy typ konta!', statusCode: 31 });
 		return;
 	}
 
@@ -282,7 +279,7 @@ app.post('/user/login', (req, res) => {
 		return;
 	}*/
 	if (!validateEmail.test(email)) {
-		res.json({ status: "Nieprawidlowy adres email!", statusCode: 3 });
+		res.json({ status: 'Nieprawidlowy adres email!', statusCode: 3 });
 		return;
 	}
 
@@ -306,10 +303,10 @@ app.post('/user/login', (req, res) => {
 		// Read all rows from table
 		const request = new Request(
 			"SELECT * FROM users WHERE email = '" +
-			email +
-			"' AND password = '" +
-			hashed +
-			"'",
+				email +
+				"' AND password = '" +
+				hashed +
+				"'",
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				if (rowCount > 0) {
@@ -334,13 +331,13 @@ function qAPI() {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
 		if (
-			req.query.question_content !== "undefined" &&
-			req.query.answer_1 !== "undefined" &&
-			req.query.answer_2 !== "undefined" &&
-			req.query.answer_3 !== "undefined" &&
-			req.query.answer_correct !== "undefined" &&
-			req.query.category_id !== "undefined" &&
-			req.query.created_by !== "undefined"
+			req.query.question_content !== 'undefined' &&
+			req.query.answer_1 !== 'undefined' &&
+			req.query.answer_2 !== 'undefined' &&
+			req.query.answer_3 !== 'undefined' &&
+			req.query.answer_correct !== 'undefined' &&
+			req.query.category_id !== 'undefined' &&
+			req.query.created_by !== 'undefined'
 		) {
 			let content = req.query.question_content;
 			let answer_1 = req.query.answer_1;
@@ -349,9 +346,8 @@ function qAPI() {
 			let answer_correct = req.query.answer_correct;
 			let category_id = req.query.category_id;
 			let created_by = req.query.created_by;
-		}
-		else {
-			res.json("Data not correct")
+		} else {
+			res.json('Data not correct');
 		}
 		//"INSERT INTO questions (qusetion_content, answer_1, answer_2, answer_3, answer_correct, created_by, category_id)"
 		const connection = new Connection(connectToAzureWriter());
@@ -371,13 +367,9 @@ function qAPI() {
 				`INSERT INTO questions (question_content, answer_1, answer_2, answer_3, answer_correct, created_by, category_id) values (${content}, ${answer_1}, ${answer_2}, ${answer_3}, ${answer_correct}, ${created_by}, ${category_id})`,
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
-					if (err !== "undefined") {
-						res.json("Insert complete")
-					}
-					else
-						(
-							res.json(err)
-						)
+					if (err !== 'undefined') {
+						res.json('Insert complete');
+					} else res.json(err);
 					connection.close();
 				}
 			);
@@ -436,8 +428,8 @@ function qAPI() {
 		});
 		console.log(
 			'SELECT * FROM questions where category_id in (' +
-			categorySQL.join(',') +
-			')'
+				categorySQL.join(',') +
+				')'
 		);
 		//Przykład jak wrzucic tabele koniecznie '[]' w ?category[]=1 inaczej nie zadziala funkcja foreach
 		//http://localhost:5000/questions/getcategory?category[]=3&category[]=1
@@ -456,8 +448,8 @@ function qAPI() {
 			// Read all rows from table
 			const request = new Request(
 				'SELECT * FROM questions where category_id in (' +
-				categorySQL.join(',') +
-				')',
+					categorySQL.join(',') +
+					')',
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
 					res.json(jsonArray);
@@ -541,9 +533,9 @@ function qAPI() {
 		const connection = new Connection(connectToAzure());
 		connection.on('connect', function (err) {
 			if (err) {
-				console.log(err)
+				console.log(err);
 			} else {
-				queryDatabase()
+				queryDatabase();
 			}
 		});
 		connection.connect();
@@ -551,10 +543,12 @@ function qAPI() {
 			console.log('Reading rows from the Table...');
 			// Read all rows from table
 			const request = new Request(
-				"SELECT TOP 10 * FROM questions where category_id in (" + categorySQL.join(",") + ") ORDER BY NEWID()",
+				'SELECT TOP 10 * FROM questions where category_id in (' +
+					categorySQL.join(',') +
+					') ORDER BY NEWID()',
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
-					res.json(jsonArray)
+					res.json(jsonArray);
 					jsonArray = [];
 					connection.close();
 				}
@@ -567,32 +561,29 @@ function qAPI() {
 				jsonArray.push(jsonRow);
 			});
 			connection.execSql(request);
-		}
+		};
 	});
 
-	app.post("/questions/getqueswithcode", (req, res) => {
+	app.post('/questions/getqueswithcode', (req, res) => {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
 		var jsonArray = [];
-		res.header("Access-Control-Allow-Origin", "*");
-
+		res.header('Access-Control-Allow-Origin', '*');
 
 		let quiz_code;
-		if (typeof req.query.quiz_code == "undefined") {
-			res.json("quiz_code not defined")
+		if (typeof req.query.quiz_code == 'undefined') {
+			res.json('quiz_code not defined');
 			return 0;
-		}
-		else
-			quiz_code = req.query.quiz_code;
+		} else quiz_code = req.query.quiz_code;
 
 		//console.log("SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+")")
 
 		const connection = new Connection(connectToAzure());
 		connection.on('connect', function (err) {
 			if (err) {
-				console.log(err)
+				console.log(err);
 			} else {
-				queryDatabase()
+				queryDatabase();
 			}
 		});
 		connection.connect();
@@ -600,10 +591,12 @@ function qAPI() {
 			console.log('Reading rows from the Table...');
 			// Read all rows from table
 			const request = new Request(
-				"SELECT  *  FROM [dbo].[vw_quiz_associated_questions] where [quiz_code] ='" + quiz_code + "' ORDER BY NEWID()",
+				"SELECT  *  FROM [dbo].[vw_quiz_associated_questions] where [quiz_code] ='" +
+					quiz_code +
+					"' ORDER BY NEWID()",
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
-					res.json(jsonArray)
+					res.json(jsonArray);
 					jsonArray = [];
 					connection.close();
 				}
@@ -616,24 +609,23 @@ function qAPI() {
 				jsonArray.push(jsonRow);
 			});
 			connection.execSql(request);
-		}
+		};
 	});
 }
 
 function quizRegisterAPI() {
-
-	app.get("/quiz/getQuizId", (req, res) => {
+	app.get('/quiz/getQuizId', (req, res) => {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
-		let code = req.query.quiz_code
-		let jsonArray = []
-		res.header("Access-Control-Allow-Origin", "*");
+		let code = req.query.quiz_code;
+		let jsonArray = [];
+		res.header('Access-Control-Allow-Origin', '*');
 		const connection = new Connection(connectToAzure());
 		connection.on('connect', function (err) {
 			if (err) {
-				console.log(err)
+				console.log(err);
 			} else {
-				queryDatabase()
+				queryDatabase();
 			}
 		});
 		connection.connect();
@@ -644,7 +636,7 @@ function quizRegisterAPI() {
 				"SELECT TOP 1 id FROM vw_quizes where quiz_code='" + code + "'",
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
-					res.json(jsonArray)
+					res.json(jsonArray);
 					jsonArray = [];
 					connection.close();
 				}
@@ -657,78 +649,69 @@ function quizRegisterAPI() {
 				jsonArray.push(jsonRow);
 			});
 			connection.execSql(request);
-		}
-	})
+		};
+	});
 
-	app.put("/quiz/registernew", (req, res) => {
+	app.put('/quiz/registernew', (req, res) => {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
-		let code = ""
-		res.header("Access-Control-Allow-Origin", "*");
+		let code = '';
+		res.header('Access-Control-Allow-Origin', '*');
 
 		//Depends on the passed category like ?category[]=1&category[]=3
-		let categories = req.query.category
-		let categorySQL = []
-
-
+		let categories = req.query.category;
+		let categorySQL = [];
 
 		const connection = new Connection(connectToAzureWriter());
 		connection.on('connect', function (err) {
 			if (err) {
-				console.log(err)
+				console.log(err);
 			} else {
-				console.log("Connected")
+				console.log('Connected');
 				connection.beginTransaction(function (err) {
-
 					if (err) {
 						connection.rollbackTransaction(function (err) {
-							console.log(err)
-							console.log("Rolling back transaction")
-						})
+							console.log(err);
+							console.log('Rolling back transaction');
+						});
+					} else {
+						console.log('Executing insert, fetching code');
+						insertQuizReturnCode();
 					}
-					else {
-						console.log("Executing insert, fetching code")
-						insertQuizReturnCode()
-
-
-
-					}
-					console.log("Finalized Transaction")
-				}, "add_quiz")
-
+					console.log('Finalized Transaction');
+				}, 'add_quiz');
 			}
 		});
 
 		connection.connect();
-		console.log("Sending Request")
+		console.log('Sending Request');
 
 		const insertQuizReturnCode = function () {
 			console.log('Inserting and reading code from the Table...');
 			// Read all rows from table
-			let quiz_id = undefined
+			let quiz_id = undefined;
 			const request = new Request(
-
 				`
                 INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,10,'NO TIME')
                 SELECT hashids.encode1(MAX(id)) as code, MAX(id) as Id FROM dbo.quizes
-                `
-				,
+                `,
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
 					res.json(code);
-					typeof err === "undefined" ? console.log("Successfully inserted quiz and returned quiz code") : console.log(err);
+					typeof err === 'undefined'
+						? console.log('Successfully inserted quiz and returned quiz code')
+						: console.log(err);
 				}
 			);
 
 			request.on('row', function (columns) {
-				let json = {}
+				let json = {};
 				columns.forEach(function (column) {
 					if (column.metadata.colName == 'code') {
 						json[column.metadata.colName] = column.value;
-					}
-					else if (column.metadata.colName == 'Id') {
+					} else if (column.metadata.colName == 'Id') {
 						quiz_id = column.value;
-						console.log("quizid = " + quiz_id)
+						console.log('quizid = ' + quiz_id);
 					}
 				});
 				code = json;
@@ -736,42 +719,42 @@ function quizRegisterAPI() {
 
 			connection.execSql(request);
 			request.on('requestCompleted', function () {
-				console.log("Request completed setting assigning questionsToQuiz")
-				selectQuestionsForQuiz(quiz_id)
-			})
+				console.log('Request completed setting assigning questionsToQuiz');
+				selectQuestionsForQuiz(quiz_id);
+			});
 
 			connection.on('end', function () {
-				console.log('Ending connection')
-			})
-		}
+				console.log('Ending connection');
+			});
+		};
 
 		const selectQuestionsForQuiz = function (quiz_id) {
-
 			console.log('Reading random 10 rows from the Table...');
-			let sqlQuery = ""
-			let jsonArray = []
+			let sqlQuery = '';
+			let jsonArray = [];
 
 			// Read all rows from table
 			if (typeof req.query.category === 'undefined') {
-				console.log("Categories were not selected")
-				sqlQuery = "SELECT TOP 10 id FROM questions ORDER BY NEWID()"
+				console.log('Categories were not selected');
+				sqlQuery = 'SELECT TOP 10 id FROM questions ORDER BY NEWID()';
 			} else {
-				console.log("Categories were selected")
-				categories.forEach(category => {
-					categorySQL.push(category)
+				console.log('Categories were selected');
+				categories.forEach((category) => {
+					categorySQL.push(category);
 				});
-				sqlQuery = "SELECT TOP 10 id FROM questions where category_id in (" + categorySQL.join(",") + ") ORDER BY NEWID()"
+				sqlQuery =
+					'SELECT TOP 10 id FROM questions where category_id in (' +
+					categorySQL.join(',') +
+					') ORDER BY NEWID()';
 			}
-			console.log(sqlQuery)
+			console.log(sqlQuery);
 
-
-			const request = new Request(
-				sqlQuery,
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					typeof err === "undefined" ? console.log("Successfully fetched 10 random questions") : console.log(err);
-				}
-			);
+			const request = new Request(sqlQuery, function (err, rowCount, rows) {
+				console.log(rowCount + ' row(s) returned');
+				typeof err === 'undefined'
+					? console.log('Successfully fetched 10 random questions')
+					: console.log(err);
+			});
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -780,41 +763,39 @@ function quizRegisterAPI() {
 				jsonArray.push(jsonRow);
 			});
 			request.on('requestCompleted', function () {
-				console.log("Request completed populating bridge table...")
+				console.log('Request completed populating bridge table...');
 				// console.log(jsonArray)
 				populateBridgeTable(quiz_id, jsonArray);
 				jsonArray = [];
-
-			})
+			});
 			connection.execSql(request);
-		}
+		};
 		const populateBridgeTable = function (quiz_id, question_ids) {
-			let arrayIds = []
-			question_ids.forEach(id => {
-				arrayIds.push("(" + quiz_id + ", " + id.id + ")")
+			let arrayIds = [];
+			question_ids.forEach((id) => {
+				arrayIds.push('(' + quiz_id + ', ' + id.id + ')');
 			});
 			question_ids = undefined;
-			console.log(arrayIds)
-			let sqlQuery = "INSERT INTO [dbo].[quiz_questions_bridge] (quiz_id, question_id) VALUES "
-			sqlQuery += arrayIds.join(',')
+			console.log(arrayIds);
+			let sqlQuery =
+				'INSERT INTO [dbo].[quiz_questions_bridge] (quiz_id, question_id) VALUES ';
+			sqlQuery += arrayIds.join(',');
 			// console.log(sqlQuery)
-			const request = new Request(
-				sqlQuery,
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					typeof err === "undefined" ? console.log("Successfully inserted assignemnt data to database") : console.log(err);
-					connection.commitTransaction(function (error) {
-						console.log("Trying to close connection")
-						typeof error === "undefined" ? connection.close() : console.log("error" + error);
-					})
+			const request = new Request(sqlQuery, function (err, rowCount, rows) {
+				console.log(rowCount + ' row(s) returned');
+				typeof err === 'undefined'
+					? console.log('Successfully inserted assignemnt data to database')
+					: console.log(err);
+				connection.commitTransaction(function (error) {
+					console.log('Trying to close connection');
+					typeof error === 'undefined'
+						? connection.close()
+						: console.log('error' + error);
+				});
+			});
 
-				}
-			);
-
-			console.log("Executing request");
+			console.log('Executing request');
 			connection.execSql(request);
-
-		}
-	})
-
+		};
+	});
 }

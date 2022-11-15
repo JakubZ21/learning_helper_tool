@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import BackGround from '../UI/BackGround';
 import './Start.css';
 import Logo from './quiz.png';
+import { login } from '../LoginPage/LoginUser';
 
 function Start() {
 	return (

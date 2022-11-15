@@ -60,7 +60,7 @@ body {
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
-	margin-top: 25px;
+	margin-top: 15px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 10px;
@@ -133,4 +133,14 @@ body {
 	color: rgb(156, 16, 16);
 	font-weight: bold;
 	text-align: center;
+}
+p {
+	margin-top: 3px;
+	color: red;
+	font-size: 14px;
+	position: relative;
+	left: 90px;
+}
+.warn {
+	border: 2px solid red;
 }

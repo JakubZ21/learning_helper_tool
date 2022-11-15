@@ -3,6 +3,11 @@ import Logo from './m3.png';
 import { Link } from 'react-router-dom';
 
 const Creator = () => {
+	const sendQuestion = (e) => {
+		e.preventDefault();
+		///fetch, type post,userRefe()
+	};
+
 	return (
 		<div>
 			<nav className='nav'>
@@ -16,7 +21,7 @@ const Creator = () => {
 						<img src={Logo} alt='quiz-game'></img>
 					</div>
 					<div className='container-creator-context'>
-						<form action='' method=''>
+						<form onSubmit={sendQuestion} method=''>
 							<label for='question'>Pytanie </label>
 							<textarea
 								id='question'
@@ -55,10 +60,11 @@ const Creator = () => {
 								name='answer4'
 								class='textarea-answer'
 							></textarea>
+							<button class='btn-textarea' type='submit'>
+								Zatwierdź
+							</button>
 						</form>
-						<button class='btn-textarea'>
-							<a href='#'></a> Zatwierdź
-						</button>
+
 						<Link className='text-link' to='/'>
 							<button class='btn-textarea'> Wróć </button>
 						</Link>

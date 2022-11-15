@@ -1,4 +1,5 @@
 //import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Start from './components/startPage/Start';
 import Categories from './components/categoriesPage/Categories';
@@ -9,39 +10,12 @@ import Join from './components/JoinPage/Join';
 import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
 import Creator from './components/QuestionCreator/Creator';
+import { UserAuthProvider } from './components/Auth';
 
-//////
-// function App() {
-
-//   const [backendData, setBackendData] = useState([{}])
-
-//   useEffect(() => {
-//     fetch("/api").then(response => response.json()
-//       ).then(data =>{
-//         setBackendData(data)
-//       })
-//   }, [])
-
-//   return (
-//     <div>
-//       {(typeof backendData.users === 'undefined') ? (
-//         <p>Loading...</p>
-//       ): (
-//         backendData.users.map((user,i) =>
-//         (<p key = {i}>
-//          {user}
-//         </p>))
-//       )
-//       }
-//     </div>
-//   )
-// }
-////////
-
-///FE  - WS ///
 function App() {
 	return (
 		<div>
+			{/* <UserAuthProvider value='Sero'> */}
 			<Switch>
 				<Route path='/' exact>
 					<Redirect to='/start' />
@@ -61,14 +35,17 @@ function App() {
 				<Route path='/join'>
 					<Join />
 				</Route>
-				{/* Nowe  */}
-				{/* <Route path='/user'>
+				{/* Nowe  -chronic  */}
+
+				<Route path='/user' exact component={PanelUser}>
 					<PanelUser />
-				</Route> */}
+				</Route>
+				{/* Nowe  */}
 				<Route path='/question'>
 					<Creator />
 				</Route>
 			</Switch>
+			{/* </UserAuthProvider> */}
 			<ToastContainer />
 		</div>
 	);
