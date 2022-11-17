@@ -32,7 +32,7 @@ const Creator = () => {
 				category_id: chosenSelect,
 				created_by: 4,
 			}),
-			header: {
+			headers: {
 				'Content-Type': 'application/json',
 			},
 		})

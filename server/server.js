@@ -84,7 +84,7 @@ app.get('/categories/getall', (req, res) => {
 app.put('/categories/addCategory', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
-	if (req.body.category_name !== 'undefined') {
+	if (typeof req.body.category_name !== 'undefined') {
 		let category_name = req.body.category_name;
 	} else {
 		res.json('Category not defined');
@@ -107,7 +107,7 @@ app.put('/categories/addCategory', (req, res) => {
 			`INSERT INTO question_category (category_name) values (${category_name})`,
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
-				if (err !== 'undefined') {
+				if (typeof err !== 'undefined') {
 					res.json('Insert complete');
 				} else res.json(err);
 				connection.close();
@@ -125,11 +125,12 @@ quizRegisterAPI();
 app.put('/sendscore', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
+	res.header('Access-Control-Allow-Origin', '*');
 	if (
-		req.body.score !== 'undefined' &&
-		req.body.maxScore !== 'undefined' &&
-		req.body.quiz_id !== 'undefined' &&
-		req.body.takenby !== 'undefined'
+		typeof req.body.score !== 'undefined' &&
+		typeof req.body.maxScore !== 'undefined' &&
+		typeof req.body.quiz_id !== 'undefined' &&
+		typeof req.body.takenby !== 'undefined'
 	) {
 		let score = req.body.score;
 		let maxScore = req.body.maxScore;
@@ -138,11 +139,17 @@ app.put('/sendscore', (req, res) => {
 	} else {
 		res.json('Data is not defined');
 	}
-	res.header('Access-Control-Allow-Origin', '*');
+	console.log(req.body)
 
-	const score = req.body.score;
-	console.log(req.body);
-	res.json({ status: 'ok', statusCode: 2 });
+	// const score = req.body.score;
+	// console.log(req.body);
+	// res.json({ 
+	// 	score: score,
+	// 	maxScore: maxScore,
+	// 	quiz_id: quiz_id,
+	// 	takenby: takenby,
+	// 	status: 'ok', 
+	// statusCode: 2 });
 
 	// const connection = new Connection(connectToAzureWriter());
 	// 	connection.on('connect', function (err) {
@@ -330,29 +337,29 @@ function qAPI() {
 	app.put('/questions/addQuestion', (req, res) => {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
+		let content, answer_1, answer_2, answer_3, answer_correct, category_id, created_by
 		// res.header('Access-Control-Allow-Origin', '*');
-		console.log(req.body);
 		if (
-			req.body.question_content !== 'undefined' &&
-			req.body.answer_1 !== 'undefined' &&
-			req.body.answer_2 !== 'undefined' &&
-			req.body.answer_3 !== 'undefined' &&
-			req.body.answer_correct !== 'undefined' &&
-			req.body.category_id !== 'undefined' &&
-			req.body.created_by !== 'undefined' &&
-			req.body !== {}
+			typeof req.body.question_content !== 'undefined' &&
+			typeof req.body.answer_1 !== 'undefined' &&
+			typeof req.body.answer_2 !== 'undefined' &&
+			typeof req.body.answer_3 !== 'undefined' &&
+			typeof req.body.answer_correct !== 'undefined' &&
+			typeof req.body.category_id !== 'undefined' &&
+			typeof req.body.created_by !== 'undefined'
 		) {
-			let content = req.query.question_content;
-			let answer_1 = req.query.answer_1;
-			let answer_2 = req.query.answer_2;
-			let answer_3 = req.query.answer_3;
-			let answer_correct = req.query.answer_correct;
-			let category_id = req.query.category_id;
-			let created_by = req.query.created_by;
-			console.log(req.query);
+			content = req.body.question_content;
+			answer_1 = req.body.answer_1;
+			answer_2 = req.body.answer_2;
+			answer_3 = req.body.answer_3;
+			answer_correct = req.body.answer_correct;
+			category_id = req.body.category_id;
+			created_by = req.body.created_by;
+			// console.log("correct")
 		} else {
-			res.json('Data not correct');
+			res.json("Data not correct")
 		}
+		// console.log(content)
 		//"INSERT INTO questions (qusetion_content, answer_1, answer_2, answer_3, answer_correct, created_by, category_id)"
 		const connection = new Connection(connectToAzureWriter());
 		connection.on('connect', function (err) {
@@ -368,10 +375,10 @@ function qAPI() {
 			console.log('Inserting question into questions');
 			// Read all rows from table
 			const request = new Request(
-				`INSERT INTO questions (question_content, answer_1, answer_2, answer_3, answer_correct, created_by, category_id) values (${content}, ${answer_1}, ${answer_2}, ${answer_3}, ${answer_correct}, ${created_by}, ${category_id})`,
+				`INSERT INTO questions (question_content, answer_1, answer_2, answer_3, answer_correct, created_by, category_id) values ('${content}', '${answer_1}', '${answer_2}', '${answer_3}', '${answer_correct}', ${created_by}, ${category_id})`,
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
-					if (err !== 'undefined') {
+					if (typeof err !== 'undefined') {
 						res.json('Insert complete');
 					} else res.json(err);
 					connection.close();
