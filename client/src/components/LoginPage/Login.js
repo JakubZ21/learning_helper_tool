@@ -157,7 +157,6 @@ const Login = () => {
 				.then((response) => response.json())
 				.then((data) => {
 					prepareToast(data.status, data.statusCode);
-					///przypisać zmienna
 				});
 		}
 	};

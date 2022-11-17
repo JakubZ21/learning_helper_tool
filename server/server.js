@@ -330,14 +330,17 @@ function qAPI() {
 	app.put('/questions/addQuestion', (req, res) => {
 		var Connection = require('tedious').Connection;
 		var Request = require('tedious').Request;
+		// res.header('Access-Control-Allow-Origin', '*');
+		console.log(req.body);
 		if (
-			req.query.question_content !== 'undefined' &&
-			req.query.answer_1 !== 'undefined' &&
-			req.query.answer_2 !== 'undefined' &&
-			req.query.answer_3 !== 'undefined' &&
-			req.query.answer_correct !== 'undefined' &&
-			req.query.category_id !== 'undefined' &&
-			req.query.created_by !== 'undefined'
+			req.body.question_content !== 'undefined' &&
+			req.body.answer_1 !== 'undefined' &&
+			req.body.answer_2 !== 'undefined' &&
+			req.body.answer_3 !== 'undefined' &&
+			req.body.answer_correct !== 'undefined' &&
+			req.body.category_id !== 'undefined' &&
+			req.body.created_by !== 'undefined' &&
+			req.body !== {}
 		) {
 			let content = req.query.question_content;
 			let answer_1 = req.query.answer_1;
@@ -346,6 +349,7 @@ function qAPI() {
 			let answer_correct = req.query.answer_correct;
 			let category_id = req.query.category_id;
 			let created_by = req.query.created_by;
+			console.log(req.query);
 		} else {
 			res.json('Data not correct');
 		}
