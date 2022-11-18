@@ -21,10 +21,11 @@ body {
 	border: 3px solid rgb(2, 2, 2);
 	border-radius: 15px;
 	box-shadow: 5px 20px 80px #333;
+	overflow: hidden;
 }
 
 h2 {
-	font-size: 4.2rem;
+	font-size: 3.3rem;
 	margin-bottom: 4rem;
 	font-weight: 700;
 }
@@ -42,7 +43,7 @@ h2 {
 }
 .container-score-question {
 	display: block;
-	margin: 0 auto;
+	margin: 25px auto;
 	color: rgba(66, 70, 83, 0.747);
 }
 
@@ -86,6 +87,7 @@ h2 {
 }
 .choice-prefix {
 	padding: 1.5rem 2.5rem;
+	border-radius: 15px;
 	background-color: #0b9216a4;
 	color: #fff;
 }
@@ -107,7 +109,7 @@ h2 {
 	display: block;
 	width: 56%;
 	height: 50px;
-	margin: 15px auto;
+	margin: 35px auto;
 	background: #1e7c16;
 	color: #fff;
 	font-size: 1em;
@@ -155,7 +157,7 @@ h2 {
 	margin-bottom: 30px;
 	padding: 30px;
 }
-h3 {
+.container-text-result {
 	font-size: 34px;
 	color: rgb(72, 109, 53);
 }

@@ -21,6 +21,9 @@
 .container-title {
 	padding: 20px;
 }
+.container-main-creator {
+	padding: 70px;
+}
 
 textarea {
 	width: 60%;

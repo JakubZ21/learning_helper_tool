@@ -105,7 +105,7 @@ const Categories = () => {
 						<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
 							Twój Kod
 						</label>
-						<p className='code-display'>{code}</p>
+						<p className='code-display '>{code}</p>
 						<button className='btn-ctg' onClick={handleGoToQuiz}>
 							Przejdź do Quizu
 						</button>
@@ -117,7 +117,7 @@ const Categories = () => {
 		return (
 			<div>
 				<nav class='nav'></nav>
-				<main>
+				<main className='container-main'>
 					<div className='main-cat'>
 						<Link className='text-link' to='/'>
 							<button className='btn-close'>close</button>

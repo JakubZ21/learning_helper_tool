@@ -10,12 +10,11 @@ import Join from './components/JoinPage/Join';
 import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
 import Creator from './components/QuestionCreator/Creator';
-import { UserAuthProvider } from './components/Auth';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 function App() {
 	return (
 		<div>
-			{/* <UserAuthProvider value='Sero'> */}
 			<Switch>
 				<Route path='/' exact>
 					<Redirect to='/start' />
@@ -36,16 +35,27 @@ function App() {
 					<Join />
 				</Route>
 				{/* Nowe  -chronic  */}
-
 				<Route path='/user' exact component={PanelUser}>
 					<PanelUser />
 				</Route>
+
+				{/* <PrivateRoute path='/user' exact component={PanelUser}>
+					<PanelUser />
+				</PrivateRoute> */}
+				{/* <Route
+					path='/user'
+					element={
+						<PrivateRoute>
+							<PanelUser />
+						</PrivateRoute>
+					}
+				/> */}
 				{/* Nowe  */}
 				<Route path='/question'>
 					<Creator />
 				</Route>
 			</Switch>
-			{/* </UserAuthProvider> */}
+
 			<ToastContainer />
 		</div>
 	);

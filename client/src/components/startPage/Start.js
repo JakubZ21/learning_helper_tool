@@ -13,7 +13,7 @@ function Start() {
 					<li>Username</li>
 				</ul> */}
 			</nav>
-			<main>
+			<main className='container-main-start'>
 				<div className='main_view'>
 					<div className='container-img'>
 						<img src={Logo} alt='logo'></img>

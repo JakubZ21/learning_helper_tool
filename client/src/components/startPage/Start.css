@@ -15,7 +15,7 @@ body {
 	height: 65px;
 	background: none;
 }
-main {
+.container-main-start {
 	padding: 100px;
 }
 .main_view {

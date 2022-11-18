@@ -51,7 +51,7 @@ const Creator = () => {
 					<li>Username</li>
 				</ul>
 			</nav>
-			<main>
+			<main className='container-main-creator'>
 				<div className='container-creator-menu'>
 					<Link className='text-link' to='/'>
 						<button className='btn-close question'>close</button>

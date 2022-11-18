@@ -164,11 +164,17 @@ const Quiz = () => {
 							<div className='container-text'>
 								{(() => {
 									if (countCorrectAnswer < 5) {
-										return <h3>Słabiutko</h3>;
+										return <h3 className='container-text-result'>Słabiutko</h3>;
 									} else if (countCorrectAnswer < 5 && correctAnswer <= 7) {
-										return <h3>Nie jest źle</h3>;
+										return (
+											<h3 className='container-text-result'>Nie jest źle</h3>
+										);
 									} else {
-										return <h3>Gratuluje wyniku</h3>;
+										return (
+											<h3 className='container-text-result'>
+												Gratuluje wyniku
+											</h3>
+										);
 									}
 								})()}
 							</div>

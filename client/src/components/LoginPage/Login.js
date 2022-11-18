@@ -1,5 +1,4 @@
 import './Login.css';
-import BackGround from '../UI/BackGround';
 import MainNavigation from '../Navigation/MainNavigation';
 import { Link, history, useHistory } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
@@ -184,7 +183,7 @@ const Login = () => {
 								value={formVal.name}
 								onChange={handleChange}
 							/>
-							<p>{formErrors.name}</p>
+							<p className='form-error'>{formErrors.name}</p>
 
 							<input
 								className={`input__data ${formErrors.email ? 'warn' : ''}`}
@@ -196,7 +195,7 @@ const Login = () => {
 								value={formVal.email}
 								onChange={handleChange}
 							/>
-							<p>{formErrors.email}</p>
+							<p className='form-error'>{formErrors.email}</p>
 							<input
 								className={`input__data ${formErrors.password ? 'warn' : ''}`}
 								type='password'
@@ -207,7 +206,7 @@ const Login = () => {
 								value={formVal.password}
 								onChange={handleChange}
 							/>
-							<p>{formErrors.password}</p>
+							<p className='form-error'>{formErrors.password}</p>
 							<div className='container_radio'>
 								<div className='btn__radio'>
 									<label htmlFor='huey' className='lbl-user'>

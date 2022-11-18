@@ -1,5 +1,7 @@
 import './User.css';
 import Logo from './m1.png';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const PanelUser = () => {
 	return (
@@ -9,7 +11,7 @@ const PanelUser = () => {
 					<li>Username</li>
 				</ul>
 			</nav>
-			<main>
+			<main className='main-container-panelUser'>
 				<div className='container-menu'>
 					<div className='container-img'>
 						<img src={Logo} alt='quiz-game'></img>
