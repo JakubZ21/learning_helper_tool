@@ -127,6 +127,13 @@ const Quiz = () => {
 		nextQuestion();
 	};
 
+	const handleBack = function () {
+
+			sessionStorage.getItem("username") === null ?
+			history.push('/') : history.push('/user')
+
+	};
+
 	if (loading) {
 		return (
 			<div>
@@ -136,19 +143,21 @@ const Quiz = () => {
 		);
 	} else {
 		if (endQuiz) {
-			fetch(url2, {
-				method: 'PUT',
-				body: JSON.stringify({
-					//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
-					score: countCorrectAnswer,
-					takenby: 1,
-					quiz_id: quizId,
-					maxScore: questionsFetched.length,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}).then((response) => response.json());
+			if (sessionStorage.getItem("id") != null) {
+				fetch(url2, {
+					method: 'PUT',
+					body: JSON.stringify({
+						//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
+						score: countCorrectAnswer,
+						takenby: parseInt(sessionStorage.getItem("id")),
+						quiz_id: quizId,
+						maxScore: questionsFetched.length,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}).then((response) => response.json());
+			}
 			return (
 				<div>
 					<nav className='nav'></nav>
@@ -179,7 +188,7 @@ const Quiz = () => {
 								})()}
 							</div>
 							<div className='container-quiz-btn'>
-								<Link className='text-link' to='/'>
+								<Link className='text-link' onClick={handleBack}>
 									<button className='btn-join'>Powrót</button>
 								</Link>
 							</div>
@@ -209,9 +218,8 @@ const Quiz = () => {
 								<div className='choice-container'>
 									<p className='choice-prefix'>{index + 1}</p>
 									<p
-										className={`choice-text ${
-											answer.isCorrect && 'answerCorrect'
-										}`}
+										className={`choice-text ${answer.isCorrect && 'answerCorrect'
+											}`}
 										onClick={checkAnswer}
 									>
 										{answer.answer}

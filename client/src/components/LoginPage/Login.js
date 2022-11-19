@@ -15,6 +15,11 @@ const Login = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [accountType, setAccountType] = useState(false);
 
+	const [loggedId, setLoggedId] = useState ()
+	const [loggedUsername, setLoggedUName] = useState ()
+
+
+
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
 	const usernameInputRefRegister = useRef();
@@ -70,7 +75,7 @@ const Login = () => {
 		const enteredPassword = passwordInputRef.current.value;
 		const status = '';
 
-		console.log(enteredEmail, enteredPassword);
+		// console.log(enteredEmail, enteredPassword);
 		let url = 'http://localhost:5000/user/login';
 		setIsLoading(true);
 
@@ -89,8 +94,12 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
+					console.log(data)
 					prepareToast(data.status, data.statusCode);
 					if (data.statusCode === 2) {
+						sessionStorage.setItem("username", data.username)
+						sessionStorage.setItem("id", data.id)
+						sessionStorage.setItem("user_type", data.user_type)
 						history.push('/user');
 					} else {
 					}
@@ -155,7 +164,12 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
+					console.log(data)
+					sessionStorage.setItem("username", data.username)
+					sessionStorage.setItem("id", data.id)
 					prepareToast(data.status, data.statusCode);
+					if(data.statusCode === 2) history.push('/user');
+					
 				});
 		}
 	};
