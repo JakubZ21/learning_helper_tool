@@ -1,6 +1,6 @@
 import './Creator.css';
 import Logo from './m3.png';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useRef } from 'react';
 
 const Creator = () => {
@@ -10,6 +10,8 @@ const Creator = () => {
 	const answer3Ref = useRef();
 	const answer4Ref = useRef();
 	const selectRef = useRef();
+
+	const history = useHistory();
 
 	const sendQuestion = (e) => {
 		e.preventDefault();
@@ -42,6 +44,7 @@ const Creator = () => {
 			.catch((err) => console.log(err));
 
 		///fetch, type post,userRefe()
+		history.push('/user');
 	};
 
 	return (
@@ -71,28 +74,36 @@ const Creator = () => {
 								className='textarea-question'
 								ref={questionRef}
 							></textarea>
-							<label htmlFor='question'>Odpowiedź A </label>
+							<label htmlFor='question'>
+								Odpowiedź <strong>1</strong>{' '}
+							</label>
 							<textarea
 								id='answer1'
 								name='answer_1'
 								className='textarea-answer'
 								ref={answer1Ref}
 							></textarea>
-							<label htmlFor='question'>Odpowiedź B </label>
+							<label htmlFor='question'>
+								Odpowiedź <strong>2</strong>{' '}
+							</label>
 							<textarea
 								id='answer2'
 								name='answer_2'
 								className='textarea-answer'
 								ref={answer2Ref}
 							></textarea>
-							<label htmlFor='question'>Odpowiedź C </label>
+							<label htmlFor='question'>
+								Odpowiedź <strong>3</strong>{' '}
+							</label>
 							<textarea
 								id='answer3'
 								name='answer_3'
 								className='textarea-answer'
 								ref={answer3Ref}
 							></textarea>
-							<label htmlFor='question'>Poprawna Odpowiedź </label>
+							<label htmlFor='question'>
+								Odpowiedź <strong>Poprawna</strong>{' '}
+							</label>
 							<textarea
 								id='answer4'
 								name='answer_correct'
@@ -101,10 +112,10 @@ const Creator = () => {
 							></textarea>
 							<label htmlFor='category'>Wybierz Kategorie:</label>
 							<select id='category_id' name='category' ref={selectRef}>
-								<option value='Angielski'>Angielski</option>
-								<option value='Geografia'>Geografia</option>
-								<option value='Literatura'>Literatura</option>
-								<option value='Matematyka'>Matematyka</option>
+								<option value='3'>Angielski</option>
+								<option value='2'>Geografia</option>
+								<option value='4'>Literatura</option>
+								<option value='1'>Matematyka</option>
 							</select>
 							<button className='btn-textarea sub' type='submit'>
 								Zatwierdź

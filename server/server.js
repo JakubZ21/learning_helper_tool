@@ -132,10 +132,10 @@ app.put('/sendscore', (req, res) => {
 		typeof req.body.quiz_id !== 'undefined' &&
 		typeof req.body.takenby !== 'undefined'
 	) {
-		let score = req.body.score;
-		let maxScore = req.body.maxScore;
-		let quiz_id = req.body.quiz_id;
-		let takenby = req.body.takenby;
+		var score = req.body.score;
+		var maxScore = req.body.maxScore;
+		var quiz_id = req.body.quiz_id;
+		var takenby = req.body.takenby;
 	} else {
 		res.json('Data is not defined');
 	}
@@ -151,35 +151,36 @@ app.put('/sendscore', (req, res) => {
 	// 	status: 'ok', 
 	// statusCode: 2 });
 
-	// const connection = new Connection(connectToAzureWriter());
-	// 	connection.on('connect', function (err) {
-	// 		if (err) {
-	// 			console.log(err);
-	// 		} else {
-	// 			queryDatabase();
-	// 		}
-	// 	});
-	// 	connection.connect();
+	const connection = new Connection(connectToAzureWriter());
+		connection.on('connect', function (err) {
+			if (err) {
+				console.log(err);
+			} else {
+				queryDatabase();
+			}
+		});
+		connection.connect();
 
-	// 	const queryDatabase = function () {
-	// 		console.log('Inserting attempt score');
-	// 		// Read all rows from table
-	// 		const request = new Request(
-	// 			`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenb_id}, ${quiz_id}, CURRENTTIMESTAMP, ${score}, ${max_score})`,
-	// 			function (err, rowCount, rows) {
-	// 				console.log(rowCount + ' row(s) returned');
-	// 				if (err !== "undefined") {
-	// 					res.json("Insert complete")
-	// 				}
-	// 				else
-	// 					(
-	// 						res.json(err)
-	// 					)
-	// 				connection.close();
-	// 			}
-	// 		);
-	// 		connection.execSql(request);
-	// 	};
+		const queryDatabase = function () {
+			console.log('Inserting attempt score');
+			// Read all rows from table
+			// console.log(`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENTTIMESTAMP, ${score}, ${maxScore})`)
+			const request = new Request(
+				`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENT_TIMESTAMP, ${score}, ${maxScore})`,
+				function (err, rowCount, rows) {
+					console.log(rowCount + ' row(s) returned');
+					if (typeof err !== "undefined") {
+						res.json("Insert complete")
+					}
+					else
+						(
+							res.json(err)
+						)
+					connection.close();
+				}
+			);
+			connection.execSql(request);
+		};
 });
 
 app.put('/user/register', (req, res) => {
@@ -229,6 +230,9 @@ app.put('/user/register', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
 
+	var usernameSent = "";
+	var useridSent;
+	
 	const connection = new Connection(connectToAzureWriter());
 	connection.on('connect', function (err) {
 		if (err) {
@@ -250,7 +254,7 @@ app.put('/user/register', (req, res) => {
 					res.json({ status: 'Podany email istnieje', statusCode: 3 });
 				} else {
 					queryDatabase();
-					res.json({ status: 'Poprawnie zarejestrowano', statusCode: 2 });
+					// res.json({username: usernameSent, id: useridSent, status: 'Poprawnie zarejestrowano', statusCode: 2 });
 				}
 			}
 		);
@@ -258,17 +262,38 @@ app.put('/user/register', (req, res) => {
 	};
 
 	const queryDatabase = function () {
-		console.log('Reading rows from the Table...');
+		console.log('Inserting users into the Table...');
 		// Read all rows from table
 		const request = new Request(
 			`INSERT INTO users (username, email, user_type, password, registered_at) VALUES ('${username}', '${email}', '${userType}', '${hashed}', CURRENT_TIMESTAMP)`,
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
+				// connection.close();
+				returnIdUsername() 	
+			}
+		);
+
+		connection.execSql(request);
+	};
+	const returnIdUsername = function () {
+		const request = new Request(
+			"SELECT * FROM users WHERE email = '" +
+				email +
+				"' AND password = '" +
+				hashed +
+				"'",
+			function (err, rowCount, rows) {
+				console.log(rowCount + ' row(s) returned');
+				res.json({username: usernameSent, id: useridSent, status: 'Poprawnie zarejestrowano', statusCode: 2 });
 				connection.close();
 			}
 		);
-		connection.execSql(request);
-	};
+		request.on('row', function (columns) {
+			useridSent = columns[0].value;
+			usernameSent = columns[1].value;
+		});
+		connection.execSql(request)
+	}
 });
 
 //check user if exists in db -> return 1 if exists, 0 if not
@@ -296,6 +321,10 @@ app.post('/user/login', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
 
+	let username = ""
+	let userid = ""
+	let user_type = ""
+
 	const connection = new Connection(connectToAzure());
 	connection.on('connect', function (err) {
 		if (err) {
@@ -317,13 +346,18 @@ app.post('/user/login', (req, res) => {
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				if (rowCount > 0) {
-					res.json({ status: 'Zalogowano pomyślnie', statusCode: 2 });
+					res.json({ username: username, id: userid, user_type: user_type, status: 'Zalogowano pomyślnie', statusCode: 2 });
 				} else {
 					res.json({ status: 'Niepoprawny email lub hasło', statusCode: 3 });
 				}
 				connection.close();
 			}
 		);
+		request.on('row', function (columns) {
+			userid = columns[0].value;
+			username = columns[1].value;
+			user_type = columns[3].value;
+		});
 		connection.execSql(request);
 	};
 });

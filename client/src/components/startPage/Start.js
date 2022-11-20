@@ -28,9 +28,9 @@ function Start() {
 						<Link className='text-link' to='/join'>
 							<button className='btn_main'>Dołącz</button>
 						</Link>
-						<Link className='text-link' to='/question'>
+						{/* <Link className='text-link' to='/question'>
 							<button className='btn_main'>Próbny</button>
-						</Link>
+						</Link> */}
 					</div>
 				</div>
 			</main>
