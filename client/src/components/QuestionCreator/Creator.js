@@ -47,6 +47,13 @@ const Creator = () => {
 		history.push('/user');
 	};
 
+	const handleX = () => {
+		// console.log(sessionStorage.getItem("username"))
+		sessionStorage.getItem('username') === null
+			? history.push('/')
+			: history.push('/user');
+	};
+
 	return (
 		<div>
 			<nav className='nav'>
@@ -56,9 +63,10 @@ const Creator = () => {
 			</nav>
 			<main className='container-main-creator'>
 				<div className='container-creator-menu'>
-					<Link className='text-link' to='/'>
-						<button className='btn-close question'>close</button>
-					</Link>
+					<button className='btn-close question' onClick={handleX}>
+						close
+					</button>
+
 					{/* <div className='container-img'>
 						<img src={Logo} alt='quiz-game'></img>
 					</div> */}

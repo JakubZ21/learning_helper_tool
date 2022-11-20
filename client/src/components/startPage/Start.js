@@ -3,7 +3,6 @@ import BackGround from '../UI/BackGround';
 import './Start.css';
 import Logo from './quiz.png';
 import { login } from '../LoginPage/LoginUser';
-import useAuth from '../useAuth';
 
 function Start() {
 	return (

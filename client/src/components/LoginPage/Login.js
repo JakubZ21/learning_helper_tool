@@ -6,11 +6,9 @@ import { useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useAuth from '../useAuth';
 
 const Login = () => {
 	const [name, setName] = useState('');
-	const [isAuth, setIsAuth, login, logout] = useAuth(true);
 
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
@@ -97,7 +95,9 @@ const Login = () => {
 					console.log(data);
 					prepareToast(data.status, data.statusCode);
 					if (data.statusCode === 2) {
-						login();
+						sessionStorage.setItem('username', data.username);
+						sessionStorage.setItem('id', data.id);
+						sessionStorage.setItem('user_type', data.user_type);
 						history.push('/user');
 					} else {
 					}

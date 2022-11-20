@@ -11,68 +11,35 @@ import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
 import Creator from './components/QuestionCreator/Creator';
 import ProtectedRoute from './components/ProtectedRoute';
-import useAuth from './components/useAuth';
 
 function App() {
-	const [isAuth, login, logout] = useAuth(false);
-
 	return (
 		<div>
-			{isAuth ? (
-				<>
-					<div className='ui message brown'>You are logged in...</div>
-					<button className='ui button blue' onClick={logout}>
-						Log out
-					</button>
-				</>
-			) : (
-				<>
-					<div className='ui message brown'>You are logged out...</div>
-					<button className='ui button blue' onClick={login}>
-						Log in
-					</button>
-				</>
-			)}
 			<Switch>
-				<Route path='/' exact component={Start} />
-				{/* <Redirect to='/start' />
-				</Route> */}
-				<Route path='/start' component={Start} />
-				{/* <Start />
-				</Route> */}
-				<Route path='/category' exact component={Categories} />
-				{/* <Categories />
-				</Route> */}
-				<Route path='/quiz' component={Quiz} />
-				{/* <Quiz />
-				</Route> */}
-				<Route path='/login' component={Login} />
-				{/* <Login />
-				</Route> */}
-				<Route path='/join' component={Join} />
-				{/* <Join />
-				</Route> */}
-				{/* Nowe  -chronic  */}
-				<ProtectedRoute path='/user' component={PanelUser} auth={isAuth} />
-				{/* <PanelUser />
-				</Route> */}
-
-				{/* <PrivateRoute path='/user' exact component={PanelUser}>
+				<Route path='/' exact>
+					<Redirect to='/start' />
+				</Route>
+				<Route path='/start'>
+					<Start />
+				</Route>
+				<Route path='/category' exact>
+					<Categories />
+				</Route>
+				<Route path='/quiz'>
+					<Quiz />
+				</Route>
+				<Route path='/login'>
+					<Login />
+				</Route>
+				<Route path='/join'>
+					<Join />
+				</Route>
+				<Route path='/user' exact>
 					<PanelUser />
-				</PrivateRoute> */}
-				{/* <Route
-					path='/user'
-					element={
-						<PrivateRoute>
-							<PanelUser />
-						</PrivateRoute>
-					}
-				/> */}
-				{/* Nowe  */}
-				<ProtectedRoute path='/question' component={Creator} auth={isAuth} />
-				{/* <Route path='/question' component={Creator} /> */}
-				{/* <Creator />
-				</Route> */}
+				</Route>
+				<Route path='/question'>
+					<Creator />
+				</Route>
 			</Switch>
 
 			<ToastContainer />

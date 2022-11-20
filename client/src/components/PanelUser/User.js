@@ -5,25 +5,20 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-
-
 const PanelUser = () => {
-	console.log(sessionStorage.getItem("XD"))
+	console.log(sessionStorage.getItem('XD'));
 
 	const history = useHistory();
 	const handleLogout = function () {
-		sessionStorage.clear()
-		history.push('/')
-
-
-
+		sessionStorage.clear();
+		history.push('/');
 	};
-	if (sessionStorage.getItem("user_type") === "TEACHER_USER") {
+	if (sessionStorage.getItem('user_type') === 'TEACHER_USER') {
 		return (
 			<>
 				<nav className='nav'>
 					<ul className='container-username'>
-						<li>{sessionStorage.getItem("username")}</li>
+						<li>{sessionStorage.getItem('username')}</li>
 					</ul>
 				</nav>
 				<main className='main-container-panelUser'>
@@ -41,20 +36,21 @@ const PanelUser = () => {
 							{/* <button className='btn-game second'>
 								<a href='ranking.html'>ranking</a>
 							</button> */}
-							<button className='btn-game fourth' onClick={handleLogout}>Wyloguj się</button>
+							<button className='btn-game fourth' onClick={handleLogout}>
+								Wyloguj się
+							</button>
 						</div>
 					</div>
 				</main>
 				<footer></footer>
 			</>
-		)
-	}
-	else {
+		);
+	} else {
 		return (
 			<>
 				<nav className='nav'>
 					<ul className='container-username'>
-						<li>{sessionStorage.getItem("username")}</li>
+						<li>{sessionStorage.getItem('username')}</li>
 					</ul>
 				</nav>
 				<main className='main-container-panelUser'>
@@ -70,13 +66,15 @@ const PanelUser = () => {
 							{/* <button className='btn-game second'>
 								<a href='ranking.html'>ranking</a>
 							</button> */}
-							<button className='btn-game fourth' onClick={handleLogout}>Wyloguj się</button>
+							<button className='btn-game fourth' onClick={handleLogout}>
+								Wyloguj się
+							</button>
 						</div>
 					</div>
 				</main>
 				<footer></footer>
 			</>
 		);
-	};
+	}
 };
 export default PanelUser;
