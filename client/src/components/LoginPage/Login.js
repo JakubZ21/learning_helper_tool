@@ -6,19 +6,19 @@ import { useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useAuth from '../useAuth';
 
 const Login = () => {
 	const [name, setName] = useState('');
+	const [isAuth, setIsAuth, login, logout] = useAuth(true);
 
 	const [isLogin, setIsLogin] = useState(true);
 	const [isRegister, setIsRegister] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 	const [accountType, setAccountType] = useState(false);
 
-	const [loggedId, setLoggedId] = useState ()
-	const [loggedUsername, setLoggedUName] = useState ()
-
-
+	const [loggedId, setLoggedId] = useState();
+	const [loggedUsername, setLoggedUName] = useState();
 
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -94,12 +94,10 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data)
+					console.log(data);
 					prepareToast(data.status, data.statusCode);
 					if (data.statusCode === 2) {
-						sessionStorage.setItem("username", data.username)
-						sessionStorage.setItem("id", data.id)
-						sessionStorage.setItem("user_type", data.user_type)
+						login();
 						history.push('/user');
 					} else {
 					}
@@ -164,12 +162,11 @@ const Login = () => {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data)
-					sessionStorage.setItem("username", data.username)
-					sessionStorage.setItem("id", data.id)
+					console.log(data);
+					sessionStorage.setItem('username', data.username);
+					sessionStorage.setItem('id', data.id);
 					prepareToast(data.status, data.statusCode);
-					if(data.statusCode === 2) history.push('/user');
-					
+					if (data.statusCode === 2) history.push('/user');
 				});
 		}
 	};

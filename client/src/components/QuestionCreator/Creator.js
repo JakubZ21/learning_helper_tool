@@ -11,7 +11,7 @@ const Creator = () => {
 	const answer4Ref = useRef();
 	const selectRef = useRef();
 
-	const history = useHistory()
+	const history = useHistory();
 
 	const sendQuestion = (e) => {
 		e.preventDefault();
@@ -44,7 +44,7 @@ const Creator = () => {
 			.catch((err) => console.log(err));
 
 		///fetch, type post,userRefe()
-		history.push('/user')
+		history.push('/user');
 	};
 
 	return (

@@ -3,11 +3,11 @@ import BackGround from '../UI/BackGround';
 import './Start.css';
 import Logo from './quiz.png';
 import { login } from '../LoginPage/LoginUser';
+import useAuth from '../useAuth';
 
 function Start() {
 	return (
 		<div>
-			{/* <BackGround /> */}
 			<nav className='nav'>
 				{/* <ul class='container-username'>
 					<li>Username</li>
@@ -18,7 +18,6 @@ function Start() {
 					<div className='container-img'>
 						<img src={Logo} alt='logo'></img>
 					</div>
-					{/* <div className='container-context'> */}
 					<div className='btn'>
 						<Link className='text-link' to='/category'>
 							<button className='btn_main'>Szybka Gra</button>
@@ -33,7 +32,6 @@ function Start() {
 							<button className='btn_main'>Próbny</button>
 						</Link> */}
 					</div>
-					{/* </div> */}
 				</div>
 			</main>
 		</div>
