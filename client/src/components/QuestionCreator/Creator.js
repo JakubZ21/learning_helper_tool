@@ -71,36 +71,28 @@ const Creator = () => {
 								className='textarea-question'
 								ref={questionRef}
 							></textarea>
-							<label htmlFor='question'>
-								Odpowiedź <strong>A</strong>{' '}
-							</label>
+							<label htmlFor='question'>Odpowiedź A </label>
 							<textarea
 								id='answer1'
 								name='answer_1'
 								className='textarea-answer'
 								ref={answer1Ref}
 							></textarea>
-							<label htmlFor='question'>
-								Odpowiedź <strong>B</strong>{' '}
-							</label>
+							<label htmlFor='question'>Odpowiedź B </label>
 							<textarea
 								id='answer2'
 								name='answer_2'
 								className='textarea-answer'
 								ref={answer2Ref}
 							></textarea>
-							<label htmlFor='question'>
-								Odpowiedź <strong>C</strong>{' '}
-							</label>
+							<label htmlFor='question'>Odpowiedź C </label>
 							<textarea
 								id='answer3'
 								name='answer_3'
 								className='textarea-answer'
 								ref={answer3Ref}
 							></textarea>
-							<label htmlFor='question'>
-								Odpowiedź <strong>D</strong>{' '}
-							</label>
+							<label htmlFor='question'>Poprawna Odpowiedź </label>
 							<textarea
 								id='answer4'
 								name='answer_correct'
