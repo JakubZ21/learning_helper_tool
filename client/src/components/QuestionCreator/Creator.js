@@ -32,7 +32,7 @@ const Creator = () => {
 				answer_3: enteredAnswer3,
 				answer_correct: enteredAnswer4,
 				category_id: chosenSelect,
-				created_by: 4,
+				created_by: sessionStorage.getItem("id"),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
