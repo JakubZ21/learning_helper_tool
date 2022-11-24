@@ -44,7 +44,6 @@ body {
 	margin-right: auto;
 	padding: 16px;
 	border: 1px solid rgb(148, 144, 144);
-
 	border-radius: 5px;
 }
 
@@ -59,7 +58,6 @@ body {
 	font-weight: bold;
 	margin-top: 20px;
 	border: 3px solid #1e7c16;
-
 	border-radius: 5px;
 	transition: background-color 0.3s, color 0.3s;
 	cursor: pointer;

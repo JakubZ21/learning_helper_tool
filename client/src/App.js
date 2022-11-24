@@ -10,7 +10,8 @@ import Join from './components/JoinPage/Join';
 import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
 import Creator from './components/QuestionCreator/Creator';
-import ProtectedRoute from './components/ProtectedRoute';
+import Highscore from './components/Highscore/Highscore';
+import CreateGame from './components/CreateGame/CreateGame';
 
 function App() {
 	return (
@@ -39,6 +40,12 @@ function App() {
 				</Route>
 				<Route path='/question'>
 					<Creator />
+				</Route>
+				<Route path='/highscore'>
+					<Highscore />
+				</Route>
+				<Route path='/createGame'>
+					<CreateGame />
 				</Route>
 			</Switch>
 

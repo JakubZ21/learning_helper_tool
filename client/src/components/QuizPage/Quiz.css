@@ -22,10 +22,13 @@ body {
 	border-radius: 15px;
 	box-shadow: 5px 20px 80px #333;
 	overflow: hidden;
+	width: 1200px;
+	margin: 0 auto;
+	height: 750px;
 }
 
 h2 {
-	font-size: 3.3rem;
+	font-size: 1.8rem;
 	margin-bottom: 4rem;
 	font-weight: 700;
 }
@@ -38,7 +41,7 @@ h2 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	max-width: 80rem;
+	max-width: 70rem;
 	margin: auto;
 }
 .container-score-question {
@@ -49,6 +52,7 @@ h2 {
 
 .question {
 	/* background: linear-gradient(120deg#deffa1 10%, #6c3 25%); */
+	height: 100px;
 	color: rgb(87, 80, 80);
 	border-radius: 15px;
 }
@@ -56,6 +60,8 @@ h2 {
 .flex-column {
 	display: flex;
 	flex-direction: column;
+	margin: 0 auto;
+	width: 800px;
 }
 .justify-center {
 	justify-content: center;
@@ -160,4 +166,12 @@ h2 {
 .container-text-result {
 	font-size: 34px;
 	color: rgb(72, 109, 53);
+}
+/* Quiz timer */
+.quiz-timer {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	font-size: 36px;
+	font-weight: bold;
 }

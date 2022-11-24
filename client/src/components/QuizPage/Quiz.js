@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
+// import Timer from '../Timer/Timer';
 
 const Quiz = () => {
 	let history = useHistory();
@@ -31,6 +32,8 @@ const Quiz = () => {
 	const [endQuiz, setEndQuiz] = useState(false);
 	const [user_id, setUserId] = useState(0);
 	const [quizId, setQuizId] = useState(0);
+	//nowy
+	const [counter, setCounter] = useState(10);
 
 	const fetchQuestions = async (API_ENDPOINT) => {
 		const response = await axios.post(url).catch((err) => console.log(err));
@@ -108,6 +111,15 @@ const Quiz = () => {
 		}
 	}, [questionsFetched[index], index]);
 
+	//TIMER
+	useEffect(() => {
+		if (counter > 0) {
+			setTimeout(() => setCounter(counter - 1), 1000);
+		} else {
+			setEndQuiz(true);
+		}
+	}, [counter]);
+
 	const nextQuestion = () => {
 		if (index >= questionsFetched.length - 1) {
 			setEndQuiz(true);
@@ -128,10 +140,9 @@ const Quiz = () => {
 	};
 
 	const handleBack = function () {
-
-			sessionStorage.getItem("username") === null ?
-			history.push('/') : history.push('/user')
-
+		sessionStorage.getItem('username') === null
+			? history.push('/')
+			: history.push('/user');
 	};
 
 	if (loading) {
@@ -143,13 +154,13 @@ const Quiz = () => {
 		);
 	} else {
 		if (endQuiz) {
-			if (sessionStorage.getItem("id") != null) {
+			if (sessionStorage.getItem('id') != null) {
 				fetch(url2, {
 					method: 'PUT',
 					body: JSON.stringify({
 						//dodac inne potrzebne rzeczy do wyslania do db (np. login, numer quizu)
 						score: countCorrectAnswer,
-						takenby: parseInt(sessionStorage.getItem("id")),
+						takenby: parseInt(sessionStorage.getItem('id')),
 						quiz_id: quizId,
 						maxScore: questionsFetched.length,
 					}),
@@ -218,8 +229,9 @@ const Quiz = () => {
 								<div className='choice-container'>
 									<p className='choice-prefix'>{index + 1}</p>
 									<p
-										className={`choice-text ${answer.isCorrect && 'answerCorrect'
-											}`}
+										className={`choice-text ${
+											answer.isCorrect && 'answerCorrect'
+										}`}
 										onClick={checkAnswer}
 									>
 										{answer.answer}
@@ -233,6 +245,10 @@ const Quiz = () => {
 						</div>
 					</div>
 				</main>
+				<div className='quiz-timer'>
+					<span>{counter}</span>
+				</div>
+				{/* <Timer maxRange={10} /> */}
 			</div>
 		);
 	}

@@ -1,7 +1,5 @@
 import './User.css';
 import Logo from './m1.png';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
@@ -33,9 +31,9 @@ const PanelUser = () => {
 							<Link className='text-link' to='/question'>
 								<button className='btn-game second'>Dodaj Pytanie</button>
 							</Link>
-							{/* <button className='btn-game second'>
-								<a href='ranking.html'>ranking</a>
-							</button> */}
+							<Link className='text-link' to='/createGame'>
+								<button className='btn-game third'>Stwórz grę</button>
+							</Link>
 							<button className='btn-game fourth' onClick={handleLogout}>
 								Wyloguj się
 							</button>
@@ -62,10 +60,10 @@ const PanelUser = () => {
 							<Link className='text-link' to='/category'>
 								<button className='btn-game first'>Szybka Gra</button>
 							</Link>
+							<Link className='text-link' to='/highscore'>
+								<button className='btn-game second'>Wynik</button>
+							</Link>
 
-							{/* <button className='btn-game second'>
-								<a href='ranking.html'>ranking</a>
-							</button> */}
 							<button className='btn-game fourth' onClick={handleLogout}>
 								Wyloguj się
 							</button>
