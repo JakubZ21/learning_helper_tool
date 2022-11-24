@@ -32,7 +32,7 @@ const Creator = () => {
 				answer_3: enteredAnswer3,
 				answer_correct: enteredAnswer4,
 				category_id: chosenSelect,
-				created_by: sessionStorage.getItem("id"),
+				created_by: sessionStorage.getItem('id'),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -58,12 +58,12 @@ const Creator = () => {
 		<div>
 			<nav className='nav'>
 				<ul className='container-username'>
-					<li>Username</li>
+					<li>{sessionStorage.getItem('username')}</li>
 				</ul>
 			</nav>
 			<main className='container-main-creator'>
 				<div className='container-creator-menu'>
-					<button className='btn-close question' onClick={handleX}>
+					<button className='btn-close-create ' onClick={handleX}>
 						close
 					</button>
 

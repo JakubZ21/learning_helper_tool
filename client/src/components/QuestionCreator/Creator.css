@@ -18,9 +18,18 @@
 	text-transform: uppercase;
 	font-weight: bold;
 }
+.container-menu-create_game {
+	position: relative;
+	border: 4px solid black;
+	height: 650px;
+	width: 450px;
+	margin: 0 auto;
+	border-radius: 15px;
+	box-shadow: 5px 20px 80px #333;
+}
 .container-title {
 	padding: 20px;
-	color: rgb(253, 251, 251);
+	color: rgb(0, 0, 0);
 }
 .container-main-creator {
 	padding: 70px;
@@ -71,9 +80,50 @@ form label {
 	text-decoration: none;
 	color: #ddd;
 }
-.question {
-	left: 90%;
-}
+
 .sub {
 	display: block;
+}
+.btn-close-create {
+	display: block;
+	overflow: hidden;
+	position: relative;
+	border: none;
+	padding: 0;
+	width: 3em;
+	height: 3em;
+	border-radius: 50%;
+	left: 91%;
+	top: 3%;
+	background: transparent;
+	color: #0a8d10;
+	font: inherit;
+	text-indent: 100%;
+	cursor: pointer;
+}
+
+.btn-close-create:focus {
+	outline: solid 0 transparent;
+	box-shadow: 0 0 0 2px #8ed0f9;
+}
+
+.btn-close-create:hover {
+	background: rgba(7, 145, 19, 0.1);
+}
+
+.btn-close-create:before,
+.btn-close-create:after {
+	position: absolute;
+	top: 15%;
+	left: calc(50% - 0.0625em);
+	width: 0.125em;
+	height: 70%;
+	border-radius: 0.125em;
+	transform: rotate(45deg);
+	background: currentcolor;
+	content: '';
+}
+
+.btn-close-create:after {
+	transform: rotate(-45deg);
 }

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 const CreateGame = () => {
 	const selectCategoryRef = useRef();
 	const selectNumberRef = useRef();
+	const selectTimeRef = useRef();
 
 	const history = useHistory();
 
@@ -23,7 +24,7 @@ const CreateGame = () => {
 				</ul>
 			</nav>
 			<main className='main-container-createGame'>
-				<div className='container-menu'>
+				<div className='container-menu-create_game'>
 					<button className='btn-createGame-close' onClick={handleX}>
 						close
 					</button>
@@ -56,6 +57,15 @@ const CreateGame = () => {
 									name='game_Quantity'
 									ref={selectNumberRef}
 								>
+									<option value='3'>10</option>
+									<option value='2'>12</option>
+									<option value='4'>15</option>
+									<option value='1'>18</option>
+								</select>
+							</div>
+							<label htmlFor='createGame-question-time'>Czas</label>
+							<div className='createGame-box'>
+								<select id='game-time-id' name='game_Time' ref={selectTimeRef}>
 									<option value='3'>10</option>
 									<option value='2'>12</option>
 									<option value='4'>15</option>

@@ -7,7 +7,7 @@
 	height: 150px;
 	width: 400px;
 	text-align: center;
-	margin: 25px auto;
+	margin: 0 auto;
 	padding: 2.7rem;
 }
 
@@ -28,7 +28,8 @@
 	padding: 10px;
 }
 .container-context-createGame #game-category-id,
-#game-quantity-id {
+#game-quantity-id,
+#game-time-id {
 	text-align: center;
 }
 .btn-createGame-confirm {

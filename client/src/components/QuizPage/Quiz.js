@@ -33,7 +33,7 @@ const Quiz = () => {
 	const [user_id, setUserId] = useState(0);
 	const [quizId, setQuizId] = useState(0);
 	//nowy
-	const [counter, setCounter] = useState(10);
+	const [counter, setCounter] = useState(20);
 
 	const fetchQuestions = async (API_ENDPOINT) => {
 		const response = await axios.post(url).catch((err) => console.log(err));

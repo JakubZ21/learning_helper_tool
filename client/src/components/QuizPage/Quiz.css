@@ -175,3 +175,7 @@ h2 {
 	font-size: 36px;
 	font-weight: bold;
 }
+#category_id {
+	width: 200px;
+	text-align: center;
+}
