@@ -706,6 +706,9 @@ function quizRegisterAPI() {
 		//Depends on the passed category like ?category[]=1&category[]=3
 		let categories = req.query.category;
 		let categorySQL = [];
+		
+		let numQuest = 10
+		if(typeof req.query.numQuest !== "undefined") numQuest=req.query.numQuest 
 
 		const connection = new Connection(connectToAzureWriter());
 		connection.on('connect', function (err) {
@@ -737,7 +740,7 @@ function quizRegisterAPI() {
 			let quiz_id = undefined;
 			const request = new Request(
 				`
-                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,10,'NO TIME')
+                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,${numQuest},'NO TIME')
                 SELECT hashids.encode1(MAX(id)) as code, MAX(id) as Id FROM dbo.quizes
                 `,
 				function (err, rowCount, rows) {
@@ -774,21 +777,21 @@ function quizRegisterAPI() {
 		};
 
 		const selectQuestionsForQuiz = function (quiz_id) {
-			console.log('Reading random 10 rows from the Table...');
+			console.log(`Reading random ${numQuest} rows from the Table...`);
 			let sqlQuery = '';
 			let jsonArray = [];
 
 			// Read all rows from table
 			if (typeof req.query.category === 'undefined') {
 				console.log('Categories were not selected');
-				sqlQuery = 'SELECT TOP 10 id FROM questions ORDER BY NEWID()';
+				sqlQuery = `SELECT TOP ${numQuest} id FROM questions ORDER BY NEWID()`;
 			} else {
 				console.log('Categories were selected');
 				categories.forEach((category) => {
 					categorySQL.push(category);
 				});
 				sqlQuery =
-					'SELECT TOP 10 id FROM questions where category_id in (' +
+					`SELECT TOP ${numQuest} id FROM questions where category_id in (` +
 					categorySQL.join(',') +
 					') ORDER BY NEWID()';
 			}
@@ -797,7 +800,7 @@ function quizRegisterAPI() {
 			const request = new Request(sqlQuery, function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				typeof err === 'undefined'
-					? console.log('Successfully fetched 10 random questions')
+					? console.log(`Successfully fetched ${numQuest} random questions`)
 					: console.log(err);
 			});
 			request.on('row', function (columns) {
