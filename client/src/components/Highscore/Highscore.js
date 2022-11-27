@@ -3,6 +3,7 @@ import Logo from './m2.png';
 import { Link, Route, useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MDBDataTable } from 'mdbreact';
 
 const Highscore = () => {
 	let history = useHistory();
@@ -69,17 +70,19 @@ const Highscore = () => {
 					<div className='container-ranking-img'>
 						<img src={Logo} alt='logo'></img>
 					</div>
+					<div id='scrolltab'>
+						<table id='ranking'>
+							<tr>
+								<th>Lp.</th>
+								<th>Kod Quizu</th>
+								<th>Nazwa użytkownika</th>
+								<th>Punkty</th>
+								<th>Data wykonania</th>
+							</tr>
+							{attemptList}
+						</table>
+					</div>
 
-					<table id='ranking'>
-						<tr>
-							<th>Lp.</th>
-							<th>Kod Quizu</th>
-							<th>Nazwa użytkownika</th>
-							<th>Punkty</th>
-							<th>Data wykonania</th>
-						</tr>
-						{attemptList}
-					</table>
 					{/* <div class='container-ranking'>
 						<div className='container-ranking-title'>
 							<div className='ranking place'>Miejsce</div>

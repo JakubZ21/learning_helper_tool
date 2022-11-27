@@ -109,10 +109,10 @@ body {
 	border-collapse: collapse;
 	width: 100%;
 	border-radius: 5px;
+	overflow: scroll;
   }
   
   #ranking td, #ranking th {
-	border: 1px solid #ddd;
 	padding: 8px;
   }
   #ranking tr
@@ -145,4 +145,11 @@ body {
 
 #ranking tr:last-child td:last-child {
 	border-bottom-right-radius: 10px;
+}
+
+#scrolltab
+{
+	overflow: auto;
+	height: 70%;
+	border-radius: 5px;
 }
