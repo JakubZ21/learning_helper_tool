@@ -23,7 +23,28 @@ const Highscore = () => {
 					<div className='container-ranking-img'>
 						<img src={Logo} alt='logo'></img>
 					</div>
-					<div class='container-ranking'>
+
+					<table id='ranking'>
+						<tr>
+							<th>Miejsce</th>
+							<th>Kod Quizu</th>
+							<th>Nazwa użytkownika</th>
+							<th>Punkty</th>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>aaaaaa</td>
+							<td>Bartek</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>aaaaaa</td>
+							<td>Bartek</td>
+							<td>10</td>
+						</tr>
+					</table>
+					{/* <div class='container-ranking'>
 						<div className='container-ranking-title'>
 							<div className='ranking place'>Miejsce</div>
 							<div className='ranking name'>Nazwa użytkownika</div>
@@ -43,7 +64,7 @@ const Highscore = () => {
 							<div className='highscore name'>Ola</div>
 							<div className='highscore score'>2</div>
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<div className='container-ranking-btn'>
 					<button className='btn-ranking' onClick={handleX}>

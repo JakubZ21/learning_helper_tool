@@ -3,6 +3,7 @@ const request = require('express');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { type } = require('os');
 
 app.use(express.json());
 app.use(cors());
@@ -122,6 +123,53 @@ qAPI();
 //API for Quiz Register
 quizRegisterAPI();
 
+app.get('/ranking/getmine', (req, res) => {
+	var Connection = require('tedious').Connection;
+	var Request = require('tedious').Request;
+	var jsonArray = [];
+	res.header('Access-Control-Allow-Origin', '*');
+
+	const connection = new Connection(connectToAzure());
+	connection.on('connect', function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			queryDatabase();
+		}
+	});
+
+	let user = ''
+	if (typeof req.query.user_id === "undefined") res.json("Nie można znalezc uzytkownika")
+
+	else {
+		user = req.query.user_id
+
+		connection.connect();
+	}
+	const queryDatabase = function () {
+		console.log('Reading rows from the Table...');
+		// Read all rows from table
+		const request = new Request(`SELECT quiz_id, taken_when, score, max_score FROM vw_attempts WHERE takenby_id = ${user}`, function (
+			err,
+			rowCount,
+			rows
+		) {
+			console.log(rowCount + ' row(s) returned');
+			res.json(jsonArray);
+			jsonArray = [];
+			connection.close();
+		});
+		request.on('row', function (columns) {
+			var jsonRow = {};
+			columns.forEach(function (column) {
+				jsonRow[column.metadata.colName] = column.value;
+			});
+			jsonArray.push(jsonRow);
+		});
+		connection.execSql(request);
+	};
+});
+
 app.put('/sendscore', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
@@ -152,35 +200,35 @@ app.put('/sendscore', (req, res) => {
 	// statusCode: 2 });
 
 	const connection = new Connection(connectToAzureWriter());
-		connection.on('connect', function (err) {
-			if (err) {
-				console.log(err);
-			} else {
-				queryDatabase();
-			}
-		});
-		connection.connect();
+	connection.on('connect', function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			queryDatabase();
+		}
+	});
+	connection.connect();
 
-		const queryDatabase = function () {
-			console.log('Inserting attempt score');
-			// Read all rows from table
-			// console.log(`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENTTIMESTAMP, ${score}, ${maxScore})`)
-			const request = new Request(
-				`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENT_TIMESTAMP, ${score}, ${maxScore})`,
-				function (err, rowCount, rows) {
-					console.log(rowCount + ' row(s) returned');
-					if (typeof err !== "undefined") {
-						res.json("Insert complete")
-					}
-					else
-						(
-							res.json(err)
-						)
-					connection.close();
+	const queryDatabase = function () {
+		console.log('Inserting attempt score');
+		// Read all rows from table
+		// console.log(`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENTTIMESTAMP, ${score}, ${maxScore})`)
+		const request = new Request(
+			`INSERT INTO attempts (takenby_id, quiz_id, taken_when, score, max_score) values (${takenby}, ${quiz_id}, CURRENT_TIMESTAMP, ${score}, ${maxScore})`,
+			function (err, rowCount, rows) {
+				console.log(rowCount + ' row(s) returned');
+				if (typeof err !== "undefined") {
+					res.json("Insert complete")
 				}
-			);
-			connection.execSql(request);
-		};
+				else
+					(
+						res.json(err)
+					)
+				connection.close();
+			}
+		);
+		connection.execSql(request);
+	};
 });
 
 app.put('/user/register', (req, res) => {
@@ -232,7 +280,7 @@ app.put('/user/register', (req, res) => {
 
 	var usernameSent = "";
 	var useridSent;
-	
+
 	const connection = new Connection(connectToAzureWriter());
 	connection.on('connect', function (err) {
 		if (err) {
@@ -269,7 +317,7 @@ app.put('/user/register', (req, res) => {
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				// connection.close();
-				returnIdUsername() 	
+				returnIdUsername()
 			}
 		);
 
@@ -278,13 +326,13 @@ app.put('/user/register', (req, res) => {
 	const returnIdUsername = function () {
 		const request = new Request(
 			"SELECT * FROM users WHERE email = '" +
-				email +
-				"' AND password = '" +
-				hashed +
-				"'",
+			email +
+			"' AND password = '" +
+			hashed +
+			"'",
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
-				res.json({username: usernameSent, id: useridSent, status: 'Poprawnie zarejestrowano', statusCode: 2 });
+				res.json({ username: usernameSent, id: useridSent, status: 'Poprawnie zarejestrowano', statusCode: 2 });
 				connection.close();
 			}
 		);
@@ -339,10 +387,10 @@ app.post('/user/login', (req, res) => {
 		// Read all rows from table
 		const request = new Request(
 			"SELECT * FROM users WHERE email = '" +
-				email +
-				"' AND password = '" +
-				hashed +
-				"'",
+			email +
+			"' AND password = '" +
+			hashed +
+			"'",
 			function (err, rowCount, rows) {
 				console.log(rowCount + ' row(s) returned');
 				if (rowCount > 0) {
@@ -473,8 +521,8 @@ function qAPI() {
 		});
 		console.log(
 			'SELECT * FROM questions where category_id in (' +
-				categorySQL.join(',') +
-				')'
+			categorySQL.join(',') +
+			')'
 		);
 		//Przykład jak wrzucic tabele koniecznie '[]' w ?category[]=1 inaczej nie zadziala funkcja foreach
 		//http://localhost:5000/questions/getcategory?category[]=3&category[]=1
@@ -493,8 +541,8 @@ function qAPI() {
 			// Read all rows from table
 			const request = new Request(
 				'SELECT * FROM questions where category_id in (' +
-					categorySQL.join(',') +
-					')',
+				categorySQL.join(',') +
+				')',
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
 					res.json(jsonArray);
@@ -589,8 +637,8 @@ function qAPI() {
 			// Read all rows from table
 			const request = new Request(
 				'SELECT TOP 10 * FROM questions where category_id in (' +
-					categorySQL.join(',') +
-					') ORDER BY NEWID()',
+				categorySQL.join(',') +
+				') ORDER BY NEWID()',
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
 					res.json(jsonArray);
@@ -637,8 +685,8 @@ function qAPI() {
 			// Read all rows from table
 			const request = new Request(
 				"SELECT  *  FROM [dbo].[vw_quiz_associated_questions] where [quiz_code] ='" +
-					quiz_code +
-					"' ORDER BY NEWID()",
+				quiz_code +
+				"' ORDER BY NEWID()",
 				function (err, rowCount, rows) {
 					console.log(rowCount + ' row(s) returned');
 					res.json(jsonArray);
@@ -706,9 +754,11 @@ function quizRegisterAPI() {
 		//Depends on the passed category like ?category[]=1&category[]=3
 		let categories = req.query.category;
 		let categorySQL = [];
-		
+
 		let numQuest = 10
-		if(typeof req.query.numQuest !== "undefined") numQuest=req.query.numQuest 
+		if (typeof req.query.numQuest !== "undefined") numQuest = req.query.numQuest
+		let type = "NO TIME"
+		if (typeof req.query.gameType !== "undefined") type = req.query.gameType
 
 		const connection = new Connection(connectToAzureWriter());
 		connection.on('connect', function (err) {
@@ -740,7 +790,7 @@ function quizRegisterAPI() {
 			let quiz_id = undefined;
 			const request = new Request(
 				`
-                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,${numQuest},'NO TIME')
+                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,${numQuest},'${type}')
                 SELECT hashids.encode1(MAX(id)) as code, MAX(id) as Id FROM dbo.quizes
                 `,
 				function (err, rowCount, rows) {

@@ -1,14 +1,27 @@
 import './CreateGame.css';
-import { useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-
+import { useRef, useState, useEffect  } from 'react';
+import { useHistory} from 'react-router-dom';
+import axios from 'axios';
 const CreateGame = () => {
 	const selectCategoryRef = useRef();
 	const selectNumberRef = useRef();
 	const selectTimeRef = useRef();
-
+	
+	const [waiting, setWaiting] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const [code, setCode] = useState('');
+	// const [categVal, setCategVal] = useState("");
+	// const [timeVal, setTimeVal] = useState("");
+	// const [numberVal, setNumberVal] = useState("");
+	
+	useEffect(() =>
+	{
+		alert(code)
+	},[code])
+	
 	const history = useHistory();
-
+	
 	const handleX = () => {
 		// console.log(sessionStorage.getItem("username"))
 		sessionStorage.getItem('username') === null
@@ -16,6 +29,25 @@ const CreateGame = () => {
 			: history.push('/user');
 	};
 
+
+
+	const registerQuiz = async (putUrl) => {
+		const response = await axios.put(putUrl).catch((err) => console.log(err));
+		if (response) {
+			const data = response.data;
+			if (typeof data !== 'undefined') {
+				setCode(response.data.code);
+				setLoading(false);
+			} else {
+			}
+		} else {
+		}
+	};
+
+	const handleClick = () => {
+		let putUrl = process.env.REACT_APP_SRV_URL+`quiz/registernew?category[]=${selectCategoryRef.current.value}&gameType=${selectTimeRef.current.value}s&numQuest=${selectNumberRef.current.value}`;
+		registerQuiz(putUrl);
+	};
 	return (
 		<div>
 			<nav className='nav'>
@@ -34,7 +66,7 @@ const CreateGame = () => {
 						<h1>Stwórz Grę</h1>
 					</div>
 					<div className='container-context-createGame'>
-						<form id='createGame-form'>
+						<form id='createGame-form' >
 							<label htmlFor='createGame-question-category'>
 								Kategoria Pytań
 							</label>
@@ -57,26 +89,25 @@ const CreateGame = () => {
 									name='game_Quantity'
 									ref={selectNumberRef}
 								>
-									<option value='3'>10</option>
-									<option value='2'>12</option>
-									<option value='4'>15</option>
-									<option value='1'>18</option>
+									<option value='10'>10</option>
+									<option value='12'>12</option>
+									<option value='15'>15</option>
+									<option value='18'>18</option>
 								</select>
 							</div>
 							<label htmlFor='createGame-question-time'>Czas</label>
 							<div className='createGame-box'>
 								<select id='game-time-id' name='game_Time' ref={selectTimeRef}>
-									<option value='3'>10</option>
-									<option value='2'>12</option>
-									<option value='4'>15</option>
-									<option value='1'>18</option>
+									<option value='10'>10</option>
+									<option value='12'>12</option>
+									<option value='15'>15</option>
+									<option value='18'>18</option>
 								</select>
 							</div>
-
-							<button className='btn-createGame-confirm' type='submit'>
-								Zatwierdź
-							</button>
 						</form>
+						<button className='btn-createGame-confirm' onClick={handleClick} >
+								Zatwierdź
+						</button>		
 					</div>
 				</div>
 			</main>
