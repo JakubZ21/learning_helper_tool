@@ -52,6 +52,7 @@ const Quiz = () => {
 		} else {
 			setWaiting(true);
 		}
+
 		const getCode = await axios
 			.get(process.env.REACT_APP_SRV_URL+'quiz/getQuizId?quiz_code=' + urlCateg)
 			.catch((err) => console.log(err));
@@ -167,7 +168,9 @@ const Quiz = () => {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-				}).then((response) => response.json());
+				}).then((response) => {
+					response.json()
+				});
 			}
 			return (
 				<div>
