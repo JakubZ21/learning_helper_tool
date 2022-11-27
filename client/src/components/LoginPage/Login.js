@@ -74,7 +74,7 @@ const Login = () => {
 		const status = '';
 
 		// console.log(enteredEmail, enteredPassword);
-		let url = 'http://localhost:5000/user/login';
+		let url = process.env.REACT_APP_SRV_URL+'user/login';
 		setIsLoading(true);
 
 		if (isLogin) {
@@ -143,7 +143,7 @@ const Login = () => {
 		setFormErrors(validate(formVal));
 		setIsSubmit(true);
 
-		let url = 'http://localhost:5000/user/register';
+		let url = process.env.REACT_APP_SRV_URL+'user/register';
 		setIsLoading(true);
 
 		if (isRegister) {

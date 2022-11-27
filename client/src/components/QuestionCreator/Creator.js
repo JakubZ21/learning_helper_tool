@@ -22,7 +22,7 @@ const Creator = () => {
 		const enteredAnswer4 = answer4Ref.current.value;
 		const chosenSelect = selectRef.current.value;
 
-		let url = 'http://localhost:5000/questions/addQuestion';
+		let url = process.env.REACT_APP_SRV_URL+'questions/addQuestion';
 		fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify({
