@@ -149,7 +149,7 @@ app.get('/ranking/getmine', (req, res) => {
 	const queryDatabase = function () {
 		console.log('Reading rows from the Table...');
 		// Read all rows from table
-		const request = new Request(`SELECT quiz_id, taken_when, score, max_score FROM vw_attempts WHERE takenby_id = ${user}`, function (
+		const request = new Request(`SELECT quiz_id, username,  taken_when, score, max_score FROM vw_attempts WHERE takenby_id = ${user}`, function (
 			err,
 			rowCount,
 			rows

@@ -63,7 +63,9 @@ const PanelUser = () => {
 							<Link className='text-link' to='/highscore'>
 								<button className='btn-game second'>Wynik</button>
 							</Link>
-
+							<Link className='text-link' to='/join'>
+								<button className='btn-game third'>Dołącz</button>
+							</Link>
 							<button className='btn-game fourth' onClick={handleLogout}>
 								Wyloguj się
 							</button>
