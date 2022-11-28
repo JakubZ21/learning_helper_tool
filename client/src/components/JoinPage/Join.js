@@ -22,6 +22,12 @@ const Join = () => {
 	const submitHandle = (event) => {
 		history.push('/quiz/?quizcode=' + quizCode);
 	};
+
+	const handleX = () => {
+		// console.log(sessionStorage.getItem("username"))
+		sessionStorage.getItem("username") === null ?
+		history.push('/') : history.push('/user')
+	};
 	return (
 		<div>
 			<nav class='nav'></nav>
@@ -42,9 +48,7 @@ const Join = () => {
 						Zatwierdź
 					</button>
 					{/* </form> */}
-					<Link className='text-link' to='/'>
-						<button className='btn-join'>Powrót</button>
-					</Link>
+						<button className='btn-join' onClick={handleX}>Powrót</button>
 				</div>
 			</main>
 		</div>

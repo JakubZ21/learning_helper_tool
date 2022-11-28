@@ -12,13 +12,13 @@ const Quiz = () => {
 	let history = useHistory();
 
 	const queryParams = new URLSearchParams(window.location.search);
-	const API_ENDPOINT = 'http://localhost:5000/';
+	const API_ENDPOINT = process.env.REACT_APP_SRV_URL;
 	const urlCateg = queryParams.get('quizcode');
 	console.log(urlCateg);
 	const url =
-		'http://localhost:5000/questions/getqueswithcode?quiz_code=' + urlCateg;
+	process.env.REACT_APP_SRV_URL+'questions/getqueswithcode?quiz_code=' + urlCateg;
 
-	let url2 = 'http://localhost:5000/sendscore';
+	let url2 = process.env.REACT_APP_SRV_URL+'sendscore';
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -52,8 +52,9 @@ const Quiz = () => {
 		} else {
 			setWaiting(true);
 		}
+
 		const getCode = await axios
-			.get('http://localhost:5000/quiz/getQuizId?quiz_code=' + urlCateg)
+			.get(process.env.REACT_APP_SRV_URL+'quiz/getQuizId?quiz_code=' + urlCateg)
 			.catch((err) => console.log(err));
 		if (getCode) {
 			const data = getCode.data;
@@ -167,7 +168,9 @@ const Quiz = () => {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-				}).then((response) => response.json());
+				}).then((response) => {
+					response.json()
+				});
 			}
 			return (
 				<div>
