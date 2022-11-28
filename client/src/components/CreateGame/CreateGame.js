@@ -1,8 +1,11 @@
 import './CreateGame.css';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import PopUp_View from '../PopUp_View/PopUp_View';
 
 const CreateGame = () => {
+	const [openModal, setOpenModal] = useState(false);
+
 	const selectCategoryRef = useRef();
 	const selectNumberRef = useRef();
 	const selectTimeRef = useRef();
@@ -14,6 +17,10 @@ const CreateGame = () => {
 		sessionStorage.getItem('username') === null
 			? history.push('/')
 			: history.push('/user');
+	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
 	};
 
 	return (
@@ -34,7 +41,7 @@ const CreateGame = () => {
 						<h1>Stwórz Grę</h1>
 					</div>
 					<div className='container-context-createGame'>
-						<form id='createGame-form'>
+						<form id='createGame-form' onSubmit={handleSubmit}>
 							<label htmlFor='createGame-question-category'>
 								Kategoria Pytań
 							</label>
@@ -73,9 +80,19 @@ const CreateGame = () => {
 								</select>
 							</div>
 
-							<button className='btn-createGame-confirm' type='submit'>
-								Zatwierdź
+							<button
+								onClick={() => setOpenModal(true)}
+								className='modalButton'
+							>
+								Modal
 							</button>
+							<PopUp_View
+								open={openModal}
+								onClose={() => setOpenModal(false)}
+							/>
+							{/* <button className='btn-createGame-confirm' type='submit'>
+								Zatwierdź
+							</button> */}
 						</form>
 					</div>
 				</div>

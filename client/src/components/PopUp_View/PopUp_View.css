@@ -1,0 +1,114 @@
+.modalButton {
+	display: block;
+	width: 60%;
+	height: 50px;
+	margin: 50px auto;
+	background: #1e7c16;
+	color: #fff;
+	font-size: 1em;
+	font-weight: bold;
+	border: 3px solid #1e7c16;
+	border-radius: 5px;
+	transition: background-color 0.3s, color 0.3s;
+	cursor: pointer;
+}
+
+/* Modal */
+.overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	border: 2px solid red;
+
+	width: 100%;
+	height: 100%;
+}
+
+.modalContainer {
+	padding: 100px;
+	max-width: 600px;
+	width: 100%;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: block;
+	background-image: linear-gradient(-605deg, #deffa1 50%, #6c3 50%);
+	box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.75);
+	border-radius: 15px;
+	border: 2px solid red;
+}
+
+.closeBtn {
+	position: fixed;
+	top: 14px;
+	right: 14px;
+	width: 3em;
+	height: 3em;
+	color: #0a8d10;
+	overflow: hidden;
+	background: transparent;
+	border-radius: 50%;
+	font: inherit;
+	text-indent: 100%;
+	cursor: pointer;
+}
+
+.closeBtn:focus {
+	outline: solid 0 transparent;
+	box-shadow: 0 0 0 2px #8ed0f9;
+}
+
+.closeBtn:hover {
+	background: rgba(7, 145, 19, 0.1);
+}
+
+.closeBtn:before,
+.closeBtn:after {
+	position: absolute;
+	top: 15%;
+	left: calc(50% - 0.0625em);
+	width: 0.125em;
+	height: 70%;
+	border-radius: 0.125em;
+	transform: rotate(45deg);
+	background: currentcolor;
+	content: '';
+}
+
+.closeBtn:after {
+	transform: rotate(-45deg);
+}
+
+.lbl-popUp {
+	color: rgb(253, 253, 253);
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 10px;
+	font-weight: bold;
+	transition: 0.5s ease-in-out;
+}
+
+/* Button close */
+
+@media screen and (max-width: 500px) {
+	.modalContainer {
+		flex-direction: column;
+		top: 0;
+		left: 0;
+		transform: none;
+		width: 100%;
+		height: 100vh;
+	}
+	img {
+		width: 100%;
+		max-height: 70vh;
+		object-fit: cover;
+	}
+
+	.heading {
+		margin: 1rem;
+	}
+}
