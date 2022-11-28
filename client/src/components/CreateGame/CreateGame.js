@@ -1,12 +1,14 @@
 import './CreateGame.css';
-import { useRef, useState, useEffect  } from 'react';
-import { useHistory} from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 const CreateGame = () => {
+	const [openModal, setOpenModal] = useState(false);
+
 	const selectCategoryRef = useRef();
 	const selectNumberRef = useRef();
 	const selectTimeRef = useRef();
-	
+
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
@@ -14,22 +16,19 @@ const CreateGame = () => {
 	// const [categVal, setCategVal] = useState("");
 	// const [timeVal, setTimeVal] = useState("");
 	// const [numberVal, setNumberVal] = useState("");
-	
-	useEffect(() =>
-	{
-		alert(code)
-	},[code])
-	
+
+	useEffect(() => {
+		alert(code);
+	}, [code]);
+
 	const history = useHistory();
-	
+
 	const handleX = () => {
 		// console.log(sessionStorage.getItem("username"))
 		sessionStorage.getItem('username') === null
 			? history.push('/')
 			: history.push('/user');
 	};
-
-
 
 	const registerQuiz = async (putUrl) => {
 		const response = await axios.put(putUrl).catch((err) => console.log(err));
@@ -45,7 +44,9 @@ const CreateGame = () => {
 	};
 
 	const handleClick = () => {
-		let putUrl = process.env.REACT_APP_SRV_URL+`quiz/registernew?category[]=${selectCategoryRef.current.value}&gameType=${selectTimeRef.current.value}s&numQuest=${selectNumberRef.current.value}`;
+		let putUrl =
+			process.env.REACT_APP_SRV_URL +
+			`quiz/registernew?category[]=${selectCategoryRef.current.value}&gameType=${selectTimeRef.current.value}s&numQuest=${selectNumberRef.current.value}`;
 		registerQuiz(putUrl);
 	};
 	return (
@@ -66,7 +67,7 @@ const CreateGame = () => {
 						<h1>Stwórz Grę</h1>
 					</div>
 					<div className='container-context-createGame'>
-						<form id='createGame-form' >
+						<form id='createGame-form'>
 							<label htmlFor='createGame-question-category'>
 								Kategoria Pytań
 							</label>
@@ -105,9 +106,9 @@ const CreateGame = () => {
 								</select>
 							</div>
 						</form>
-						<button className='btn-createGame-confirm' onClick={handleClick} >
-								Zatwierdź
-						</button>		
+						<button className='btn-createGame-confirm' onClick={handleClick}>
+							Zatwierdź
+						</button>
 					</div>
 				</div>
 			</main>
