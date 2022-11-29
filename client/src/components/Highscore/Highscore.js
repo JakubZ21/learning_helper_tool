@@ -17,8 +17,12 @@ const Highscore = () => {
 	const [data, setData] = useState([]);
 	const [fetchedList, setFetchedList] = useState([]);
 
-	const url = process.env.REACT_APP_SRV_URL + `ranking/getmine?user_id=${sessionStorage.getItem('id')}`;
-	const url2 = process.env.REACT_APP_SRV_URL + `ranking/getquizes?user_id=${sessionStorage.getItem('id')}`;
+	const url =
+		process.env.REACT_APP_SRV_URL +
+		`ranking/getmine?user_id=${sessionStorage.getItem('id')}`;
+	const url2 =
+		process.env.REACT_APP_SRV_URL +
+		`ranking/getquizes?user_id=${sessionStorage.getItem('id')}`;
 
 	const fetchAttempts = async (urlParam) => {
 		setLoading(true);
@@ -34,51 +38,50 @@ const Highscore = () => {
 		}
 	};
 
-
-
-	let list = []
-
+	let list = [];
 
 	useEffect(() => {
-		let index = 1
+		let index = 1;
 
-		if (sessionStorage.getItem("user_type") === "TEACHER_USER") {
+		if (sessionStorage.getItem('user_type') === 'TEACHER_USER') {
 			data.forEach((attempt) => {
 				list.push(
 					<tr>
 						<td>{index}</td>
 						<td><a href={"/highscore/"+attempt.quiz_code}>{attempt.quiz_code}</a></td>
 						<td>{attempt.question_count}</td>
-						<td>{attempt.quiz_mode}  </td>
+						<td>{attempt.quiz_mode} </td>
 						<td>{new Date(attempt.created_when).toLocaleString()}</td>
 					</tr>);
+
 				index++;
 			});
-			setFetchedList(list)
-		}
-		else {
+			setFetchedList(list);
+		} else {
 			data.forEach((attempt) => {
 				list.push(
 					<tr>
 						<td>{index}</td>
 						<td>{attempt.quiz_id}</td>
 						<td>{attempt.username}</td>
-						<td>{attempt.score} / {attempt.max_score} </td>
+						<td>
+							{attempt.score} / {attempt.max_score}{' '}
+						</td>
 						<td>{new Date(attempt.taken_when).toLocaleString()}</td>
 					</tr>);
 				index++;
 			});
-			setFetchedList(list)
+			setFetchedList(list);
 		}
 	}, [data]);
 
 	useEffect(() => {
-		sessionStorage.getItem("user_type") !== "TEACHER_USER" ? fetchAttempts(url) : fetchAttempts(url2);
+		sessionStorage.getItem('user_type') !== 'TEACHER_USER'
+			? fetchAttempts(url)
+			: fetchAttempts(url2);
 	}, []);
 
-
-
-	if (sessionStorage.getItem("user_type") === "TEACHER_USER") {
+	if (sessionStorage.getItem('user_type') === 'TEACHER_USER') {
 		return (
 			<div>
 				{' '}
@@ -114,9 +117,7 @@ const Highscore = () => {
 				<footer></footer>
 			</div>
 		);
-	}
-	else {
-
+	} else {
 		return (
 			<div>
 				{' '}

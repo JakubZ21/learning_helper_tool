@@ -20,7 +20,7 @@ body {
 }
 .main_view {
 	position: relative;
-	border: 3px solid black;
+	border: 2px solid black;
 	height: 650px;
 	width: 450px;
 	margin: 0 auto;
@@ -36,18 +36,18 @@ body {
 	justify-content: center;
 	display: flex;
 	flex-direction: column;
+	height: 350px;
 }
 .btn_main {
 	display: block;
 	width: 60%;
 	height: 64px;
-	margin: 10px auto;
+	margin: 15px auto;
 	background: #1e7c16;
 	border: 3px solid #1e7c16;
 	color: #fff;
 	font-size: 1em;
-	font-weight: bold;
-	margin-top: 20px;
+	/* font-weight: bold; */
 	border-radius: 5px;
 	transition: background-color 0.3s, color 0.3s;
 	cursor: pointer;
@@ -61,9 +61,9 @@ button:hover {
 	color: rgb(233, 225, 225);
 }
 
-img {
+/* img {
 	width: 100%;
 	height: auto;
 	margin: 24px;
 	padding: 16px;
-}
+} */

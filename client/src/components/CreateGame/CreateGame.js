@@ -2,6 +2,8 @@ import './CreateGame.css';
 import { useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import PopUp_View from '../PopUp_View/PopUp_View';
+
 const CreateGame = () => {
 	const [openModal, setOpenModal] = useState(false);
 
@@ -18,7 +20,7 @@ const CreateGame = () => {
 	// const [numberVal, setNumberVal] = useState("");
 
 	useEffect(() => {
-		alert(code);
+		setCode(code);
 	}, [code]);
 
 	const history = useHistory();
@@ -46,10 +48,16 @@ const CreateGame = () => {
 	const handleClick = () => {
 		let putUrl =
 			process.env.REACT_APP_SRV_URL +
-			`quiz/registernew?category[]=${selectCategoryRef.current.value}&gameType=${selectTimeRef.current.value}s&numQuest=${selectNumberRef.current.value}&created_by=${sessionStorage.getItem("id")}`;
-		console.log(putUrl)
-			registerQuiz(putUrl);
+			`quiz/registernew?category[]=${
+				selectCategoryRef.current.value
+			}&gameType=${selectTimeRef.current.value}s&numQuest=${
+				selectNumberRef.current.value
+			}&created_by=${sessionStorage.getItem('id')}`;
+		console.log(putUrl);
+		registerQuiz(putUrl);
+		setOpenModal(true);
 	};
+
 	return (
 		<div>
 			<nav className='nav'>
@@ -62,11 +70,7 @@ const CreateGame = () => {
 					<button className='btn-createGame-close' onClick={handleX}>
 						close
 					</button>
-					<div className='container-img-createGame'>
-						{/* <img src={Logo} alt='quiz-game'></img> */}
-
-						<h1>Stwórz Grę</h1>
-					</div>
+					<div className='container-img-createGame'></div>
 					<div className='container-context-createGame'>
 						<form id='createGame-form'>
 							<label htmlFor='createGame-question-category'>
@@ -110,6 +114,11 @@ const CreateGame = () => {
 						<button className='btn-createGame-confirm' onClick={handleClick}>
 							Zatwierdź
 						</button>
+						<PopUp_View
+							open={openModal}
+							onClose={() => setOpenModal(false)}
+							displayCode={code}
+						/>
 					</div>
 				</div>
 			</main>

@@ -22,7 +22,7 @@ const Creator = () => {
 		const enteredAnswer4 = answer4Ref.current.value;
 		const chosenSelect = selectRef.current.value;
 
-		let url = process.env.REACT_APP_SRV_URL+'questions/addQuestion';
+		let url = process.env.REACT_APP_SRV_URL + 'questions/addQuestion';
 		fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify({
@@ -71,7 +71,7 @@ const Creator = () => {
 						<img src={Logo} alt='quiz-game'></img>
 					</div> */}
 					<div className='container-title'>
-						<h1>Stwórz Pytanie</h1>
+						{/* <img src={Logo} alt='quiz-game'></img> */}
 					</div>
 					<div className='container-creator-context'>
 						<form onSubmit={sendQuestion} method='PUT'>
