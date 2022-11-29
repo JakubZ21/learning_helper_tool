@@ -11,6 +11,7 @@ import PanelUser from './components/PanelUser/User';
 import { ToastContainer, toast } from 'react-toastify';
 import Creator from './components/QuestionCreator/Creator';
 import Highscore from './components/Highscore/Highscore';
+import HighscoreDetails from './components/Highscore/HighscoreDetails';
 import CreateGame from './components/CreateGame/CreateGame';
 
 function App() {
@@ -41,7 +42,10 @@ function App() {
 				<Route path='/question'>
 					<Creator />
 				</Route>
-				<Route path='/highscore'>
+				<Route path='/highscore/:quiz_code'>
+					<HighscoreDetails />
+				</Route>
+				<Route exact path='/highscore'>
 					<Highscore />
 				</Route>
 				<Route path='/createGame'>

@@ -27,7 +27,6 @@ const Highscore = () => {
 			const data = response.data;
 			if (data.length > 0) {
 				setData(response.data);
-				console.log(data);
 				setLoading(false);
 			} else {
 			}
@@ -48,14 +47,11 @@ const Highscore = () => {
 				list.push(
 					<tr>
 						<td>{index}</td>
-						<td><a href={"/highscore/?quiz_code="+attempt.quiz_code}>{attempt.quiz_code}</a></td>
+						<td><a href={"/highscore/"+attempt.quiz_code}>{attempt.quiz_code}</a></td>
 						<td>{attempt.question_count}</td>
 						<td>{attempt.quiz_mode}  </td>
 						<td>{new Date(attempt.created_when).toLocaleString()}</td>
 					</tr>);
-				console.log(index)
-				console.log(data)
-				console.log(fetchedList)
 				index++;
 			});
 			setFetchedList(list)
@@ -70,9 +66,6 @@ const Highscore = () => {
 						<td>{attempt.score} / {attempt.max_score} </td>
 						<td>{new Date(attempt.taken_when).toLocaleString()}</td>
 					</tr>);
-				console.log(index)
-				console.log(data)
-				console.log(fetchedList)
 				index++;
 			});
 			setFetchedList(list)
