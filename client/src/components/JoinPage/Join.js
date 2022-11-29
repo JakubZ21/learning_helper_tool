@@ -1,18 +1,10 @@
 import './Join.css';
-import BackGround from '../UI/BackGround';
 import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
 const Join = () => {
 	const [quizCode, setQuizCode] = useState('');
 	let history = useHistory();
-	// useEffect(()=>{
-	// 	console.log(quizCode)
-	// },quizCode)
-	// useEffect(() => {
-	// 	// fetchQuestions();
-	// 	console.log("effect")
-	// }, quizCodeInputRef);
 
 	const handleChange = (passed) => {
 		setQuizCode(passed.target.value);
@@ -25,8 +17,9 @@ const Join = () => {
 
 	const handleX = () => {
 		// console.log(sessionStorage.getItem("username"))
-		sessionStorage.getItem("username") === null ?
-		history.push('/') : history.push('/user')
+		sessionStorage.getItem('username') === null
+			? history.push('/')
+			: history.push('/user');
 	};
 	return (
 		<div>
@@ -43,12 +36,15 @@ const Join = () => {
 						required=''
 						onChange={handleChange}
 					/>
-
-					<button onClick={submitHandle} className='btn-join'>
-						Zatwierdź
-					</button>
-					{/* </form> */}
-						<button className='btn-join' onClick={handleX}>Powrót</button>
+					<div className='container-join-btns'>
+						<button onClick={submitHandle} className='btn-join'>
+							Zatwierdź
+						</button>
+						{/* </form> */}
+						<button className='btn-join' onClick={handleX}>
+							Powrót
+						</button>
+					</div>
 				</div>
 			</main>
 		</div>

@@ -1,10 +1,9 @@
 import './User.css';
-import Logo from './m1.png';
+import Logo from '../startPage/quiz.png';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const PanelUser = () => {
-	
 	const history = useHistory();
 	const handleLogout = function () {
 		sessionStorage.clear();
@@ -56,18 +55,20 @@ const PanelUser = () => {
 							<img src={Logo} alt='quiz-game'></img>
 						</div>
 						<div className='container-context'>
-							<Link className='text-link' to='/category'>
-								<button className='btn-game first'>Szybka Gra</button>
-							</Link>
-							<Link className='text-link' to='/highscore'>
-								<button className='btn-game second'>Wynik</button>
-							</Link>
-							<Link className='text-link' to='/join'>
-								<button className='btn-game third'>Dołącz</button>
-							</Link>
-							<button className='btn-game fourth' onClick={handleLogout}>
-								Wyloguj się
-							</button>
+							<div className='container-users-btns'>
+								<Link className='text-link' to='/category'>
+									<button className='btn-game first'>Szybka Gra</button>
+								</Link>
+								<Link className='text-link' to='/highscore'>
+									<button className='btn-game second'>Wynik</button>
+								</Link>
+								<Link className='text-link' to='/join'>
+									<button className='btn-game third'>Dołącz</button>
+								</Link>
+								<button className='btn-game fourth' onClick={handleLogout}>
+									Wyloguj się
+								</button>
+							</div>
 						</div>
 					</div>
 				</main>

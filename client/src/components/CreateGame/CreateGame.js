@@ -55,6 +55,7 @@ const CreateGame = () => {
 			}&created_by=${sessionStorage.getItem('id')}`;
 		console.log(putUrl);
 		registerQuiz(putUrl);
+		setOpenModal(true);
 	};
 
 	return (
@@ -69,11 +70,7 @@ const CreateGame = () => {
 					<button className='btn-createGame-close' onClick={handleX}>
 						close
 					</button>
-					<div className='container-img-createGame'>
-						{/* <img src={Logo} alt='quiz-game'></img> */}
-
-						<h1>Stwórz Grę</h1>
-					</div>
+					<div className='container-img-createGame'></div>
 					<div className='container-context-createGame'>
 						<form id='createGame-form'>
 							<label htmlFor='createGame-question-category'>

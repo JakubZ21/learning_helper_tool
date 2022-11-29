@@ -1,5 +1,4 @@
 import './Login.css';
-import MainNavigation from '../Navigation/MainNavigation';
 import { Link, history, useHistory } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { useRef } from 'react';
@@ -74,7 +73,7 @@ const Login = () => {
 		const status = '';
 
 		// console.log(enteredEmail, enteredPassword);
-		let url = process.env.REACT_APP_SRV_URL+'user/login';
+		let url = process.env.REACT_APP_SRV_URL + 'user/login';
 		setIsLoading(true);
 
 		if (isLogin) {
@@ -143,7 +142,7 @@ const Login = () => {
 		setFormErrors(validate(formVal));
 		setIsSubmit(true);
 
-		let url = process.env.REACT_APP_SRV_URL+'user/register';
+		let url = process.env.REACT_APP_SRV_URL + 'user/register';
 		setIsLoading(true);
 
 		if (isRegister) {

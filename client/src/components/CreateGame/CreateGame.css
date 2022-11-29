@@ -4,7 +4,7 @@
 
 .container-img-createGame {
 	position: relative;
-	height: 150px;
+	/* height: 150px; */
 	width: 400px;
 	text-align: center;
 	margin: 0 auto;
@@ -24,7 +24,9 @@
 .container-context-createGame label {
 	display: block;
 	text-align: center;
-	padding: 10px;
+	margin: 15px;
+	font-weight: bold;
+	font-size: 18px;
 }
 .container-context-createGame #game-category-id,
 #game-quantity-id,
@@ -33,15 +35,15 @@
 }
 .btn-createGame-confirm {
 	display: block;
-	width: 60%;
+	width: 220px;
 	height: 50px;
 	margin: 50px auto;
 	background: #1e7c16;
 	color: #fff;
 	font-size: 1em;
-	font-weight: bold;
+	/* font-weight: bold; */
 	border: 3px solid #1e7c16;
-	border-radius: 5px;
+	border-radius: 8px;
 	transition: background-color 0.3s, color 0.3s;
 	cursor: pointer;
 }
@@ -53,7 +55,7 @@
 }
 
 .createGame-box select {
-	background-color: #327a42;
+	background-color: hwb(133 4% 41%);
 	color: white;
 	padding: 8px;
 	width: 200px;
@@ -105,7 +107,7 @@
 .btn-createGame-close:before,
 .btn-createGame-close:after {
 	position: absolute;
-	top: 15%;
+	top: 13%;
 	left: calc(50% - 0.0625em);
 	width: 0.125em;
 	height: 70%;

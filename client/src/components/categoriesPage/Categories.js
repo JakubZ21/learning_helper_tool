@@ -6,7 +6,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Loading from '../LoadingPage/Loading';
 import MainNavigation from '../Navigation/MainNavigation';
-import Logo from '../startPage/quiz.png';
+import Logo from '../logos/kategorie.png';
 
 const Categories = () => {
 	let history = useHistory();
