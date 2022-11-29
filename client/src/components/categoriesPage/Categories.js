@@ -11,7 +11,7 @@ import Logo from '../startPage/quiz.png';
 const Categories = () => {
 	let history = useHistory();
 	const API_ENDPOINT = process.env.REACT_APP_SRV_URL;
-	const url = process.env.REACT_APP_SRV_URL+'categories/getall';
+	const url = process.env.REACT_APP_SRV_URL + 'categories/getall';
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -61,7 +61,8 @@ const Categories = () => {
 	};
 
 	const handleClick = (id) => {
-		let putUrl = process.env.REACT_APP_SRV_URL+`quiz/registernew?category[]=${id}`;
+		let putUrl =
+			process.env.REACT_APP_SRV_URL + `quiz/registernew?category[]=${id}`;
 		registerQuiz(putUrl);
 	};
 

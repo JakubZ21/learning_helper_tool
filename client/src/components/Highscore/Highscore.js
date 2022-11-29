@@ -3,7 +3,6 @@ import Logo from './m2.png';
 import { Link, Route, useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MDBDataTable } from 'mdbreact';
 
 const Highscore = () => {
 	let history = useHistory();
@@ -17,7 +16,9 @@ const Highscore = () => {
 	const [loading, setLoading] = useState(false);
 	const [attempts, setAttempts] = useState([]);
 	const [attemptList, setAttList] = useState([]);
-	const url = process.env.REACT_APP_SRV_URL + `ranking/getmine?user_id=${sessionStorage.getItem('id')}`;
+	const url =
+		process.env.REACT_APP_SRV_URL +
+		`ranking/getmine?user_id=${sessionStorage.getItem('id')}`;
 	const fetchAttempts = async () => {
 		setLoading(true);
 		const response = await axios(url).catch((err) => console.log(err));
@@ -32,29 +33,31 @@ const Highscore = () => {
 		}
 	};
 	useEffect(() => {
-		console.log("XD")
+		console.log('XD');
 		fetchAttempts();
 	}, []);
-	let list = []
+	let list = [];
 	useEffect(() => {
-		let index = 1
+		let index = 1;
 
-		
 		attempts.forEach((attempt) => {
 			list.push(
 				<tr>
 					<td>{index}</td>
 					<td>{attempt.quiz_id}</td>
 					<td>{attempt.username}</td>
-					<td>{attempt.score} / {attempt.max_score} </td>
+					<td>
+						{attempt.score} / {attempt.max_score}{' '}
+					</td>
 					<td>{new Date(attempt.taken_when).toLocaleDateString()}</td>
-				</tr>);
-			console.log(index)
-			console.log(attempts)
-			console.log(attemptList)
+				</tr>
+			);
+			console.log(index);
+			console.log(attempts);
+			console.log(attemptList);
 			index++;
 		});
-		setAttList(list)
+		setAttList(list);
 	}, [attempts]);
 
 	return (
