@@ -21,6 +21,7 @@ function connectToAzure() {
 		options: {
 			database: 'learning_helper_tool_sqldb_dev', //update me
 			encrypt: true,
+			connectTimeout: 60000,
 		},
 	};
 	return config;
@@ -38,6 +39,7 @@ function connectToAzureWriter() {
 		options: {
 			database: 'learning_helper_tool_sqldb_dev', //update me
 			encrypt: true,
+			connectTimeout: 60000,
 		},
 	};
 	return config;
