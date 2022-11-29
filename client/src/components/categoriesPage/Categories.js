@@ -86,11 +86,11 @@ const Categories = () => {
 		setButtons(locButtons);
 	}, [categories]);
 
-
 	const handleX = () => {
 		// console.log(sessionStorage.getItem("username"))
-		sessionStorage.getItem("username") === null ?
-		history.push('/') : history.push('/user')
+		sessionStorage.getItem('username') === null
+			? history.push('/')
+			: history.push('/user');
 	};
 
 	if (loading) {
@@ -106,7 +106,9 @@ const Categories = () => {
 				<nav class='nav'></nav>
 				<main className='container-main'>
 					<div className='main-join'>
-							<button className='btn-close' onClick={handleX}>close</button>
+						<button className='btn-close' onClick={handleX}>
+							close
+						</button>
 						<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
 							Twój Kod
 						</label>
@@ -124,7 +126,9 @@ const Categories = () => {
 				<nav class='nav'></nav>
 				<main className='container-main'>
 					<div className='main-cat'>
-							<button className='btn-close' onClick={handleX}>close</button>
+						<button className='btn-close' onClick={handleX}>
+							close
+						</button>
 						<div className='container-category-img'>
 							<img src={Logo} alt='logo'></img>
 						</div>

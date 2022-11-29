@@ -47,7 +47,7 @@ const Highscore = () => {
 					<td>{attempt.quiz_id}</td>
 					<td>{attempt.username}</td>
 					<td>{attempt.score} / {attempt.max_score} </td>
-					<td>{new Date(attempt.taken_when).toLocaleDateString()}</td>
+					<td>{new Date(attempt.taken_when).toLocaleString()}</td>
 				</tr>);
 			console.log(index)
 			console.log(attempts)
