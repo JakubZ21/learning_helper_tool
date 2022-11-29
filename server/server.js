@@ -172,6 +172,53 @@ app.get('/ranking/getquizes', (req, res) => {
 	};
 });
 
+app.get('/ranking/getresults', (req, res) => {
+	var Connection = require('tedious').Connection;
+	var Request = require('tedious').Request;
+	var jsonArray = [];
+	res.header('Access-Control-Allow-Origin', '*');
+
+	const connection = new Connection(connectToAzure());
+	connection.on('connect', function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			queryDatabase();
+		}
+	});
+
+	let code = ''
+	if (typeof req.query.code === "undefined") res.json("Nie można znalezc kodu")
+
+	else {
+		code = req.query.code
+
+		connection.connect();
+	}
+	const queryDatabase = function () {
+		console.log('Reading rows from the Table...');
+		// Read all rows from table
+		const request = new Request(`SELECT quiz_id, username,  taken_when, score, max_score FROM vw_attempts WHERE quiz_code = '${code}'`, function (
+			err,
+			rowCount,
+			rows
+		) {
+			console.log(rowCount + ' row(s) returned');
+			res.json(jsonArray);
+			jsonArray = [];
+			connection.close();
+		});
+		request.on('row', function (columns) {
+			var jsonRow = {};
+			columns.forEach(function (column) {
+				jsonRow[column.metadata.colName] = column.value;
+			});
+			jsonArray.push(jsonRow);
+		});
+		connection.execSql(request);
+	};
+});
+
 app.get('/ranking/getmine', (req, res) => {
 	var Connection = require('tedious').Connection;
 	var Request = require('tedious').Request;
