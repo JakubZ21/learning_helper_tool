@@ -21,6 +21,7 @@ function connectToAzure() {
 		options: {
 			database: 'learning_helper_tool_sqldb_dev', //update me
 			encrypt: true,
+			connectTimeout: 60000,
 		},
 	};
 	return config;
@@ -38,6 +39,7 @@ function connectToAzureWriter() {
 		options: {
 			database: 'learning_helper_tool_sqldb_dev', //update me
 			encrypt: true,
+			connectTimeout: 60000,
 		},
 	};
 	return config;
@@ -122,6 +124,53 @@ app.put('/categories/addCategory', (req, res) => {
 qAPI();
 //API for Quiz Register
 quizRegisterAPI();
+
+app.get('/ranking/getquizes', (req, res) => {
+	var Connection = require('tedious').Connection;
+	var Request = require('tedious').Request;
+	var jsonArray = [];
+	res.header('Access-Control-Allow-Origin', '*');
+
+	const connection = new Connection(connectToAzure());
+	connection.on('connect', function (err) {
+		if (err) {
+			console.log(err);
+		} else {
+			queryDatabase();
+		}
+	});
+
+	let user = ''
+	if (typeof req.query.user_id === "undefined") res.json("Nie można znalezc uzytkownika")
+
+	else {
+		user = req.query.user_id
+
+		connection.connect();
+	}
+	const queryDatabase = function () {
+		console.log('Reading rows from the Table...');
+		// Read all rows from table
+		const request = new Request(`SELECT quiz_code, question_count, quiz_mode, created_when FROM vw_quizes WHERE created_by = ${user}`, function (
+			err,
+			rowCount,
+			rows
+		) {
+			console.log(rowCount + ' row(s) returned');
+			res.json(jsonArray);
+			jsonArray = [];
+			connection.close();
+		});
+		request.on('row', function (columns) {
+			var jsonRow = {};
+			columns.forEach(function (column) {
+				jsonRow[column.metadata.colName] = column.value;
+			});
+			jsonArray.push(jsonRow);
+		});
+		connection.execSql(request);
+	};
+});
 
 app.get('/ranking/getmine', (req, res) => {
 	var Connection = require('tedious').Connection;
@@ -759,6 +808,8 @@ function quizRegisterAPI() {
 		if (typeof req.query.numQuest !== "undefined") numQuest = req.query.numQuest
 		let type = "NO TIME"
 		if (typeof req.query.gameType !== "undefined") type = req.query.gameType
+		let created_by = "4"
+		if (typeof req.query.created_by !== "undefined") created_by = req.query.created_by
 
 		const connection = new Connection(connectToAzureWriter());
 		connection.on('connect', function (err) {
@@ -790,7 +841,7 @@ function quizRegisterAPI() {
 			let quiz_id = undefined;
 			const request = new Request(
 				`
-                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,4,${numQuest},'${type}')
+                INSERT INTO quizes (created_when,created_by,question_count,quiz_mode)  values (CURRENT_TIMESTAMP,${created_by}, ${numQuest}, '${type}')
                 SELECT hashids.encode1(MAX(id)) as code, MAX(id) as Id FROM dbo.quizes
                 `,
 				function (err, rowCount, rows) {
@@ -801,7 +852,7 @@ function quizRegisterAPI() {
 						: console.log(err);
 				}
 			);
-
+				console.log(request)
 			request.on('row', function (columns) {
 				let json = {};
 				columns.forEach(function (column) {

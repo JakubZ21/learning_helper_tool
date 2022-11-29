@@ -48,9 +48,13 @@ const CreateGame = () => {
 	const handleClick = () => {
 		let putUrl =
 			process.env.REACT_APP_SRV_URL +
-			`quiz/registernew?category[]=${selectCategoryRef.current.value}&gameType=${selectTimeRef.current.value}s&numQuest=${selectNumberRef.current.value}`;
+			`quiz/registernew?category[]=${
+				selectCategoryRef.current.value
+			}&gameType=${selectTimeRef.current.value}s&numQuest=${
+				selectNumberRef.current.value
+			}&created_by=${sessionStorage.getItem('id')}`;
+		console.log(putUrl);
 		registerQuiz(putUrl);
-		setOpenModal(true);
 	};
 
 	return (

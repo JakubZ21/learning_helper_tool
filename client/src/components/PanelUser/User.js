@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const PanelUser = () => {
-	console.log(sessionStorage.getItem('XD'));
-
+	
 	const history = useHistory();
 	const handleLogout = function () {
 		sessionStorage.clear();
