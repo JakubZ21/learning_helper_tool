@@ -26,7 +26,8 @@
 .container-menu {
 	position: relative;
 	border: 2px solid black;
-	height: 650px;
+	/* height: ; */
+	height: auto;
 	width: 450px;
 	margin: 0 auto;
 	border-radius: 15px;
@@ -48,8 +49,9 @@ img {
 }
 .container-context {
 	position: relative;
-	height: 350px;
+	height: 450px;
 }
+
 
 .btn-game {
 	height: 64px;
@@ -94,6 +96,12 @@ img {
 .fourth {
 	position: absolute;
 	top: 290px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.fifth {
+	position: absolute;
+	top: 370px;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }

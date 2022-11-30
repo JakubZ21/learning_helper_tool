@@ -32,7 +32,10 @@ const PanelUser = () => {
 							<Link className='text-link' to='/createGame'>
 								<button className='btn-game third'>Stwórz grę</button>
 							</Link>
-							<button className='btn-game fourth' onClick={handleLogout}>
+							<Link className='text-link' to='/highscore'>
+								<button className='btn-game fourth'>Zobacz ranking</button>
+							</Link>
+							<button className='btn-game fifth' onClick={handleLogout}>
 								Wyloguj się
 							</button>
 						</div>

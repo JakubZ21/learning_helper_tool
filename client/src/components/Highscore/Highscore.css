@@ -108,6 +108,12 @@
 	background-color: #52c97a;
 }
 
+#ranking td a 
+{
+	color: darkblue;
+	font-weight: bolder;
+	text-decoration: underline;
+}
 #ranking tr:nth-child(even) {
 	background-color: #f2f2f2;
 }

@@ -10,7 +10,7 @@ const HighscoreDetails = () => {
 		// console.log(sessionStorage.getItem("username"))
 		sessionStorage.getItem('username') === null
 			? history.push('/')
-			: history.push('/user');
+			: history.push('/highscore');
 	};
 
 	const [loading, setLoading] = useState(false);
@@ -22,9 +22,9 @@ const HighscoreDetails = () => {
 	const url = process.env.REACT_APP_SRV_URL + `ranking/getresults?code=${code}`;
 
 
-	const fetchAttempts = async (urlParam) => {
+	const fetchAttempts = async () => {
 		setLoading(true);
-		const response = await axios(urlParam).catch((err) => console.log(err));
+		const response = await axios(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
 			if (data.length > 0) {
@@ -32,12 +32,11 @@ const HighscoreDetails = () => {
 				console.log(data);
 				setLoading(false);
 			} else {
+				console.log(response)
 			}
 		} else {
 		}
 	};
-
-
 
 	let list = []
 
@@ -61,9 +60,12 @@ const HighscoreDetails = () => {
 	
 	useEffect(() => {
 		setCode(param)
-		fetchAttempts(url);
 	}, []);
 
+	useEffect(()=>
+	{
+		fetchAttempts(url);
+	}, [code])
 	return (
 		<div>
 			{' '}
@@ -80,7 +82,7 @@ const HighscoreDetails = () => {
 					<div id='scrolltab'>
 						<table id='ranking'>
 							<tr>
-								<th>Lp. Detail</th>
+								<th>Lp.</th>
 								<th>Kod Quizu</th>
 								<th>Nazwa użytkownika</th>
 								<th>Punkty</th>

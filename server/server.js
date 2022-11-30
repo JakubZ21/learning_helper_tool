@@ -73,6 +73,8 @@ app.get('/categories/getall', (req, res) => {
 			jsonArray = [];
 			connection.close();
 		});
+		request.setTimeout(60000)
+
 		request.on('row', function (columns) {
 			var jsonRow = {};
 			columns.forEach(function (column) {
@@ -161,6 +163,7 @@ app.get('/ranking/getquizes', (req, res) => {
 			jsonArray = [];
 			connection.close();
 		});
+		request.setTimeout(60000)
 		request.on('row', function (columns) {
 			var jsonRow = {};
 			columns.forEach(function (column) {
@@ -189,16 +192,16 @@ app.get('/ranking/getresults', (req, res) => {
 
 	let code = ''
 	if (typeof req.query.code === "undefined") res.json("Nie można znalezc kodu")
-
 	else {
 		code = req.query.code
-
 		connection.connect();
 	}
+	
 	const queryDatabase = function () {
 		console.log('Reading rows from the Table...');
+		
 		// Read all rows from table
-		const request = new Request(`SELECT quiz_id, username,  taken_when, score, max_score FROM vw_attempts WHERE quiz_code = '${code}'`, function (
+		const request = new Request(`SELECT quiz_id, username,  taken_when, score, max_score FROM vw_attempts WHERE quiz_id = '${code}'`, function (
 			err,
 			rowCount,
 			rows
@@ -208,6 +211,9 @@ app.get('/ranking/getresults', (req, res) => {
 			jsonArray = [];
 			connection.close();
 		});
+
+		request.setTimeout(60000)
+
 		request.on('row', function (columns) {
 			var jsonRow = {};
 			columns.forEach(function (column) {
@@ -215,6 +221,7 @@ app.get('/ranking/getresults', (req, res) => {
 			});
 			jsonArray.push(jsonRow);
 		});
+
 		connection.execSql(request);
 	};
 });
@@ -255,6 +262,7 @@ app.get('/ranking/getmine', (req, res) => {
 			jsonArray = [];
 			connection.close();
 		});
+		request.setTimeout(60000)
 		request.on('row', function (columns) {
 			var jsonRow = {};
 			columns.forEach(function (column) {
@@ -432,6 +440,7 @@ app.put('/user/register', (req, res) => {
 				connection.close();
 			}
 		);
+		request.setTimeout(60000)
 		request.on('row', function (columns) {
 			useridSent = columns[0].value;
 			usernameSent = columns[1].value;
@@ -497,6 +506,7 @@ app.post('/user/login', (req, res) => {
 				connection.close();
 			}
 		);
+		request.setTimeout(60000)
 		request.on('row', function (columns) {
 			userid = columns[0].value;
 			username = columns[1].value;
@@ -593,6 +603,7 @@ function qAPI() {
 				jsonArray = [];
 				connection.close();
 			});
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -646,6 +657,7 @@ function qAPI() {
 					connection.close();
 				}
 			);
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -692,6 +704,7 @@ function qAPI() {
 					connection.close();
 				}
 			);
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -742,6 +755,7 @@ function qAPI() {
 					connection.close();
 				}
 			);
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -760,11 +774,11 @@ function qAPI() {
 		res.header('Access-Control-Allow-Origin', '*');
 
 		let quiz_code;
-		if (typeof req.query.quiz_code == 'undefined') {
+		if (typeof req.query.quiz_code === 'undefined') {
 			res.json('quiz_code not defined');
 			return 0;
 		} else quiz_code = req.query.quiz_code;
-
+		// console.log(quiz_code)
 		//console.log("SELECT TOP 10 * FROM questions where category_id in ("+categorySQL.join(",")+")")
 
 		const connection = new Connection(connectToAzure());
@@ -772,12 +786,14 @@ function qAPI() {
 			if (err) {
 				console.log(err);
 			} else {
+				console.log("before query")
 				queryDatabase();
 			}
 		});
 		connection.connect();
+
 		const queryDatabase = function () {
-			console.log('Reading rows from the Table...');
+			console.log('Reading rows from the Table... in GetQuestWithCode');
 			// Read all rows from table
 			const request = new Request(
 				"SELECT  *  FROM [dbo].[vw_quiz_associated_questions] where [quiz_code] ='" +
@@ -788,12 +804,19 @@ function qAPI() {
 					res.json(jsonArray);
 					jsonArray = [];
 					connection.close();
+					// console.log(request)
+					// console.log("\n\n\n")
+					// console.log(connection)
 				}
 			);
+
+
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
 					jsonRow[column.metadata.colName] = column.value;
+					// console.log(column.value + " | " + column.metadata.colName)
 				});
 				jsonArray.push(jsonRow);
 			});
@@ -830,6 +853,7 @@ function quizRegisterAPI() {
 					connection.close();
 				}
 			);
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {
@@ -899,7 +923,8 @@ function quizRegisterAPI() {
 						: console.log(err);
 				}
 			);
-				console.log(request)
+			console.log(request)
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				let json = {};
 				columns.forEach(function (column) {
@@ -951,6 +976,7 @@ function quizRegisterAPI() {
 					? console.log(`Successfully fetched ${numQuest} random questions`)
 					: console.log(err);
 			});
+			request.setTimeout(60000)
 			request.on('row', function (columns) {
 				var jsonRow = {};
 				columns.forEach(function (column) {

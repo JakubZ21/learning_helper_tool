@@ -14,7 +14,6 @@ const Quiz = () => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const API_ENDPOINT = process.env.REACT_APP_SRV_URL;
 	const urlCateg = queryParams.get('quizcode');
-	console.log(urlCateg);
 	const url =
 	process.env.REACT_APP_SRV_URL+'questions/getqueswithcode?quiz_code=' + urlCateg;
 
@@ -35,7 +34,7 @@ const Quiz = () => {
 	//nowy
 	const [counter, setCounter] = useState(20);
 
-	const fetchQuestions = async (API_ENDPOINT) => {
+	const fetchQuestions = async () => {
 		const response = await axios.post(url).catch((err) => console.log(err));
 		if (response) {
 			const data = response.data;
@@ -113,13 +112,13 @@ const Quiz = () => {
 	}, [questionsFetched[index], index]);
 
 	//TIMER
-	useEffect(() => {
-		if (counter > 0) {
-			setTimeout(() => setCounter(counter - 1), 1000);
-		} else {
-			setEndQuiz(true);
-		}
-	}, [counter]);
+	// useEffect(() => {
+	// 	if (counter > 0) {
+	// 		setTimeout(() => setCounter(counter - 1), 1000);
+	// 	} else {
+	// 		setEndQuiz(true);
+	// 	}
+	// }, [counter]);
 
 	const nextQuestion = () => {
 		if (index >= questionsFetched.length - 1) {
@@ -248,9 +247,9 @@ const Quiz = () => {
 						</div>
 					</div>
 				</main>
-				<div className='quiz-timer'>
+				{/* <div className='quiz-timer'>
 					<span>{counter}</span>
-				</div>
+				</div> */}
 				{/* <Timer maxRange={10} /> */}
 			</div>
 		);
