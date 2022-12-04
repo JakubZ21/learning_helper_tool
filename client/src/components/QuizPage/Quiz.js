@@ -15,9 +15,11 @@ const Quiz = () => {
 	const API_ENDPOINT = process.env.REACT_APP_SRV_URL;
 	const urlCateg = queryParams.get('quizcode');
 	const url =
-	process.env.REACT_APP_SRV_URL+'questions/getqueswithcode?quiz_code=' + urlCateg;
+		process.env.REACT_APP_SRV_URL +
+		'questions/getqueswithcode?quiz_code=' +
+		urlCateg;
 
-	let url2 = process.env.REACT_APP_SRV_URL+'sendscore';
+	let url2 = process.env.REACT_APP_SRV_URL + 'sendscore';
 
 	const [waiting, setWaiting] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -53,7 +55,9 @@ const Quiz = () => {
 		}
 
 		const getCode = await axios
-			.get(process.env.REACT_APP_SRV_URL+'quiz/getQuizId?quiz_code=' + urlCateg)
+			.get(
+				process.env.REACT_APP_SRV_URL + 'quiz/getQuizId?quiz_code=' + urlCateg
+			)
 			.catch((err) => console.log(err));
 		if (getCode) {
 			const data = getCode.data;
@@ -168,7 +172,7 @@ const Quiz = () => {
 						'Content-Type': 'application/json',
 					},
 				}).then((response) => {
-					response.json()
+					response.json();
 				});
 			}
 			return (
@@ -176,7 +180,9 @@ const Quiz = () => {
 					<nav className='nav'></nav>
 					<main className='main-container-container'>
 						<div className='main-container-quiz1'>
-							<div className='container-title'>Uzyskana liczba punktów:</div>
+							<div className='container-title-score'>
+								Uzyskana liczba punktów:
+							</div>
 							<div className='container-score'>
 								<strong>
 									{countCorrectAnswer}/{questionsFetched.length}
@@ -186,7 +192,11 @@ const Quiz = () => {
 							<div className='container-text'>
 								{(() => {
 									if (countCorrectAnswer < 5) {
-										return <h3 className='container-text-result'>Słabiutko</h3>;
+										return (
+											<h3 className='container-text-result'>
+												Ups... coś poszło nie tak
+											</h3>
+										);
 									} else if (countCorrectAnswer < 5 && correctAnswer <= 7) {
 										return (
 											<h3 className='container-text-result'>Nie jest źle</h3>
@@ -202,7 +212,7 @@ const Quiz = () => {
 							</div>
 							<div className='container-quiz-btn'>
 								<Link className='text-link' onClick={handleBack}>
-									<button className='btn-join'>Powrót</button>
+									<button className='btn-join-score'>Powrót</button>
 								</Link>
 							</div>
 						</div>

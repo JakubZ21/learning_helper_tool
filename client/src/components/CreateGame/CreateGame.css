@@ -14,6 +14,9 @@
 #createGame-form {
 	display: block;
 	text-align: center;
+	font-weight: bold;
+	margin: 25px;
+	font-size: 18px;
 }
 
 .container-context-createGame {
@@ -21,17 +24,12 @@
 	/* border: 3px solid red; */
 	height: 400px;
 }
-.container-context-createGame label {
-	display: block;
-	text-align: center;
-	margin: 15px;
-	font-weight: bold;
-	font-size: 18px;
-}
+
 .container-context-createGame #game-category-id,
 #game-quantity-id,
 #game-time-id {
 	text-align: center;
+	margin: 10px;
 }
 .btn-createGame-confirm {
 	display: block;
