@@ -1,25 +1,25 @@
-const { json } = require('express');
-const request = require('express');
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { type } = require('os');
-
+require('dotenv').config()
 app.use(express.json());
 app.use(cors());
+
+
 
 function connectToAzure() {
 	var config = {
 		authentication: {
 			options: {
-				userName: 'quiz_reader',
-				password: 'wsmsjzOu!z',
+				userName: process.env.USERNAME_R,
+				password: process.env.PASSWORD_R,
 			},
 			type: 'default',
 		},
-		server: 'wsmsjz-learning-helper-tool-sqlsrv-dev.database.windows.net',
+		server: process.env.AZURE_DB_SRV,
 		options: {
-			database: 'learning_helper_tool_sqldb_dev', //update me
+			database: process.env.AZURE_DB_DATABASE,
 			encrypt: true,
 			connectTimeout: 60000,
 		},
@@ -30,14 +30,14 @@ function connectToAzureWriter() {
 	var config = {
 		authentication: {
 			options: {
-				userName: 'quiz_readwriter',
-				password: 'wsmsjzOu!z',
+				userName: process.env.USERNAME_RW,
+				password: process.env.PASSWORD_RW,
 			},
 			type: 'default',
 		},
-		server: 'wsmsjz-learning-helper-tool-sqlsrv-dev.database.windows.net',
+		server: process.env.AZURE_DB_SRV,
 		options: {
-			database: 'learning_helper_tool_sqldb_dev', //update me
+			database: process.env.AZURE_DB_DATABASE,
 			encrypt: true,
 			connectTimeout: 60000,
 		},

@@ -62,7 +62,7 @@ const Categories = () => {
 
 	const handleClick = (id) => {
 		let putUrl =
-			process.env.REACT_APP_SRV_URL + `quiz/registernew?category[]=${id}`;
+			process.env.REACT_APP_SRV_URL + `quiz/registernew?category[]=${id}&created_by${sessionStorage.getItem("id")}`;
 		registerQuiz(putUrl);
 	};
 
