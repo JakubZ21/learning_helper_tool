@@ -32,7 +32,7 @@ const Join = () => {
 						className='input-join'
 						type='text'
 						name='txt'
-						placeholder='Podaj KOD PIN'
+						placeholder='Podaj kod'
 						required=''
 						onChange={handleChange}
 					/>

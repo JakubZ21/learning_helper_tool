@@ -111,7 +111,7 @@ const Categories = () => {
 							close
 						</button>
 						<label className='lbl-cat' htmlFor='chk' aria-hidden='true'>
-							Twój Kod
+							Twój kod
 						</label>
 						<p className='code-display '>{code}</p>
 						<button className='btn-ctg' onClick={handleGoToQuiz}>

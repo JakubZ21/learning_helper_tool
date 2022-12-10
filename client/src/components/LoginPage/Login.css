@@ -25,7 +25,7 @@
 	height: 100%;
 }
 .lbl__main {
-	color: #4c524d;
+	color: #3d3c3c;
 	font-size: 2.3em;
 	justify-content: center;
 	display: flex;
@@ -48,7 +48,7 @@
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
-	margin-top: 15px;
+	margin-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 10px;
@@ -100,7 +100,7 @@
 	transition: 0.8s ease-in-out;
 }
 .login label {
-	color: #4c524d;
+	color: #3d3c3c;
 	transform: scale(0.6);
 }
 
